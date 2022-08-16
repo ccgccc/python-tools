@@ -2,6 +2,7 @@
 *.DS_Store
 *.csv
 crawl_program/spotify/secrets.py
+crawl_program/spotify/*.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

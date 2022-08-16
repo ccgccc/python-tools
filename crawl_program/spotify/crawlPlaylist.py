@@ -3,15 +3,12 @@ import base64
 import json
 from secrets import *
 
-
 # ******************************
 #    抓取 Spotify 播放列表数据
 # ******************************
 
 # 此处定义播放列表id
 playlistID = "6Ev0ju4qLsqSLznN7fjErt"
-
-file_encoding = 'utf-8-sig'
 
 
 def getAccessToken(clientID, clientSecret):
@@ -51,13 +48,15 @@ def getPlaylistTracks(token, playlistID):
 token = getAccessToken(clientID, clientSecret)
 tracklist = getPlaylistTracks(token, playlistID)
 # print(tracklist)
-with open('tracklist.json', 'a', encoding=file_encoding) as f:
-    json.dump(tracklist, f)
+# Write json to file
+# with open('tracklist.json', 'w') as f:
+#     json.dump(tracklist, f)
 
 for t in tracklist['tracks']['items']:
     print('--------------------')
     print('Track:   ' + t['track']['name'])
-    print('Album:   ' + t['track']['album']['name'] + ' (' + t['track']['album']['release_date'] + ")")
+    print('Album:   ' + t['track']['album']['name'] +
+          ' (' + t['track']['album']['release_date'] + ")")
     print('Artists: ', end='')
     artists = t['track']['artists']
     for i in range(len(artists)):
