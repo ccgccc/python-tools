@@ -1,3 +1,4 @@
+from platform import release
 import requests
 import json
 from utils.auth import *
@@ -20,44 +21,51 @@ def getArtistAlbums(token, artistId, limit, offset):
     albumsObject = res.json()
     return albumsObject
 
+
 def printAlbums(artistAlbums, count):
     for t in artistAlbums['items']:
         print('--------------------')
         count = count + 1
-        print(str(count) + ': ' + t['name'])
-        print('Group: ' + t['album_group'])
-        print('Type:  ' + t['album_type'])
-        print('Date:  ' + t['release_date'])
-        print('Tracks: ' + str(t['total_tracks']))
-        print('Artists: ', end='')
-        artists = t['artists']
-        for i in range(len(artists)):
-            print(artists[i]['name'], end='')
-            print(', ', end='') if i < len(artists) - 1 else print()
+        albumName = str(count) + ': ' + t['name']
+        albumGroup = 'Group: ' + t['album_group']
+        albumType = 'Type:  ' + t['album_type']
+        releaseDate = 'Date:  ' + t['release_date']
+        tracksNum = 'Tracks: ' + str(t['total_tracks'])
+        artists = 'Artists: '
+        artistsList = t['artists']
+        for i in range(len(artistsList)):
+            artists = artists + artistsList[i]['name'] + (', ' if i < len(artistsList) - 1 else '')
+        print(albumName, albumGroup, albumType, releaseDate, tracksNum, artists, sep='\n')
 
 
 # API requests
 token = getAccessToken(clientID, clientSecret)
 limit = 50
 artistAlbums = getArtistAlbums(token, artistId, limit, 0)
-# allAblums = artistAlbums['items']
+allAblums = artistAlbums['items']
 printAlbums(artistAlbums, 0)
 
-moreRequestTime = artistAlbums['total'] // limit
-for i in range(moreRequestTime):
+moreRequestTimes = artistAlbums['total'] // limit
+for i in range(moreRequestTimes):
     offset = limit * (i + 1)
     moreArtistAlbums = getArtistAlbums(token, artistId, limit, offset)
+    allAblums.extend(moreArtistAlbums['items'])
     printAlbums(moreArtistAlbums, offset)
 
 # print(tracklist)
 # Write json to file
 # with open('albums.json', 'w') as f:
-#     json.dump(artistAlbums, f)
+#     # json.dump(artistAlbums, f)
+#     json.dump(allAblums, f)
 
 # i = 0
-# for t in artistAlbums['items']:
+# for t in allAblums:
 #     print('--------------------')
 #     i = i + 1
 #     print(str(i) + ': ' + t['name'])
 #     print('Date: ' + t['release_date'])
 #     print('Tracks: ' + str(t['total_tracks']))
+
+# print('--------------------')
+# print('Album Statistic:')
+
