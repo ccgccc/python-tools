@@ -2,14 +2,14 @@ import json
 from albumFunc import *
 
 # ******************************
-#    抓取 Spotify 艺人专辑
+#  Crawl spotify artist albums
 # ******************************
 
-# 此处定义艺人id
+# Define artist id here
 artistId = "2QcZxAgcs2I1q7CtCkl6MI"  # Eson Chan
 
 
-allAblums = getAllAlbums(artistId)
+allAblums = getArtistAllAlbums(artistId)
 
 # Write json to file
 with open('albums.json', 'w') as f:
