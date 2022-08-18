@@ -78,9 +78,9 @@ def getAlbumTracksByThirdPartyAPI(token, albumId):
     # print(type(res))
     # print(res)
     if (res.status_code == 401):
-        print('**********')
+        print('\n**********')
         print('Spotify token expired, please retrive a new token.')
-        print('**********')
+        print('**********\n')
         raise
     albumTracksObject = res.json()
     return albumTracksObject

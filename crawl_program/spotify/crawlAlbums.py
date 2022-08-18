@@ -1,14 +1,17 @@
 import json
-from albumFunc import *
+from spotifyFunc import *
+from artists import *
 
 # ******************************
 #  Crawl spotify artist albums
 # ******************************
 
-# Define artist id here
-artistId = "2QcZxAgcs2I1q7CtCkl6MI"  # Eson Chan
+# Define artist here
+artist = 'jacky_cheung'
+artistId = artists[artist]['artistId']
 
 
+#  Get artist albums
 allAblums = getArtistAllAlbums(artistId)
 
 # Write json to file
@@ -27,11 +30,12 @@ with open('albums.json', 'w') as f:
 
 # Detail Output
 count = 0
-albumFile = open('album.txt', 'w')
+albumFile = open('albums.txt', 'w')
 for t in allAblums:
     seperation = '--------------------'
     count = count + 1
     albumName = str(count) + ': ' + t['name']
+    albumId = 'Id: ' + t['id']
     albumGroup = 'Group: ' + t['album_group']
     albumType = 'Type:  ' + t['album_type']
     releaseDate = 'Date:  ' + t['release_date']
@@ -41,9 +45,9 @@ for t in allAblums:
     for i in range(len(artistsList)):
         artists = artists + artistsList[i]['name'] + \
             (', ' if i < len(artistsList) - 1 else '')
-    print(seperation, albumName, albumGroup, albumType,
+    print(seperation, albumName, albumId, albumGroup, albumType,
           releaseDate, tracksNum, artists, sep='\n')
-    print(seperation, albumName, albumGroup, albumType,
+    print(seperation, albumName, albumId, albumGroup, albumType,
           releaseDate, tracksNum, artists, sep='\n', file=albumFile)
 albumFile.close()
 
