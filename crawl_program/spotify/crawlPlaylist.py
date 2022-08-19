@@ -4,10 +4,10 @@ from utils.auth import *
 from secrets import *
 
 # ******************************
-#    抓取 Spotify 播放列表数据
+#    Crawl spotify playlist
 # ******************************
 
-# 此处定义播放列表id
+# Define playlist id here
 playlistID = "6Ev0ju4qLsqSLznN7fjErt"
 
 

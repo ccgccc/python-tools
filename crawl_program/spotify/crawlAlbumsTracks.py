@@ -1,5 +1,6 @@
 import json
 import xlwt
+import time
 from spotifyFunc import *
 from artists import *
 
@@ -8,22 +9,23 @@ from artists import *
 # ******************************
 
 # Define artist here
-artist = 'jacky_cheung'
-artistId = artists[artist]['artistId']
-# Spotify developer api doesn't provide track playcount info, so we use spotify's own api to get it.
-# This workaround needs us to get an accesstoken from spotify web page.
+artist = 'jay_chou'
+# Spotify developer api doesn't provide track playcount info, so use spotify's own api to get it.
+# This workaround needs getting an accesstoken from spotify web page.
 # Token is retrived by spotify web page, e.g. https://open.spotify.com/album/1rBr9FeLlp5ueSKtE89FZa (最偉大的作品).
 # Find https://api-partner.spotify.com/pathfinder/v1/query request and copy accesstoken from its authorization header.
-spotifyToken = "BQAP8B-mAK55ycUsug87jIMuu4XSe7qqoxoDB7fmEKVf6YMvNKXIxT_IP4CCVgjAozbmi-7JxW1KtkmcPQZ2vRX_N6j3PeVe3Q0rwtKbSx5--WBUhP12pZX7ewY322nhYhQTV0D_tyE2CZVqZqFnBaT9q2GFJNy3oRoX3Li3h5o6rgH2H3D04Ffc40DZ5bVDT5U9Nam4n5STg2Cv4PTaC-SIV2S7UijZmuFPt4yww-_IqrwERq5PB_fUae8z5om42ZjqT7lrtJZIfDIaG_XYKITa3t0RF00i28hPEHsTbu2miTz70ZFvNB9roAr5kzcIl5fj3wUsnp0sj1ab9oip54-IYxZM"
+spotifyToken = "BQChuw4sjVaGsMU0kiJS6WqthwpJSfj6OIchS4hwtlMyfqYfuwyrlFOIMuxi7YmguZR9viC6W7dP_Vrp7nWDnB4X1sTA0c4MbpzlRpHBSptAGxvCb--ZXqVqtaKhP5unET5_GLwrWftSFALLXjanbDK_hweB23ymocxKIyGKUSNVNhpnNpH3-o60mBDcEmCz8DzhWjvi9z0V5bnpIPMtwopWAGXfbE6Ea0SNvOM5PlgdUBbNUhSEkWBrltc0WyT7CgGCY7CNXiZ4j6ZvlXptyl3a5tnDVKtgh6GyQrl6dFGUTCQzHZ57fk-6XoKB6SbjLxgBjVexB967AzVI8Mcc_OaXv39V"
 
 
 # Get artist albums
+artistId = artists[artist]['artistId']
 allAblums = getArtistAllAlbums(artistId)
 # Get all albums tracks
 allTracks = []
 trackNames = set()
+trackPlaycountToMs = {}
 albumCount = 0
-# for album in allAblums[0:10]:
+# for album in allAblums[0:5]:
 for album in allAblums:
     print('--------------------')
     albumCount = albumCount + 1
@@ -40,13 +42,15 @@ for album in allAblums:
     trackCount = 0
     for track in albumTracks['data']['album']['tracks']['items']:
         trackCount = trackCount + 1
-        # ignore repeated tracks
+        trackUid = track['uid']
+        trackUri = track['track']['uri']
         trackName = track['track']['name']
-        if trackName in trackNames:
-            continue
-        else:
-            trackNames.add(trackName)
         trackPlaycount = track['track']['playcount']
+        durationMs = track['track']['duration']['totalMilliseconds']
+        duration = str(durationMs // 60000) + "m " + \
+            "{:02d}".format(durationMs // 1000 % 60) + "s"
+        playable = 'Y' if track['track']['playability']['playable'] == True else 'N'
+        # concatenate artists & filter other artists
         artistsList = track['track']['artists']['items']
         allArtists = ''
         containsArtist = False
@@ -57,13 +61,23 @@ for album in allAblums:
                 (', ' if i < len(artistsList) - 1 else '')
         if not containsArtist:
             continue
-        durationMs = track['track']['duration']['totalMilliseconds']
-        duration = str(durationMs // 60000) + "m " + \
-            str(durationMs // 1000 % 60) + "s"
+        # ignore repeated tracks
+        # 1. by track name
+        if trackName in trackNames:
+            continue
+        else:
+            trackNames.add(trackName)
+        # 2. by playcount & duration
+        # if trackPlaycount is equal & duration difference is less than 5 seconds, consider them the same track
+        if trackPlaycount in trackPlaycountToMs.keys() and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 5000:
+            continue
+        else:
+            trackPlaycountToMs[trackPlaycount] = durationMs
         print(str(trackCount) + ': ' + trackName + ", " + trackPlaycount)
         allTracks.append(
-            {'trackName': trackName, 'artists': allArtists, 'duration': duration,
-             'playcount': int(trackPlaycount), 'albumName': albumName, 'releaseDate': releaseDate})
+            {'trackUid': trackUid, 'trackUri': trackUri, 'trackName': trackName, 'artists': allArtists,
+             'durationMs': durationMs, 'duration': duration, 'playcount': int(trackPlaycount),
+             'albumId': albumId, 'albumName': albumName, 'releaseDate': releaseDate, 'playable': playable})
 # Sort all tracks by playcount
 allTracks = sorted(
     allTracks, key=lambda track: track['playcount'], reverse=True)
@@ -71,7 +85,7 @@ allTracks = sorted(
 
 # Write json to file
 with open('allTracks.json', 'w') as f:
-    json.dump(allTracks, f)
+    json.dump(allTracks, f, ensure_ascii=False)
 
 
 def writeToXlsx(allTracks, fileName):
@@ -79,12 +93,13 @@ def writeToXlsx(allTracks, fileName):
     workbook = xlwt.Workbook(encoding="utf-8", style_compression=0)
     sheet = workbook.add_sheet('allTracks', cell_overwrite_ok=True)
     # set column width
-    sheet.col(0).width = 256*20  # 列宽n个字符长度，256为衡量单位
-    sheet.col(1).width = 256*10
+    sheet.col(0).width = 256*25  # 列宽n个字符长度，256为衡量单位
+    sheet.col(1).width = 256*12
     sheet.col(2).width = 256*20
     sheet.col(3).width = 256*10
     sheet.col(4).width = 256*20
     sheet.col(5).width = 256*20
+    sheet.col(6).width = 256*20
     # set font
     font = xlwt.Font()
     font.name = '等线'  # 字体类型
@@ -92,7 +107,15 @@ def writeToXlsx(allTracks, fileName):
     style = xlwt.XFStyle()
     style.font = font
     # write header
-    writeHeader(sheet, style)
+    sheet.row(0).height_mismatch = True
+    sheet.row(0).height = int(256*1.3)
+    sheet.write(0, 0, 'Track', style)
+    sheet.write(0, 1, 'Play Count', style)
+    sheet.write(0, 2, 'Artists', style)
+    sheet.write(0, 3, 'Duration', style)
+    sheet.write(0, 4, 'Album', style)
+    sheet.write(0, 5, 'Release Date', style)
+    sheet.write(0, 6, 'Playable', style)
     # write track data
     for i in range(len(allTracks)):
         sheet.row(i+1).height_mismatch = True
@@ -103,22 +126,13 @@ def writeToXlsx(allTracks, fileName):
         sheet.write(i+1, 3, allTracks[i]['duration'], style)
         sheet.write(i+1, 4, allTracks[i]['albumName'], style)
         sheet.write(i+1, 5, allTracks[i]['releaseDate'], style)
+        sheet.write(i+1, 6, allTracks[i]['playable'], style)
     # save to file
     workbook.save(fileName)
 
 
-def writeHeader(sheet, style):
-    sheet.row(0).height_mismatch = True
-    sheet.row(0).height = int(256*1.3)
-    sheet.write(0, 0, 'Track', style)
-    sheet.write(0, 1, 'PlayCount', style)
-    sheet.write(0, 2, 'Artists', style)
-    sheet.write(0, 3, 'Duration', style)
-    sheet.write(0, 4, 'Album', style)
-    sheet.write(0, 5, 'Release Date', style)
-
-
-writeToXlsx(allTracks, artists[artist]['name'] + '_All Tracks.xlsx')
+writeToXlsx(allTracks, artists[artist]['name'] +
+            '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
 
 # # Get album tracks by spotify developer api, but this doesn't have play count info
 # token = getAccessToken(clientID, clientSecret)

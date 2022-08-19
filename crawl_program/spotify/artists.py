@@ -10,5 +10,9 @@ artists = {
     'eason_chan': {
         'name': '陈奕迅',
         'artistId': '2QcZxAgcs2I1q7CtCkl6MI'
+    },
+    'bruno_mars': {
+        'name': 'Bruno Mars',
+        'artistId': '0du5cEVh5yTK9QJze8zA0C'
     }
 }

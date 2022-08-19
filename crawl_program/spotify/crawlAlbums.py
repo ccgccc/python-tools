@@ -7,7 +7,7 @@ from artists import *
 # ******************************
 
 # Define artist here
-artist = 'jacky_cheung'
+artist = 'bruno_mars'
 artistId = artists[artist]['artistId']
 
 
@@ -17,7 +17,7 @@ allAblums = getArtistAllAlbums(artistId)
 # Write json to file
 with open('albums.json', 'w') as f:
     # json.dump(artistAlbums, f)
-    json.dump(allAblums, f)
+    json.dump(allAblums, f, ensure_ascii=False)
 
 # Simple Output
 # i = 0
