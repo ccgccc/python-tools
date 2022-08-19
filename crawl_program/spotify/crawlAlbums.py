@@ -15,8 +15,7 @@ artistId = artists[artist]['artistId']
 allAblums = getArtistAllAlbums(artistId)
 
 # Write json to file
-with open('albums.json', 'w') as f:
-    # json.dump(artistAlbums, f)
+with open('./files/' + artist + '_albums.json', 'w') as f:
     json.dump(allAblums, f, ensure_ascii=False)
 
 # Simple Output
@@ -30,7 +29,7 @@ with open('albums.json', 'w') as f:
 
 # Detail Output
 count = 0
-albumFile = open('albums.txt', 'w')
+albumFile = open('./files/' + artist + '_albums.txt', 'w')
 for t in allAblums:
     seperation = '--------------------'
     count = count + 1

@@ -9,12 +9,12 @@ from artists import *
 # ******************************
 
 # Define artist here
-artist = 'jay_chou'
+artist = 'bruno_mars'
 # Spotify developer api doesn't provide track playcount info, so use spotify's own api to get it.
 # This workaround needs getting an accesstoken from spotify web page.
 # Token is retrived by spotify web page, e.g. https://open.spotify.com/album/1rBr9FeLlp5ueSKtE89FZa (最偉大的作品).
 # Find https://api-partner.spotify.com/pathfinder/v1/query request and copy accesstoken from its authorization header.
-spotifyToken = "BQChuw4sjVaGsMU0kiJS6WqthwpJSfj6OIchS4hwtlMyfqYfuwyrlFOIMuxi7YmguZR9viC6W7dP_Vrp7nWDnB4X1sTA0c4MbpzlRpHBSptAGxvCb--ZXqVqtaKhP5unET5_GLwrWftSFALLXjanbDK_hweB23ymocxKIyGKUSNVNhpnNpH3-o60mBDcEmCz8DzhWjvi9z0V5bnpIPMtwopWAGXfbE6Ea0SNvOM5PlgdUBbNUhSEkWBrltc0WyT7CgGCY7CNXiZ4j6ZvlXptyl3a5tnDVKtgh6GyQrl6dFGUTCQzHZ57fk-6XoKB6SbjLxgBjVexB967AzVI8Mcc_OaXv39V"
+spotifyToken = "BQB0TtTKKeyEf4SkFUGMeyTWE6Yqsxg_1hJbtCSZIVuPZXAXCg21zgt6D5h7_ZpA0Zcql_MW3GFcU_y6HEdsAnbwYFj4eKZ5GPTVE494xQNe7VUx1l5K-R_q_dsjh3LJq6BRJS_k_IeykpHtdO_hXDp2bG0G0Zmwp16TFVFTxOu6MWFd3T0kjrra9-2g_zoixjQzcmMPESAPQpP6HJrITMdrt3iUQCPsYFWZq7k9GsFuvunX_BGsIRJ3eEIzrONXBbjacyNTLIuVFJGKQTFMI4Wj8h_wFf1Rpo_YfAJIIz7XXOUsdppDRIE6F9sQgr3wGcAYfEaVEmeAuakg2v_B5_SpLhMk"
 
 
 # Get artist albums
@@ -68,8 +68,9 @@ for album in allAblums:
         else:
             trackNames.add(trackName)
         # 2. by playcount & duration
-        # if trackPlaycount is equal & duration difference is less than 5 seconds, consider them the same track
-        if trackPlaycount in trackPlaycountToMs.keys() and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 5000:
+        # if trackPlaycount is equal & duration difference is less than 10 seconds, consider them the same track
+        if trackPlaycount in trackPlaycountToMs.keys() and int(trackPlaycount) > 0 \
+                and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 10000:
             continue
         else:
             trackPlaycountToMs[trackPlaycount] = durationMs
@@ -84,7 +85,7 @@ allTracks = sorted(
 # print(allTracks)
 
 # Write json to file
-with open('allTracks.json', 'w') as f:
+with open('./files/' + artist + '_allTracks.json', 'w') as f:
     json.dump(allTracks, f, ensure_ascii=False)
 
 
@@ -93,11 +94,11 @@ def writeToXlsx(allTracks, fileName):
     workbook = xlwt.Workbook(encoding="utf-8", style_compression=0)
     sheet = workbook.add_sheet('allTracks', cell_overwrite_ok=True)
     # set column width
-    sheet.col(0).width = 256*25  # 列宽n个字符长度，256为衡量单位
+    sheet.col(0).width = 256*40  # 列宽n个字符长度，256为衡量单位
     sheet.col(1).width = 256*12
-    sheet.col(2).width = 256*20
+    sheet.col(2).width = 256*40
     sheet.col(3).width = 256*10
-    sheet.col(4).width = 256*20
+    sheet.col(4).width = 256*40
     sheet.col(5).width = 256*20
     sheet.col(6).width = 256*20
     # set font
@@ -131,7 +132,7 @@ def writeToXlsx(allTracks, fileName):
     workbook.save(fileName)
 
 
-writeToXlsx(allTracks, artists[artist]['name'] +
+writeToXlsx(allTracks, './files/' + artists[artist]['name'] +
             '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
 
 # # Get album tracks by spotify developer api, but this doesn't have play count info
