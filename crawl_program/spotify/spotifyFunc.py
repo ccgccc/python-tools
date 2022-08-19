@@ -43,7 +43,6 @@ def getAlbumTracksByThirdPartyAPI(token, albumId):
         "Authorization": "Bearer " + token
     }
     res = requests.get(albumTracksEndPoint, headers=getHeader)
-    # print(res)
     if (res.status_code == 401):
         print('\n**********')
         print('Spotify token expired, please retrive a new token.')
@@ -53,7 +52,8 @@ def getAlbumTracksByThirdPartyAPI(token, albumId):
     return albumTracksObject
 
 
-def getAlbumTracks(token, albumId, limit, offset):  # Get one album's tracks
+def getAlbumTracks(albumId, limit, offset):  # Get one album's tracks
+    token = getAccessToken(clientID, clientSecret)
     albumTracksEndPoint = f"https://api.spotify.com/v1/albums/{albumId}/tracks?limit={limit}&offset={offset}"
     getHeader = {
         "Authorization": "Bearer " + token
@@ -64,7 +64,8 @@ def getAlbumTracks(token, albumId, limit, offset):  # Get one album's tracks
     return albumTracksObject
 
 
-def getSingleTrack(token, trackId):  # Get single track
+def getSingleTrack(trackId):  # Get single track
+    token = getAccessToken(clientID, clientSecret)
     trackEndPoint = f"https://api.spotify.com/v1/tracks/{trackId}"
     getHeader = {
         "Authorization": "Bearer " + token
@@ -73,6 +74,35 @@ def getSingleTrack(token, trackId):  # Get single track
     res = requests.get(trackEndPoint, headers=getHeader)
     atrackObject = res.json()
     return atrackObject
+
+
+def getPlaylistAndAllTracks(playlistID):  # Get playlist and all its tracks
+    token = getAccessToken(clientID, clientSecret)
+    playlistEndPoint = f"https://api.spotify.com/v1/playlists/{playlistID}?offset=100&limit=100"
+    getHeader = {
+        "Authorization": "Bearer " + token
+    }
+    res = requests.get(playlistEndPoint, headers=getHeader)
+    playlistObject = res.json()
+    # request more if there is more tracks
+    moreTracksUri = playlistObject['tracks']['next']
+    while moreTracksUri != None:
+        tracksRes = requests.get(moreTracksUri, headers=getHeader).json()
+        # print(tracksRes)
+        playlistObject['tracks']['items'].extend(tracksRes['items'])
+        moreTracksUri = tracksRes['next']
+    return playlistObject
+
+
+def getPlaylistTracks(playlistID, limit, offset):  # Get playlist's tracks
+    token = getAccessToken(clientID, clientSecret)
+    playlistTracksEndPoint = f"https://api.spotify.com/v1/playlists/{playlistID}/tracks?limit={limit}&offset={offset}"
+    getHeader = {
+        "Authorization": "Bearer " + token
+    }
+    res = requests.get(playlistTracksEndPoint, headers=getHeader)
+    playlistTracksObject = res.json()
+    return playlistTracksObject
 
 
 def printAlbums(artistAlbums, count):  # Print albums info
