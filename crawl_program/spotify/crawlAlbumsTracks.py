@@ -9,12 +9,12 @@ from artists import *
 # ******************************
 
 # Define artist here
-artist = 'eason_chan'
+artist = 'bruno_mars'
 # Spotify developer api doesn't provide track playcount info, so use spotify's own api to get it.
 # This workaround needs getting an accesstoken from spotify web page.
 # Token is retrived by spotify web page, e.g. https://open.spotify.com/album/1rBr9FeLlp5ueSKtE89FZa (最偉大的作品).
 # Find https://api-partner.spotify.com/pathfinder/v1/query request and copy accesstoken from its authorization header.
-spotifyToken = "BQADPeQBlk5iAJBIMIzfA9srv1T8Q5M1E9BeLpqsTWsdnxOxsa1N15aOGPDcKFkUki2MFxd9VCXIZPj_7L3-QtAa5UgAISWhaXObuEtuyBkAsWg271kPm46b0GgvZlKoRhA2LdjmXWTQJZnzm_L6RRbdmwNbQclMRhgbjpBaBryG1Nvl9U97GasxZpbeOCOHnFgYho0vlntnGeyUWPsWqUb7NHdhj06n5mBmHwSNxYmAppXVj699FQzdEOIEJsAwxrZOweFhfpcuW5fNIslqEf2lbhbX8eGwvtX9OkVwq3md9TVQuXGHwYynrRBx0WQK6yuatILZjgKRz68UvGh_Q3teiL5x"
+spotifyToken = "BQDyp_lHREewcY4lmoUt3xQ72coDHlv0JomGGx2LKbiDyOVMI4cN6BCUEG83-A47pJyGqcZ--kvsGBjnqAxQmjewaH0BIPF-mvMkHCuYs6Ehbau8u1ufER5LhffON1xUvjWpFxxQhgn2_rjupREiOooa9NGtYa7RB_b8VmxAvRdIMuJEDj7SeP5m3fy1M9aIeRAzU6Vvv49BuI_895Inml8b5Ug2eIlI-kDBah16dwRedih-4nbeOwuS0giQsXHrQGkwUp2dVPj2_14_NR30YfnX-GPiSmETIKiN-wnJenQzMiBL0WWA-t30kSGnRtt3qQ3rv5nmz8Usi7keSRdvFdjqEL8D"
 
 
 # Get artist albums
@@ -91,14 +91,14 @@ allTracks = sorted(
 # print(allTracks)
 
 # Write json to file
-with open('./files/' + artist + '_allTracks.json', 'w') as f:
+with open('./files/' + artist + '_alltracks.json', 'w') as f:
     json.dump(allTracks, f, ensure_ascii=False)
 
 
 def writeToXlsx(allTracks, fileName):
     # create workbook and sheet
     workbook = xlwt.Workbook(encoding="utf-8", style_compression=0)
-    sheet = workbook.add_sheet('allTracks', cell_overwrite_ok=True)
+    sheet = workbook.add_sheet('All Tracks', cell_overwrite_ok=True)
     # set column width
     sheet.col(0).width = 256*40  # 列宽n个字符长度，256为衡量单位
     sheet.col(1).width = 256*40
@@ -122,7 +122,7 @@ def writeToXlsx(allTracks, fileName):
     sheet.write(0, 2, 'Play Count', style)
     sheet.write(0, 3, 'Duration', style)
     sheet.write(0, 4, 'Album', style)
-    sheet.write(0, 5, 'Album Artist', style)
+    sheet.write(0, 5, 'Album Artists', style)
     sheet.write(0, 6, 'Release Date', style)
     sheet.write(0, 7, 'Playable', style)
     # write track data
@@ -143,6 +143,7 @@ def writeToXlsx(allTracks, fileName):
 
 writeToXlsx(allTracks, './files/' + artists[artist]['name'] +
             '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
+
 
 # # Get album tracks by spotify developer api, but this doesn't have play count info
 # token = getAccessToken(clientID, clientSecret)

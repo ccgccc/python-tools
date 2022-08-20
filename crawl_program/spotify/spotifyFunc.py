@@ -1,6 +1,7 @@
 import requests
+import json
 from utils.auth import *
-from secrets import clientID, clientSecret
+from utils.secrets import clientID, clientSecret
 
 
 def getArtistAllAlbums(artistId):  # Get artist all albums, filtered and sorted
@@ -52,8 +53,7 @@ def getAlbumTracksByThirdPartyAPI(token, albumId):
     return albumTracksObject
 
 
-def getAlbumTracks(albumId, limit, offset):  # Get one album's tracks
-    token = getAccessToken(clientID, clientSecret)
+def getAlbumTracks(token, albumId, limit, offset):  # Get one album's tracks
     albumTracksEndPoint = f"https://api.spotify.com/v1/albums/{albumId}/tracks?limit={limit}&offset={offset}"
     getHeader = {
         "Authorization": "Bearer " + token
@@ -64,8 +64,7 @@ def getAlbumTracks(albumId, limit, offset):  # Get one album's tracks
     return albumTracksObject
 
 
-def getSingleTrack(trackId):  # Get single track
-    token = getAccessToken(clientID, clientSecret)
+def getSingleTrack(token, trackId):  # Get single track
     trackEndPoint = f"https://api.spotify.com/v1/tracks/{trackId}"
     getHeader = {
         "Authorization": "Bearer " + token
@@ -94,8 +93,7 @@ def getPlaylistAndAllTracks(playlistID):  # Get playlist and all its tracks
     return playlistObject
 
 
-def getPlaylistTracks(playlistID, limit, offset):  # Get playlist's tracks
-    token = getAccessToken(clientID, clientSecret)
+def getPlaylistTracks(token, playlistID, limit, offset):  # Get playlist's tracks
     playlistTracksEndPoint = f"https://api.spotify.com/v1/playlists/{playlistID}/tracks?limit={limit}&offset={offset}"
     getHeader = {
         "Authorization": "Bearer " + token
@@ -103,6 +101,31 @@ def getPlaylistTracks(playlistID, limit, offset):  # Get playlist's tracks
     res = requests.get(playlistTracksEndPoint, headers=getHeader)
     playlistTracksObject = res.json()
     return playlistTracksObject
+
+
+def createPlayList(spotify, token, userId, name, description, ispublic):  # Create playlist
+    createPlaylistEndPoint = f"https://api.spotify.com/v1/users/{userId}/playlists"
+    postHeader = {
+        "Content-Type": "application/json"
+    }
+    postData = {
+        "name": name,
+        "description": description,
+        "public": ispublic
+    }
+    res = spotify.post(createPlaylistEndPoint,
+                       headers=postHeader, data=json.dumps(postData))
+    # print(res)
+    if res.status_code == 201:
+        print('\n**********')
+        print('Successfully created playlist.')
+        print('**********\n')
+    else:
+        print('\n**********')
+        print('Creating playlist failed.')
+        print('**********\n')
+    playlistObject = res.json()
+    return playlistObject
 
 
 def printAlbums(artistAlbums, count):  # Print albums info
