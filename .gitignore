@@ -2,6 +2,7 @@
 *.DS_Store
 *.csv
 crawl_program/spotify/secrets.py
+crawl_program/spotify/utils/secrets.py
 crawl_program/spotify/*.json
 crawl_program/spotify/*.txt
 crawl_program/spotify/*.xlsx
