@@ -9,8 +9,8 @@ from spotifyFunc import *
 
 # Define artist here
 # artist = 'jacky_cheung'
-artist = 'bruno_mars'
-# artist = 'nobody'
+# artist = 'bruno_mars'
+artist = 'nobody'
 
 # Define track number to add
 tracksNumber = 20
