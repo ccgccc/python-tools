@@ -1,5 +1,6 @@
 import requests
 import json
+import sys
 from utils.auth import *
 from utils.secrets import clientID, clientSecret
 
@@ -48,7 +49,7 @@ def getAlbumTracksByThirdPartyAPI(token, albumId):
         print('\n**********')
         print('Spotify token expired, please retrive a new token.')
         print('**********\n')
-        raise
+        sys.exit()
     albumTracksObject = res.json()
     return albumTracksObject
 
@@ -126,6 +127,85 @@ def createPlayList(spotify, token, userId, name, description, ispublic):  # Crea
         print('**********\n')
     playlistObject = res.json()
     return playlistObject
+
+
+def updatePlayList(spotify, token, playlistId, name, description, ispublic):  # Create playlist
+    updatePlaylistEndPoint = f"https://api.spotify.com/v1/playlists/{playlistId}"
+    postHeader = {
+        "Content-Type": "application/json"
+    }
+    postData = {
+        "name": name,
+        "description": description,
+        "public": ispublic
+    }
+    res = spotify.put(updatePlaylistEndPoint,
+                      headers=postHeader, data=json.dumps(postData))
+    # print(res)
+    if res.status_code == 200:
+        print('\n**********')
+        print('Successfully updated playlist.')
+        print('**********\n')
+    else:
+        print('\n**********')
+        print('Updating playlist failed.')
+        print('**********\n')
+    return res
+
+
+def addTracksToPlayList(spotify, token, playlistId, trackUriList):  # Add tracks to playlist
+    playlistAddTracksEndPoint = f"https://api.spotify.com/v1/playlists/{playlistId}/tracks"
+    postHeader = {
+        "Content-Type": "application/json"
+    }
+    postData = {
+        "uris": trackUriList
+    }
+    res = spotify.post(playlistAddTracksEndPoint,
+                       headers=postHeader, data=json.dumps(postData))
+    # print(res)
+    if res.status_code == 201:
+        print('\n**********')
+        print('Successfully add tracks to playlist.')
+        print('**********\n')
+    else:
+        print('\n**********')
+        print('Add tracks to playlist failed.')
+        print('**********\n')
+    resJson = res.json()
+    return resJson
+
+
+# Add tracks to playlist by number
+def addTracksToPlaylistByNumber(spotify, token, playlistId, allTracks, tracksNumber):
+    toAddTracks = allTracks[0:tracksNumber] if tracksNumber < len(
+        allTracks) else allTracks
+    # query string format, not recommended
+    # trackUris = ''
+    # i = 0
+    # for i in range(len(toAddTracks)):
+    #     trackUris = trackUris + \
+    #         toAddTracks[i]['trackUri'] + \
+    #         (',' if i < len(toAddTracks) - 1 else '')
+    # print(trackUris)
+    # post json format
+    trackUriList = []
+    for track in toAddTracks:
+        trackUriList.append(track['trackUri'])
+    resJson = addTracksToPlayList(spotify, token, playlistId, trackUriList)
+    return resJson
+
+
+# Add tracks to playlist by playcount
+def addTracksToPlaylistByPlaycount(spotify, token, playlistId, allTracks, playcount):
+    trackUriList = []
+    for track in allTracks:
+        if track['playcount'] < playcount:
+            break
+        else:
+            trackUriList.append(track['trackUri'])
+    resJson = addTracksToPlayList(spotify, token, playlistId, trackUriList)
+    return resJson
 
 
 def printAlbums(artistAlbums, count):  # Print albums info

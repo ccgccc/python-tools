@@ -13,8 +13,9 @@ artist = 'bruno_mars'
 # Spotify developer api doesn't provide track playcount info, so use spotify's own api to get it.
 # This workaround needs getting an accesstoken from spotify web page.
 # Token is retrived by spotify web page, e.g. https://open.spotify.com/album/1rBr9FeLlp5ueSKtE89FZa (最偉大的作品).
-# Find https://api-partner.spotify.com/pathfinder/v1/query request and copy accesstoken from its authorization header.
-spotifyToken = "BQDyp_lHREewcY4lmoUt3xQ72coDHlv0JomGGx2LKbiDyOVMI4cN6BCUEG83-A47pJyGqcZ--kvsGBjnqAxQmjewaH0BIPF-mvMkHCuYs6Ehbau8u1ufER5LhffON1xUvjWpFxxQhgn2_rjupREiOooa9NGtYa7RB_b8VmxAvRdIMuJEDj7SeP5m3fy1M9aIeRAzU6Vvv49BuI_895Inml8b5Ug2eIlI-kDBah16dwRedih-4nbeOwuS0giQsXHrQGkwUp2dVPj2_14_NR30YfnX-GPiSmETIKiN-wnJenQzMiBL0WWA-t30kSGnRtt3qQ3rv5nmz8Usi7keSRdvFdjqEL8D"
+# Find https://api-partner.spotify.com/pathfinder/v1/query request (search 'query') and copy accesstoken from its authorization header.
+spotifyToken = \
+"BQB3eDnhG-BspCowI14ga-n1OV8AWLCQZDYib_rJs-Ujq847OxSgFxIUIG-og4mYtnrAnL64aMBPUg4yQkJqloNadeSj-V4jVdVDW2ez4DiFDLqLPP3yjpOrKao4c-5GFbDmSsNeD-QiN1jWJ0QHwYl1bbBuQVIn4NeMAgWy4FPUWWqWuOJIQTBiFIFuRj0AeGzjQPIKYcPy8HORCzFvF0-usT_SRXxrkBiuvYTIpsZPFAZ0o6LkB7pEGy3EIV1hjVP_Ur02pCCHaM4VvapxTTuQEkOrXtX_GXEFE3QfiMvk4PYqVVVKPmcprAZ25Rbmvq2BmRkigCA-wx8BZYonQlBHF5tc"
 
 
 # Get artist albums

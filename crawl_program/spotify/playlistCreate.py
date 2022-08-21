@@ -1,5 +1,6 @@
 import json
 import time
+import sys
 from utils.auth import *
 from utils.secrets import clientID, clientSecret
 from artists import *
@@ -14,12 +15,15 @@ from spotifyFunc import *
 # artist = 'jay_chou'
 # artist = 'eason_chan'
 # artist = 'bruno_mars'
-artist = 'Nobody'
+artist = 'nobody'
 
 # Define my user id here
 myUserId = '31jvwpn5kplbtp4sqdqaol2x5mcy'  # ccg ccc
 
 
+if artists.get(artist) == None:
+    print(artist + ' is not defined in artist.py, please define it first.')
+    sys.exit()
 # playlist name & description
 playlistName = artists[artist]['name'] + ' Most Played Songs'
 playlistDescription = artists[artist]['name'] + ' most played songs.' + \
