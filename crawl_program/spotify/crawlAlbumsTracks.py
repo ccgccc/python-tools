@@ -9,13 +9,13 @@ from artists import *
 # ******************************
 
 # Define artist here
-artist = 'bruno_mars'
+artist = 'jj_lin'
 # Spotify developer api doesn't provide track playcount info, so use spotify's own api to get it.
 # This workaround needs getting an accesstoken from spotify web page.
 # Token is retrived by spotify web page, e.g. https://open.spotify.com/album/1rBr9FeLlp5ueSKtE89FZa (最偉大的作品).
-# Find https://api-partner.spotify.com/pathfinder/v1/query request (search 'query') and copy accesstoken from its authorization header.
+# Find https://api-partner.spotify.com/pathfinder/v1/query request (search 'query') and copy token from its authorization headers.
 spotifyToken = \
-"BQB3eDnhG-BspCowI14ga-n1OV8AWLCQZDYib_rJs-Ujq847OxSgFxIUIG-og4mYtnrAnL64aMBPUg4yQkJqloNadeSj-V4jVdVDW2ez4DiFDLqLPP3yjpOrKao4c-5GFbDmSsNeD-QiN1jWJ0QHwYl1bbBuQVIn4NeMAgWy4FPUWWqWuOJIQTBiFIFuRj0AeGzjQPIKYcPy8HORCzFvF0-usT_SRXxrkBiuvYTIpsZPFAZ0o6LkB7pEGy3EIV1hjVP_Ur02pCCHaM4VvapxTTuQEkOrXtX_GXEFE3QfiMvk4PYqVVVKPmcprAZ25Rbmvq2BmRkigCA-wx8BZYonQlBHF5tc"
+    'BQBY09o-glyJm2LLkm-MAstTNs-Ay8ns81Byhu4zav5Bk5iFvaqQFK_aH6NSXoUjt5Jd0McCw-010XqSkEmfHZOxrMRqVntP3z50YCz196l146oYBl-2xeeRO2j1zyOm2wnNnhhDasTui2GSGdkTYRbqVBkx5KCi1E--xRm914_eaosERFHHsJU5X8EE08av9VOY4PdNOfpsWdBhnYLRV8l_vsUUdccnzCrafeORr6em3HNnMAmoY04YdHlGxY9ZUTwhC8XUZYGtPd0gx7BLI0mjS41O5LAjmp2li2loSJmhJeegulY-cZ2J91Ab9q3hxssuVX07aKbF84Q48JoVd1UuwdnE'
 
 
 # Get artist albums
@@ -59,8 +59,8 @@ for album in allAblums:
         playable = 'Y' if track['track']['playability']['playable'] == True else 'N'
         # concatenate artists & filter other artists
         artistsList = track['track']['artists']['items']
-        allArtists = ''
         containsArtist = False
+        allArtists = ''
         for i in range(len(artistsList)):
             if artistsList[i]['uri'].find(artistId) >= 0:
                 containsArtist = True

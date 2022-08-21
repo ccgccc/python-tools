@@ -12,7 +12,7 @@ from spotifyFunc import *
 # artist = 'eason_chan'
 artist = 'nobody'
 
-# Define track number to add
+# Define minimum playcount to add tracks
 playcount = 5000000
 
 

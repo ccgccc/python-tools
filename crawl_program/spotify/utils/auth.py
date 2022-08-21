@@ -27,6 +27,7 @@ def getAccessToken(clientID, clientSecret):
     accessToken = responseObject['access_token']
     return accessToken
 
+
 # Using Authorization Code Flow
 def getAuthorizationToken(clientID, clientSecret, scope):
     # Credentials you get from registering a new application
@@ -55,3 +56,18 @@ def getAuthorizationToken(clientID, clientSecret, scope):
                                 authorization_response=redirect_response)
     # print(token, end='\n\n')
     return spotify, token
+
+
+# GET request headers
+def getHeader(token):
+    return {
+        "Authorization": "Bearer " + token,
+        "accept-language": "zh-CN"
+    }
+
+
+# POST request headers
+def postHeader(token):
+    return {
+        "Content-Type": "application/json"
+    }

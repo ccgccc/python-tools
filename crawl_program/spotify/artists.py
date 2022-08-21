@@ -16,5 +16,13 @@ artists = {
     'bruno_mars': {
         'name': 'Bruno Mars',
         'artistId': '0du5cEVh5yTK9QJze8zA0C'
+    },
+    'g_e_m': {
+        'name': '邓紫棋',
+        'artistId': '7aRC4L63dBn3CiLDuWaLSI'
+    },
+    'jj_lin': {
+        'name': '林俊杰',
+        'artistId': '7Dx7RhX0mFuXhCOUgB01uM'
     }
 }
