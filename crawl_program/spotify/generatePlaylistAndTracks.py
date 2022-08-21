@@ -16,8 +16,8 @@ from spotifyFunc import *
 # artist = 'eason_chan'
 # artist = 'bruno_mars'
 # artist = 'g_e_m'
-artist = 'jj_lin'
-# artist = 'nobody'
+# artist = 'jj_lin'
+artist = 'nobody'
 
 # Define create method: 1 - by number, 2 - by playcount
 # createMethod = 1
