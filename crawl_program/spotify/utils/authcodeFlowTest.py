@@ -2,6 +2,7 @@ from auth import *
 
 # Retrive user infomation test
 
+
 # https://developer.spotify.com/documentation/general/guides/authorization/scopes/
 scope = [
     "user-read-email",

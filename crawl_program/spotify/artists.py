@@ -1,3 +1,6 @@
+# Deine artist to crawl
+artistToCrawl = 'jj_lin'
+
 # Deine artists
 # Search artist on spotfy (e.g. 张学友 on spotify) to get artistId
 artists = {

@@ -6,22 +6,26 @@ from utils.secrets import clientID, clientSecret
 
 
 # Get artist all albums, filtered and sorted
-def getArtistAllAlbums(artistId):
-    token = getAccessToken(clientID, clientSecret)
+def getArtistAllAlbums(token, artistId):
+    print('--------------------')
+    print('Crawling Album...')
     limit = 50
     artistAlbums = getArtistAlbums(token, artistId, limit, 0)
     allAblums = artistAlbums['items']
+    print('albums count: ' + str(len(allAblums)))
     # printAlbums(artistAlbums, 0)
     moreRequestTimes = artistAlbums['total'] // limit
     for i in range(moreRequestTimes):
         offset = limit * (i + 1)
         moreArtistAlbums = getArtistAlbums(token, artistId, limit, offset)
         allAblums.extend(moreArtistAlbums['items'])
+        print('albums count: ' + str(len(allAblums)))
         # printAlbums(moreArtistAlbums, offset)
     # Filter ablums type to album and single
     for album in allAblums[::-1]:
         if (album['album_type'] != 'album' and album['album_type'] != 'single'):
             allAblums.remove(album)
+    print('filtered albums count: ' + str(len(allAblums)))
     # Sort albums by release date
     allAblums = sorted(allAblums, key=lambda a: a['release_date'])
     return allAblums

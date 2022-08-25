@@ -2,29 +2,31 @@ import json
 import xlwt
 import time
 from spotifyFunc import *
-from artists import *
+from artists import artists, artistToCrawl
+from utils.secrets import clientID, clientSecret
 
 # ******************************
 #  Crawl spotify artist tracks
 # ******************************
 
 # Define artist here
-artist = 'jj_lin'
+artist = artistToCrawl
 # Spotify developer api doesn't provide track playcount info, so use spotify's own api to get it.
 # This workaround needs getting an accesstoken from spotify web page.
 # Token is retrived by spotify web page, e.g. https://open.spotify.com/album/1rBr9FeLlp5ueSKtE89FZa (最偉大的作品).
 # Find https://api-partner.spotify.com/pathfinder/v1/query request (search 'query') and copy token from its authorization headers.
 spotifyToken = \
-    'BQBY09o-glyJm2LLkm-MAstTNs-Ay8ns81Byhu4zav5Bk5iFvaqQFK_aH6NSXoUjt5Jd0McCw-010XqSkEmfHZOxrMRqVntP3z50YCz196l146oYBl-2xeeRO2j1zyOm2wnNnhhDasTui2GSGdkTYRbqVBkx5KCi1E--xRm914_eaosERFHHsJU5X8EE08av9VOY4PdNOfpsWdBhnYLRV8l_vsUUdccnzCrafeORr6em3HNnMAmoY04YdHlGxY9ZUTwhC8XUZYGtPd0gx7BLI0mjS41O5LAjmp2li2loSJmhJeegulY-cZ2J91Ab9q3hxssuVX07aKbF84Q48JoVd1UuwdnE'
+    'BQDcVilZxBxIZGot9f8aCn1lKcWzXhVhEXkUbFdm_n6m6uWNzZuYww8Cv0rZHzcsiEtiWrg_0iartAZdcKEfMjewk1yMj2kwnJrf0SvT3MvzTlrdYhAzIe9QKdY7KQpu4qKPqyzmtdBe5lyIjL-h3RkoTXTOEhYq8fJQmUYXEAjc8vyQsJWgq9nGtSSGamNcrOEmty9gUvMJflOPAXnP4A4HkxBc86TzfLU8knwaYL1XNdSbG47MTBSs4SHIMFmQgNO8kb1xdkovMOb7de4Z2b154K1cXTqMLprm-x5uuBCKrD5EMudVN5Jx9B3LybdpUG97-_MJQQyZcXSy2ANN2_Z7NG_k'
+# Filter track by track name or not
+filterTrackByName = False
 
 
 # Get artist albums
 artistId = artists[artist]['artistId']
-allAblums = getArtistAllAlbums(artistId)
+token = getAccessToken(clientID, clientSecret)
+allAblums = getArtistAllAlbums(token, artistId)
 # Get all albums tracks
 allTracks = []
-trackNames = set()
-trackPlaycountToMs = {}
 albumCount = 0
 # for album in allAblums[0:5]:
 for album in allAblums:
@@ -38,11 +40,15 @@ for album in allAblums:
         albumArtists = albumArtists + albumArtistsList[i]['name'] + \
             (', ' if i < len(albumArtistsList) - 1 else '')
     releaseDate = album['release_date']
+    albumAlbumGroup = album['album_group']
+    albumAlbumType = album['album_type']
+    albumType = album['type']
+    totalTracks = album['total_tracks']
     print(str(albumCount) + ': ' + albumName)
     print('Album Id: ' + albumId)
     print('Album Artist: ' + albumArtists)
     print('Release Date: ' + releaseDate)
-    print('Total Tracks: ' + str(album['total_tracks']))
+    print('Total Tracks: ' + str(totalTracks))
     albumTracks = getAlbumTracksByThirdPartyAPI(
         spotifyToken, albumId)
     # print(albumTracks)
@@ -68,32 +74,48 @@ for album in allAblums:
                 (', ' if i < len(artistsList) - 1 else '')
         if not containsArtist:
             continue
-        # ignore repeated tracks
-        # 1. by track name
+        print(str(trackCount) + ': ' + trackName + ", " + trackPlaycount)
+        allTracks.append(
+            {'trackUid': trackUid, 'trackUri': trackUri, 'trackName': trackName, 'artists': allArtists,
+             'durationMs': durationMs, 'duration': duration, 'playcount': int(trackPlaycount), 'playable': playable,
+             'albumId': albumId, 'albumName': albumName, 'albumArtists': albumArtists, 'releaseDate': releaseDate,
+             'albumAlbumGroup': albumAlbumGroup, 'albumAlbumType': albumAlbumType, 'albumType': albumType, 'totalTracks': totalTracks})
+
+# Write json to file
+with open('./files/' + artist + '_alltracks_raw.json', 'w') as f:
+    json.dump(allTracks, f, ensure_ascii=False)
+
+# Filter albums tracks
+filterdTracks = []
+trackNames = set()
+trackPlaycountToMs = {}
+for track in allTracks:
+    trackPlaycount = track['playcount']
+    durationMs = track['durationMs']
+    # ignore repeated tracks by playcount & duration
+    # if trackPlaycount is equal & duration difference is less than 10 seconds, consider them the same track
+    if trackPlaycount in trackPlaycountToMs.keys() and int(trackPlaycount) > 0 \
+            and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 10000:
+        continue
+    else:
+        trackPlaycountToMs[trackPlaycount] = durationMs
+    if filterTrackByName:
+        # ignore repeated tracks by track name
+        # not recomendded, sometimes repeated track names are alright, e.g. K歌之王 (国+粤)
         if trackName in trackNames:
             continue
         else:
             trackNames.add(trackName)
-        # 2. by playcount & duration
-        # if trackPlaycount is equal & duration difference is less than 10 seconds, consider them the same track
-        if trackPlaycount in trackPlaycountToMs.keys() and int(trackPlaycount) > 0 \
-                and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 10000:
-            continue
-        else:
-            trackPlaycountToMs[trackPlaycount] = durationMs
-        print(str(trackCount) + ': ' + trackName + ", " + trackPlaycount)
-        allTracks.append(
-            {'trackUid': trackUid, 'trackUri': trackUri, 'trackName': trackName, 'artists': allArtists,
-             'durationMs': durationMs, 'duration': duration, 'playcount': int(trackPlaycount), 'albumId': albumId,
-             'albumName': albumName, 'albumArtists': albumArtists, 'releaseDate': releaseDate, 'playable': playable})
+    filterdTracks.append(track)
+
 # Sort all tracks by playcount
-allTracks = sorted(
-    allTracks, key=lambda track: track['playcount'], reverse=True)
+sortedTracks = sorted(
+    filterdTracks, key=lambda track: track['playcount'], reverse=True)
 # print(allTracks)
 
 # Write json to file
-with open('./files/' + artist + '_alltracks.json', 'w') as f:
-    json.dump(allTracks, f, ensure_ascii=False)
+# with open('./files/' + artist + '_alltracks.json', 'w') as f:
+#     json.dump(allTracks, f, ensure_ascii=False)
 
 
 def writeToXlsx(allTracks, fileName):
@@ -142,35 +164,5 @@ def writeToXlsx(allTracks, fileName):
     workbook.save(fileName)
 
 
-writeToXlsx(allTracks, './files/' + artists[artist]['name'] +
+writeToXlsx(sortedTracks, './files/' + artists[artist]['name'] +
             '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
-
-
-# # Get album tracks by spotify developer api, but this doesn't have play count info
-# token = getAccessToken(clientID, clientSecret)
-# limit = 50
-# # albumTracks = getAlbumTracks(token, allAblums[0]['id'], limit, 0)
-# # print(albumTracks)
-# # Write json to file
-# # with open('albumTracks.json', 'w') as f:
-# #     json.dump(albumTracks, f)
-# allTracks = []
-# for album in allAblums[0:10]:
-#     albumTracks = getAlbumTracks(token, album['id'], limit, 0)
-#     # print(albumTracks)
-#     print('--------------------')
-#     print('Album: ' + album['name'] + ' (' + album['release_date'] + ')')
-#     i = 0
-#     for track in albumTracks['items']:
-#         i = i + 1
-#         print(str(i) + ': ' + track['name'])
-#         # print('Id: ' + t['id'])
-#         # print('Date: ' + t['release_date'])
-#         # print('Tracks: ' + str(t['total_tracks']))
-#         # not necessary, album info already has track info
-#         track = getSingleTrack(token, track['id'])
-#         allTracks.append(track)
-
-# # Write json to file
-# with open('allTracks.json', 'w') as f:
-#     json.dump(allTracks, f)
