@@ -7,6 +7,9 @@ crawl_program/spotify/*.json
 crawl_program/spotify/*.txt
 crawl_program/spotify/*.xlsx
 crawl_program/spotify/files/
+regex/phone_process/*.txt
+regex/phone_process/files
+regex/phone_process/results
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
