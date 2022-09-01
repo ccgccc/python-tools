@@ -1,6 +1,8 @@
 ##### My Gitignore
 *.DS_Store
 *.csv
+*.xls
+*.xlsx
 crawl_program/spotify/secrets.py
 crawl_program/spotify/utils/secrets.py
 crawl_program/spotify/*.json
