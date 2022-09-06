@@ -25,11 +25,9 @@ def main():
         allAblums = json.load(f)
     # token = getAccessToken(clientID, clientSecret)
     # allAblums = getArtistAllAlbums(token, artistId)
-    # Get all tracks
-    allTracks = getAllTracks(spotifyToken, artistId, allAblums)
-    # Write json to file
-    with open('./files/tracks/' + artist + '_alltracks_raw.json', 'w') as f:
-        json.dump(allTracks, f, ensure_ascii=False)
+
+    # Get all tracks & write to file
+    getAllTracks(spotifyToken, artistId, allAblums)
 
 
 def getAllTracks(spotifyToken, artistId, allAblums):
@@ -88,10 +86,9 @@ def getAllTracks(spotifyToken, artistId, allAblums):
                     'durationMs': durationMs, 'duration': duration, 'playcount': int(trackPlaycount), 'playable': playable,
                     'albumId': albumId, 'albumName': albumName, 'albumArtists': albumArtists, 'releaseDate': releaseDate,
                     'albumAlbumGroup': albumAlbumGroup, 'albumAlbumType': albumAlbumType, 'albumType': albumType, 'totalTracks': totalTracks})
-    # Sort all tracks by playcount
-    # allTracks = sorted(
-    #     allTracks, key=lambda track: track['playcount'], reverse=True)
-    # print(allTracks)
+    # Write json to file
+    with open('./files/tracks/' + artist + '_alltracks_raw.json', 'w') as f:
+        json.dump(allTracks, f, ensure_ascii=False)
     return allTracks
 
 

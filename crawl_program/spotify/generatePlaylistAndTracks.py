@@ -23,7 +23,7 @@ artist = 'nobody'
 createMethod = 1
 # createMethod = 2
 # For method 1: Define track number to add tracks
-tracksNumber = 25
+tracksNumber = 30
 # For method 2: Define minimum playcount to add tracks
 playcount = 6000000
 

@@ -26,7 +26,6 @@ def crawlAlbums(artists, artist):
     token = getAccessToken(clientID, clientSecret)
     #  Get artist albums
     allAblums = getArtistAllAlbums(token, artistId)
-
     # Write json to file
     with open('./files/albums/' + artist + '_albums.json', 'w') as f:
         json.dump(allAblums, f, ensure_ascii=False)

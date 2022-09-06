@@ -17,7 +17,7 @@ artist = artistToCrawl
 # Token is retrived by spotify web page, e.g. https://open.spotify.com/album/1rBr9FeLlp5ueSKtE89FZa (最偉大的作品).
 # Find https://api-partner.spotify.com/pathfinder/v1/query request (search 'query') and copy token from its authorization headers.
 spotifyToken = \
-    'BQBCI_Wi0kIuvZy-SZbcrTtJUNueQMmX3IKfRXPAOERFI1N2Sdf9t4vYBq6LTok6oIY-T_MLCuTAGIJCwLmshcQ1NI7vGxJ6DFl694GShPe9zybB6bvdHyb5nWhgFPZODfEcKstT9gVDHGHcyBMrStTD32FKl0NO6Uu6xK3fV3iV8sq502KKM-ZqrpPQJXZpnl3TpD4jRpVThj0kel3NDMFpkO1lHtTtyuDlR2j0VCuLD1xlsKOHko9kYbEsgcU3S4P2OWO8ZzEgrh3aLz4TI7wmC9VtGBwuk9roS1bsL7kyqqVXvd9ZiWp4Rt_WDc_2gzVGWALPX6_to6-By-WbjRPsFqGP'
+    'BQCZWMvIBHyif_pQSkiMgq6yQuO1l5OUqBPsLiNJ9gNBbirWdDlD7T2042AXNsFdYCTgNHHwkjVsh1k_RLs_1fYLYV1KT_NSWjMBdwMyDJ7CY--jz-xN94ezNt1AeBPowDNRsPvGX8wz4Ec4Jfn27EawsDt8BJjtic0RwDVr05TgoEsB643-qQwNH6ptHocNlcU5rc0WgQf-0pzrcvGc51efI-fua9usICMsM5omFRYJ9lSegwAPjwP1u_ACk1E_b1oKEz0YfapB6DhQML3_j91a3unq-Z_LOcm6WDsKsu8EIg8re7T_Lrs80rf8ctl8xqDorf-L0RdLEBypgLKYT54xpdmZ'
 # Filter track by track name or not
 filterTrackByName = False
 
@@ -32,9 +32,6 @@ with open('./files/albums/' + artist + '_albums.json') as f:
 
 # Get all albums tracks
 allTracks = getAllTracks(spotifyToken, artistId, allAblums)
-# Write json to file
-with open('./files/tracks/' + artist + '_alltracks_raw.json', 'w') as f:
-    json.dump(allTracks, f, ensure_ascii=False)
 
 # Process tracks
 processedTracks = processTracks(allTracks)

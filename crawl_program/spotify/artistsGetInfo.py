@@ -14,7 +14,8 @@ artistList = [
     '7aRC4L63dBn3CiLDuWaLSI',  # 邓紫棋
     '7Dx7RhX0mFuXhCOUgB01uM',  # 林俊杰
     '2hgxWUG24w1cFLBlPSEVcV',  # 许嵩
-    '2F5W6Rsxwzg0plQ0w8dSyt'  # 王力宏
+    '2F5W6Rsxwzg0plQ0w8dSyt',  # 王力宏
+    '4F5TrtYYxsVM1PhbtISE5m'  # Beyond
 ]
 
 

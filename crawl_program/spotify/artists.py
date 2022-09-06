@@ -1,5 +1,5 @@
 # Deine artist to crawl
-artistToCrawl = 'xusong'
+artistToCrawl = 'beyond'
 
 # Deine artists
 # Search artist on spotfy (e.g. 张学友 on spotify) to get artistId
@@ -35,5 +35,9 @@ artists = {
     'leehom_wang': {
         'name': '王力宏',
         'artistId': '2F5W6Rsxwzg0plQ0w8dSyt'
+    },
+    'beyond': {
+        'name': 'Beyond',
+        'artistId': '4F5TrtYYxsVM1PhbtISE5m'
     }
 }
