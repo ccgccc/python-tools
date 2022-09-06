@@ -1,8 +1,7 @@
 import json
-import re
+from utils.secrets import clientID, clientSecret
 from spotifyFunc import *
 from crawlPlaylist import writeToCsvFile
-from utils.secrets import clientID, clientSecret
 
 # ******************************
 #   Crawl spotify liked songs

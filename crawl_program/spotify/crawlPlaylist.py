@@ -1,7 +1,7 @@
 import json
 import re
-from spotifyFunc import *
 from utils.secrets import clientID, clientSecret
+from spotifyFunc import *
 
 # ******************************
 #    Crawl spotify playlist
@@ -15,16 +15,19 @@ playlistID = "2QBH6yCLDJhTiXKqDfCtOA"  # Like
 # playlistID = "7w3Y21vKZuLLq1huUuEWZZ"  # 周杰伦
 
 
-# API requests
-token = getAccessToken(clientID, clientSecret)
-playlist = getPlaylistAndAllTracks(token, playlistID)
-# print(tracklist)
+def main():
+    # API requests
+    token = getAccessToken(clientID, clientSecret)
+    playlist = getPlaylistAndAllTracks(token, playlistID)
 
-fileName = './files/playlists/playlist_' + \
-    playlist['name'] + '_by ' + playlist['owner']['display_name']
-# Write json to file
-with open(fileName + '.json', 'w') as f:
-    json.dump(playlist, f, ensure_ascii=False)
+    fileName = './files/playlists/playlist_' + \
+        playlist['name'] + '_by ' + playlist['owner']['display_name']
+    # Write json to file
+    with open(fileName + '.json', 'w') as f:
+        json.dump(playlist, f, ensure_ascii=False)
+    # Write playlist tracks to csv file
+    csvFileName = fileName + '.csv'
+    writeToCsvFile(playlist['tracks']['items'], csvFileName)
 
 
 def writeToCsvFile(trackItems, csvFileName):
@@ -62,5 +65,5 @@ def writeToCsvFile(trackItems, csvFileName):
     file.close()
 
 
-csvFileName = fileName + '.csv'
-writeToCsvFile(playlist['tracks']['items'], csvFileName)
+if __name__ == '__main__':
+    main()

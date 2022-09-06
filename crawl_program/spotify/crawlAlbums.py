@@ -1,62 +1,62 @@
 import json
+import re
+from utils.secrets import clientID, clientSecret
+from artists import artists, artistToCrawl
 from spotifyFunc import *
-from artists import artists
 
 # ******************************
 #  Crawl spotify artist albums
 # ******************************
 
-# Define artists here
-artistToCrawlList = [
-    'jacky_cheung',
-    'jay_chou',
-    'eason_chan',
-    'bruno_mars',
-    'g_e_m',
-    'jj_lin'
-]
+# Define artist to crawl here
+artistToCrawlList = [artistToCrawl]
+# Crawl all artists
+# artistToCrawlList = artists.keys()
+
+
+def main():
+    for artist in artistToCrawlList:
+        print('--------------------')
+        print('Processing ' + artists[artist]['name'] + '...')
+        crawlAlbums(artists, artist)
 
 
 def crawlAlbums(artists, artist):
     artistId = artists[artist]['artistId']
+    token = getAccessToken(clientID, clientSecret)
     #  Get artist albums
-    allAblums = getArtistAllAlbums(artistId)
+    allAblums = getArtistAllAlbums(token, artistId)
 
     # Write json to file
     with open('./files/albums/' + artist + '_albums.json', 'w') as f:
         json.dump(allAblums, f, ensure_ascii=False)
 
-    # Simple Output
-    # i = 0
-    # for t in allAblums:
-    #     print('--------------------')
-    #     i = i + 1
-    #     print(str(i) + ': ' + t['name'])
-    #     print('Date: ' + t['release_date'])
-    #     print('Tracks: ' + str(t['total_tracks']))
-
-    # Detail Output
+    # Process albums
     count = 0
-    albumFile = open('./files/albums/' + artist + '_albums.txt', 'w')
-    for t in allAblums:
+    # albumFile = open('./files/albums/' + artist + '_albums.txt', 'w')
+    albumCsvFile = open('./files/albums/' + artist + '_albums.csv', 'w')
+    print('AlbumName', 'AlbumId', 'AlbumGroup', 'AlbumType',
+          'ReleaseDate', 'TracksNum', 'Artists', sep=', ', file=albumCsvFile)
+    for album in allAblums:
         seperation = '--------------------'
         count = count + 1
-        albumName = str(count) + ': ' + t['name']
-        albumId = 'Id: ' + t['id']
-        albumGroup = 'Group: ' + t['album_group']
-        albumType = 'Type:  ' + t['album_type']
-        releaseDate = 'Date:  ' + t['release_date']
-        tracksNum = 'Tracks: ' + str(t['total_tracks'])
-        artists = 'Artists: '
-        artistsList = t['artists']
-        for i in range(len(artistsList)):
-            artists = artists + artistsList[i]['name'] + \
-                (', ' if i < len(artistsList) - 1 else '')
-        print(seperation, albumName, albumId, albumGroup, albumType,
-              releaseDate, tracksNum, artists, sep='\n')
-        print(seperation, albumName, albumId, albumGroup, albumType,
-              releaseDate, tracksNum, artists, sep='\n', file=albumFile)
-    albumFile.close()
+        albumName = album['name']
+        albumId = album['id']
+        albumGroup = album['album_group']
+        albumType = album['album_type']
+        releaseDate = album['release_date']
+        tracksNum = str(album['total_tracks'])
+        albumArtistsList = list(
+            map(lambda artist: artist['name'], album['artists']))
+        artists = '，'.join(albumArtistsList)
+        # print(seperation, str(count) + ': ' + albumName, 'Id: ' + albumId, 'Group: ' + albumGroup,
+        #       'Type:  ' + albumType, 'Date:  ' + releaseDate, 'Tracks: ' + tracksNum, 'Artists: ' + artists, sep='\n')
+        # print(seperation, albumName, albumId, albumGroup, albumType,
+        #       releaseDate, tracksNum, artists, sep='\n', file=albumFile)
+        print(re.sub(r'\,', '，', albumName), albumId, albumGroup, albumType,
+              releaseDate, tracksNum, artists, sep=', ', file=albumCsvFile)
+    # albumFile.close()
+    albumCsvFile.close()
 
     print('--------------------')
     print('Album Statistic:')
@@ -84,5 +84,5 @@ def crawlAlbums(artists, artist):
     print(albumGroupTypeStat.items())
 
 
-for artist in artistToCrawlList:
-    crawlAlbums(artists, artist)
+if __name__ == '__main__':
+    main()

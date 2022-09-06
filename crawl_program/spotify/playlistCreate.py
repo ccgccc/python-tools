@@ -1,9 +1,8 @@
 import json
 import time
 import sys
-from utils.auth import *
 from utils.secrets import clientID, clientSecret
-from artists import *
+from artists import artists, artistToCrawl
 from spotifyFunc import *
 
 # **************************************************
@@ -16,6 +15,7 @@ from spotifyFunc import *
 # artist = 'eason_chan'
 # artist = 'bruno_mars'
 artist = 'nobody'
+# artist = artistToCrawl
 
 # Define my user id here
 myUserId = '31jvwpn5kplbtp4sqdqaol2x5mcy'  # ccg ccc
@@ -35,7 +35,7 @@ playlist = createPlayList(spotify, token, userId=myUserId, name=playlistName,
                           description=playlistDescription, ispublic=True)
 
 # Write json to file
-with open('./files/' + artist + '_playlist.json', 'w') as f:
+with open('./files/playlists/' + artist + '_playlist.json', 'w') as f:
     print('Response:')
     print(json.dumps(playlist, ensure_ascii=False))
     json.dump(playlist, f, ensure_ascii=False)

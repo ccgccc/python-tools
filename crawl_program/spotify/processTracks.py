@@ -1,8 +1,8 @@
 import json
 import xlwt
 import time
-from spotifyFunc import *
 from artists import artists, artistToCrawl
+from spotifyFunc import *
 
 # ******************************
 #  Crawl spotify artist tracks
@@ -12,35 +12,52 @@ from artists import artists, artistToCrawl
 artist = artistToCrawl
 
 
-# get all tracks
-allTracks = []
-with open('./files/tracks/' + artist + '_alltracks_raw.json') as f:
-    allTracks = json.load(f)
-# print(allTracks)
+def main():
+    # Get all tracks
+    allTracks = []
+    with open('./files/tracks/' + artist + '_alltracks_raw.json') as f:
+        allTracks = json.load(f)
+    # print(allTracks)
 
-# filter albums tracks
-filterdTracks = []
-trackPlaycountToMs = {}
-for track in allTracks:
-    trackPlaycount = track['playcount']
-    durationMs = track['durationMs']
-    # ignore repeated tracks by playcount & duration
-    # if trackPlaycount is equal & duration difference is less than 10 seconds, consider them the same track
-    if trackPlaycount in trackPlaycountToMs.keys() and int(trackPlaycount) > 0 \
-            and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 10000:
-        continue
-    else:
-        trackPlaycountToMs[trackPlaycount] = durationMs
-    filterdTracks.append(track)
+    processedTracks = processTracks(allTracks, True)
+    writeToXlsx(processedTracks, './files/' + artists[artist]['name'] +
+                '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
+    print('Done!')
 
-# Sort all tracks by playcount
-sortedTracks = sorted(
-    filterdTracks, key=lambda track: track['playcount'], reverse=True)
-# print(allTracks)
 
-# Write json to file
-# with open('./files/' + artist + '_alltracks.json', 'w') as f:
-#     json.dump(allTracks, f, ensure_ascii=False)
+def processTracks(allTracks, filterTrackByName=False):
+    # Filter albums tracks
+    filterdTracks = []
+    trackNames = set()
+    trackPlaycountToMs = {}
+    for track in allTracks:
+        trackPlaycount = track['playcount']
+        durationMs = track['durationMs']
+        # ignore repeated tracks by playcount & duration
+        # if trackPlaycount is equal & duration difference is less than 10 seconds, consider them the same track
+        if trackPlaycount in trackPlaycountToMs.keys() and int(trackPlaycount) > 0 \
+                and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 10000:
+            continue
+        else:
+            trackPlaycountToMs[trackPlaycount] = durationMs
+        if filterTrackByName:
+            # ignore repeated tracks by track name
+            # not recomendded, sometimes repeated track names are alright, e.g. K歌之王 (国+粤)
+            trackName = track['trackName']
+            if trackName in trackNames:
+                continue
+            else:
+                trackNames.add(trackName)
+        filterdTracks.append(track)
+    # Sort all tracks by playcount
+    sortedTracks = sorted(
+        filterdTracks, key=lambda track: track['playcount'], reverse=True)
+    # print(sortedTracks)
+
+    # Write json to file
+    with open('./files/tracks/' + artist + '_alltracks.json', 'w') as f:
+        json.dump(sortedTracks, f, ensure_ascii=False)
+    return sortedTracks
 
 
 def writeToXlsx(allTracks, fileName):
@@ -89,6 +106,5 @@ def writeToXlsx(allTracks, fileName):
     workbook.save(fileName)
 
 
-writeToXlsx(sortedTracks, './files/' + artists[artist]['name'] +
-            '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
-print('Done!')
+if __name__ == '__main__':
+    main()

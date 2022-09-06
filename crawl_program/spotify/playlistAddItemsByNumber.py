@@ -1,6 +1,7 @@
 import json
 import time
-from artists import *
+from utils.secrets import clientID, clientSecret
+from artists import artists, artistToCrawl
 from spotifyFunc import *
 
 # **************************************************
@@ -11,34 +12,35 @@ from spotifyFunc import *
 # artist = 'jacky_cheung'
 # artist = 'bruno_mars'
 artist = 'nobody'
+# artist = artistToCrawl
 
 # Define track number to add
-tracksNumber = 20
+tracksNumber = 25
 
 
-# get playlist
+# Get playlist
 playlist = []
-with open('./files/' + artist + '_playlist.json') as f:
+with open('./files/playlists/' + artist + '_playlist.json') as f:
     playlist = json.load(f)
 # print(playlist)
 playlistId = playlist['id']
 # print(playlistId)
 
-# get all tracks
+# Get all tracks
 allTracks = []
-with open('./files/' + artist + '_alltracks.json') as f:
+with open('./files/tracks/' + artist + '_alltracks.json') as f:
     allTracks = json.load(f)
 # print(allTracks)
 
-# get spotify authorization token by scope
+# Get spotify authorization token by scope
 scope = "playlist-modify-public"
 spotify, token = getAuthorizationToken(clientID, clientSecret, scope)
-
-resJson = addTracksToPlaylistByNumber(spotify, token, playlistId, allTracks, tracksNumber)
+resJson = addTracksToPlaylistByNumber(
+    spotify, token, playlistId, allTracks, tracksNumber)
 print('Response:')
 print(json.dumps(resJson, ensure_ascii=False))
 
-# playlist name & description
+# Playlist name & description
 playlistName = artists[artist]['name'] + ' Most Played Songs'
 playlistDescription = artists[artist]['name'] + ' most played songs (top ' + str(tracksNumber) + ').' + \
     ' Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
