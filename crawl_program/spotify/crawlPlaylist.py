@@ -1,32 +1,66 @@
 import json
+import re
 from spotifyFunc import *
+from utils.secrets import clientID, clientSecret
 
 # ******************************
 #    Crawl spotify playlist
 # ******************************
 
 # Define playlist id here
-playlistID = "6Ev0ju4qLsqSLznN7fjErt"
-# playlistID = "7w3Y21vKZuLLq1huUuEWZZ"
+# playlistID = "7J6PrVFDlPWiQe0m6NF2ie"  # Favorite
+playlistID = "2QBH6yCLDJhTiXKqDfCtOA"  # Like
+# playlistID = "1zIsw5K3WfUq3lcadhqA8n"  # 邓紫棋 Most Played Songs
+# playlistID = "6Ev0ju4qLsqSLznN7fjErt"  # 张学友
+# playlistID = "7w3Y21vKZuLLq1huUuEWZZ"  # 周杰伦
 
 
 # API requests
-playlist = getPlaylistAndAllTracks(playlistID)
+token = getAccessToken(clientID, clientSecret)
+playlist = getPlaylistAndAllTracks(token, playlistID)
 # print(tracklist)
+
+fileName = './files/playlists/playlist_' + \
+    playlist['name'] + '_by ' + playlist['owner']['display_name']
 # Write json to file
-with open('./files/playlist_' + playlist['name'] + '_by ' + playlist['owner']['display_name'] + '.json', 'w') as f:
+with open(fileName + '.json', 'w') as f:
     json.dump(playlist, f, ensure_ascii=False)
 
-count = 0
-for t in playlist['tracks']['items']:
-    print('--------------------')
-    count = count + 1
-    print(str(count))
-    print('Track:   ' + t['track']['name'])
-    print('Album:   ' + t['track']['album']['name'] +
-          ' (' + t['track']['album']['release_date'] + ")")
-    print('Artists: ', end='')
-    artists = t['track']['artists']
-    for i in range(len(artists)):
-        print(artists[i]['name'], end='')
-        print(', ', end='') if i < len(artists) - 1 else print()
+
+def writeToCsvFile(trackItems, csvFileName):
+    with open(csvFileName, 'w') as f:
+        f.write('Track Id, Track, Artists, Album, Album Artist, Release Date\n')
+    file = open(csvFileName, 'a')
+    count = 0
+    for item in trackItems:
+        print('--------------------')
+        count = count + 1
+        print(str(count))
+        # Album info
+        album = item['track']['album']
+        albumId = album['id']
+        albumName = album['name']
+        albumArtistsList = list(
+            map(lambda artist: artist['name'], album['artists']))
+        albumArtists = '，'.join(albumArtistsList)
+        releaseDate = album['release_date']
+        albumAlbumType = album['album_type']
+        albumType = album['type']
+        totalTracks = album['total_tracks']
+        # Track info
+        track = item['track']
+        trackId = track['id']
+        trackName = track['name']
+        trackArtistsList = list(
+            map(lambda artist: artist['name'], track['artists']))
+        trackArtists = '，'.join(trackArtistsList)
+        print('Track:   ' + trackName)
+        print('Album:   ' + albumName + ' (' + releaseDate + ")")
+        print('Artists: ' + trackArtists)
+        file.write(trackId + ', ' + re.sub(r'\,', '，', trackName) + ', ' + trackArtists + ', '
+                   + re.sub(r'\,', '，', albumName) + ', ' + albumArtists + ', ' + releaseDate + '\n')
+    file.close()
+
+
+csvFileName = fileName + '.csv'
+writeToCsvFile(playlist['tracks']['items'], csvFileName)

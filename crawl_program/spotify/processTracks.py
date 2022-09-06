@@ -14,7 +14,7 @@ artist = artistToCrawl
 
 # get all tracks
 allTracks = []
-with open('./files/' + artist + '_alltracks_raw.json') as f:
+with open('./files/tracks/' + artist + '_alltracks_raw.json') as f:
     allTracks = json.load(f)
 # print(allTracks)
 

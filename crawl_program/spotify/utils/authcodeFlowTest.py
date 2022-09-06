@@ -1,4 +1,5 @@
 from auth import *
+from secrets import clientID, clientSecret
 
 # Retrive user infomation test
 
@@ -8,7 +9,8 @@ scope = [
     "user-read-email",
     "playlist-read-collaborative"
 ]
-spotify, token = getAuthorizationToken(scope)
+token = getAccessToken(clientID, clientSecret)
+spotify, token = getAuthorizationToken(clientID, clientSecret, scope)
 
 # Fetch a protected resource, i.e. user profile
 r = spotify.get('https://api.spotify.com/v1/me')

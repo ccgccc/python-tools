@@ -2,9 +2,11 @@ import requests
 import json
 import sys
 from utils.auth import *
-from utils.secrets import clientID, clientSecret
 
 
+# ******************************
+#    Client Credentials Flow
+# ******************************
 # Get artist all albums, filtered and sorted
 def getArtistAllAlbums(token, artistId):
     print('--------------------')
@@ -38,22 +40,6 @@ def getArtistAlbums(token, artistId, limit, offset):
     res = requests.get(albumsEndPoint, headers=getHeaders)
     albumsObject = res.json()
     return albumsObject
-
-
-# Get one album's tracks by third party api
-def getAlbumTracksByThirdPartyAPI(token, albumId):
-    albumTracksEndPoint = f"https://api-partner.spotify.com/pathfinder/v1/query?operationName=queryAlbumTracks"\
-        f"&variables=%7B%22uri%22%3A%22spotify%3Aalbum%3A{albumId}%22%2C%22offset%22%3A0%2C%22limit%22%3A300%7D"\
-        f"&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%2217a905fd6424e17cef6d815704aaae8e11c0cfa54a998a09e8690fe7f4f09878%22%7D%7D"
-    getHeaders = getHeader(token)
-    res = requests.get(albumTracksEndPoint, headers=getHeaders)
-    if (res.status_code == 401):
-        print('\n**********')
-        print('Spotify token expired, please retrive a new token.')
-        print('**********\n')
-        sys.exit()
-    albumTracksObject = res.json()
-    return albumTracksObject
 
 
 # Get one album's tracks
@@ -91,8 +77,7 @@ def getArtistInfo(token, artistList, language=None):
 
 
 # Get playlist and all its tracks
-def getPlaylistAndAllTracks(playlistID):
-    token = getAccessToken(clientID, clientSecret)
+def getPlaylistAndAllTracks(token, playlistID):
     playlistEndPoint = f"https://api.spotify.com/v1/playlists/{playlistID}?offset=100&limit=100"
     getHeaders = getHeader(token)
     res = requests.get(playlistEndPoint, headers=getHeaders)
@@ -107,13 +92,59 @@ def getPlaylistAndAllTracks(playlistID):
     return playlistObject
 
 
-# Get playlist's tracks
+# Get playlist's tracks by request once
 def getPlaylistTracks(token, playlistID, limit, offset):
     playlistTracksEndPoint = f"https://api.spotify.com/v1/playlists/{playlistID}/tracks?limit={limit}&offset={offset}"
     getHeaders = getHeader(token)
     res = requests.get(playlistTracksEndPoint, headers=getHeaders)
     playlistTracksObject = res.json()
     return playlistTracksObject
+
+
+# ******************************
+#       Third Party API
+# ******************************
+# Get one album's tracks by third party api
+def getAlbumTracksByThirdPartyAPI(token, albumId):
+    albumTracksEndPoint = f"https://api-partner.spotify.com/pathfinder/v1/query?operationName=queryAlbumTracks"\
+        f"&variables=%7B%22uri%22%3A%22spotify%3Aalbum%3A{albumId}%22%2C%22offset%22%3A0%2C%22limit%22%3A300%7D"\
+        f"&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%2217a905fd6424e17cef6d815704aaae8e11c0cfa54a998a09e8690fe7f4f09878%22%7D%7D"
+    getHeaders = getHeader(token)
+    res = requests.get(albumTracksEndPoint, headers=getHeaders)
+    if (res.status_code == 401):
+        print('\n**********')
+        print('Spotify token expired, please retrive a new token.')
+        print('**********\n')
+        sys.exit()
+    albumTracksObject = res.json()
+    return albumTracksObject
+
+
+# ******************************
+#    Authorization Code Flow
+# ******************************
+# Get my all liked songs
+def getUserAllLikedSongs(spotify, token):
+    userTracksEndPoint = f"https://api.spotify.com/v1/me/tracks?limit=50&offset=0"
+    res = spotify.get(userTracksEndPoint)
+    userTracksObject = res.json()
+    # request more if there is more tracks
+    moreTracksUri = userTracksObject['next']
+    while moreTracksUri != None:
+        tracksRes = spotify.get(moreTracksUri).json()
+        # print(tracksRes)
+        userTracksObject['items'].extend(tracksRes['items'])
+        moreTracksUri = tracksRes['next']
+        print(moreTracksUri)
+    return userTracksObject
+
+
+# Get my liked songs by request once
+def getUserSavedTracks(spotify, token, limit=50, offset=0):
+    userTracksEndPoint = f"https://api.spotify.com/v1/me/tracks?limit={limit}&offset={offset}"
+    res = spotify.get(userTracksEndPoint)
+    userTracksObject = res.json()
+    return userTracksObject
 
 
 # Create playlist
@@ -219,6 +250,9 @@ def addTracksToPlaylistByPlaycount(spotify, token, playlistId, allTracks, playco
     return resJson
 
 
+# ******************************
+#         Util Function
+# ******************************
 # Print albums info
 def printAlbums(artistAlbums, count):
     for t in artistAlbums['items']:
