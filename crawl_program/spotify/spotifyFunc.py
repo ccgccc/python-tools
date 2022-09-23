@@ -135,7 +135,7 @@ def getUserAllLikedSongs(spotify, token):
         # print(tracksRes)
         userTracksObject['items'].extend(tracksRes['items'])
         moreTracksUri = tracksRes['next']
-        print(moreTracksUri)
+        # print(moreTracksUri)
     return userTracksObject
 
 

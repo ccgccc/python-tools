@@ -8,8 +8,8 @@ from spotifyFunc import *
 # ******************************
 
 # Define playlist id here
-# playlistID = "7J6PrVFDlPWiQe0m6NF2ie"  # Favorite
-playlistID = "2QBH6yCLDJhTiXKqDfCtOA"  # Like
+playlistID = "7J6PrVFDlPWiQe0m6NF2ie"  # Favorite
+# playlistID = "2QBH6yCLDJhTiXKqDfCtOA"  # Like
 # playlistID = "1zIsw5K3WfUq3lcadhqA8n"  # 邓紫棋 Most Played Songs
 # playlistID = "6Ev0ju4qLsqSLznN7fjErt"  # 张学友
 # playlistID = "7w3Y21vKZuLLq1huUuEWZZ"  # 周杰伦
