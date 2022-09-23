@@ -8,7 +8,7 @@ from utils.auth import *
 #    Client Credentials Flow
 # ******************************
 # Get artist all albums, filtered and sorted
-def getArtistAllAlbums(token, artistId):
+def getArtistAllAlbums(token, artistId, includeFeatureOn=True):
     print('--------------------')
     print('Crawling Album...')
     limit = 50
@@ -26,6 +26,8 @@ def getArtistAllAlbums(token, artistId):
     # Filter ablums type to album and single
     for album in allAblums[::-1]:
         if (album['album_type'] != 'album' and album['album_type'] != 'single'):
+            allAblums.remove(album)
+        if not includeFeatureOn and album['album_group'] == 'appears_on':
             allAblums.remove(album)
     print('filtered albums count: ' + str(len(allAblums)))
     # Sort albums by release date

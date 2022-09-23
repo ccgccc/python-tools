@@ -9,12 +9,14 @@ from spotifyFunc import *
 
 # Define artist here
 artist = artistToCrawl
+# Define must first artist
+mustMainArtist = False
 # Spotify developer api doesn't provide track playcount info, so use spotify's own api to get it.
 # This workaround needs getting an accesstoken from spotify web page.
-# Token is retrived by spotify web page, e.g. https://open.spotify.com/album/1rBr9FeLlp5ueSKtE89FZa (最偉大的作品).
+# Token is retrived by spotify web page, e.g. https://open.sqpotify.com/album/1rBr9FeLlp5ueSKtE89FZa (最偉大的作品).
 # Find https://api-partner.spotify.com/pathfinder/v1/query request (search 'query') and copy token from its authorization headers.
 spotifyToken = \
-    'BQBCI_Wi0kIuvZy-SZbcrTtJUNueQMmX3IKfRXPAOERFI1N2Sdf9t4vYBq6LTok6oIY-T_MLCuTAGIJCwLmshcQ1NI7vGxJ6DFl694GShPe9zybB6bvdHyb5nWhgFPZODfEcKstT9gVDHGHcyBMrStTD32FKl0NO6Uu6xK3fV3iV8sq502KKM-ZqrpPQJXZpnl3TpD4jRpVThj0kel3NDMFpkO1lHtTtyuDlR2j0VCuLD1xlsKOHko9kYbEsgcU3S4P2OWO8ZzEgrh3aLz4TI7wmC9VtGBwuk9roS1bsL7kyqqVXvd9ZiWp4Rt_WDc_2gzVGWALPX6_to6-By-WbjRPsFqGP'
+    'BQBxTHtevvZ9yzYnbiM3bx8yuPsS74eAWdEh8xNhRaa_Rcgn4RqGcpSojgl5wZGdPpPU3n2cx6No4yt-OSnhvvLIhMNy7cL3K0IhFIg6A1_zBCYTvqKyzAPN4rnNPPAzVQrwOFAHgXIc_g7pIV6-LxaO6VY87FmraoE99oeEyBOXVAy8kfAtqkeNa2Nwny-CR2Yv70eLytLQmfWgmyTEImszfgSOWLjseH9pW3rmColJY4hwTLdCxHyZqTwBO375c4R9juLvyWqZAH2BMbfoJjHSA95jZqiE1CSWJufbW4b_PalirKyjBfMe1aGvGpiqKLpDf90r0QnFbX8TU9saTGF9Apoi'
 
 
 def main():
@@ -27,10 +29,10 @@ def main():
     # allAblums = getArtistAllAlbums(token, artistId)
 
     # Get all tracks & write to file
-    getAllTracks(spotifyToken, artistId, allAblums)
+    getAllTracks(spotifyToken, artistId, allAblums, mustMainArtist)
 
 
-def getAllTracks(spotifyToken, artistId, allAblums):
+def getAllTracks(spotifyToken, artistId, allAblums, mustMainArtist=False):
     # Get all albums tracks
     allTracks = []
     albumCount = 0
@@ -69,8 +71,10 @@ def getAllTracks(spotifyToken, artistId, allAblums):
             duration = str(durationMs // 60000) + "m " + \
                 "{:02d}".format(durationMs // 1000 % 60) + "s"
             playable = 'Y' if track['track']['playability']['playable'] == True else 'N'
-            # concatenate artists & filter other artists
             artistsList = track['track']['artists']['items']
+            if mustMainArtist and artistsList[0]['uri'].find(artistId) < 0:
+                continue
+            # concatenate artists & filter other artists
             containsArtist = False
             allArtists = ''
             for i in range(len(artistsList)):
