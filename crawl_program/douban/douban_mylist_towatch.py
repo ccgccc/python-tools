@@ -8,8 +8,7 @@ from common import *
 # 在豆瓣账号中找到"想看"，将此时的url替换到此处
 base_url = 'https://movie.douban.com/people/167045714/wish'
 # 此处定义此豆瓣账号标记想看的电影总数
-total_num = 30
-# total_num = 303
+total_num = 52
 # 此处定义生成文件名
 file_name = 'douban_mylist_towatch_' + time.strftime("%Y-%m-%d") + '.csv'
 # 此处定义文件编码

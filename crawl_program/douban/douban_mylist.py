@@ -4,12 +4,10 @@ import time
 from common import *
 
 # 豆瓣账号看过电影的爬虫程序
-
 # 在豆瓣账号中找到"看过"，将此时的url替换到此处
 base_url = 'https://movie.douban.com/people/167045714/collect'
 # 此处定义此豆瓣账号标记看过的电影总数
-total_num = 30
-# total_num = 1123
+total_num = 1130
 # 此处定义生成文件名
 file_name = 'douban_mylist_' + time.strftime("%Y-%m-%d") + '.csv'
 # 此处定义文件编码
