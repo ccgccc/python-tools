@@ -24,22 +24,22 @@ tokenFile.close()
 def main():
     # Get artist albums
     artistId = artists[artist]['artistId']
-    allAblums = []
+    allAlbums = []
     with open('./files/albums/' + artist + '_albums.json') as f:
-        allAblums = json.load(f)
+        allAlbums = json.load(f)
     # token = getAccessToken(clientID, clientSecret)
-    # allAblums = getArtistAllAlbums(token, artistId)
+    # allAlbums = getArtistAllAlbums(token, artistId)
 
     # Get all tracks & write to file
-    getAllTracks(spotifyToken, artistId, allAblums, mustMainArtist)
+    getAllTracks(spotifyToken, artistId, allAlbums, mustMainArtist)
 
 
-def getAllTracks(spotifyToken, artistId, allAblums, mustMainArtist=False):
+def getAllTracks(spotifyToken, artistId, allAlbums, mustMainArtist=False):
     # Get all albums tracks
     allTracks = []
     albumCount = 0
-    # for album in allAblums[0:5]:
-    for album in allAblums:
+    # for album in allAlbums[0:5]:
+    for album in allAlbums:
         print('--------------------')
         albumCount = albumCount + 1
         albumId = album['id']

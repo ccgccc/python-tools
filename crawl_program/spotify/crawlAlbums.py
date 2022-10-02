@@ -26,10 +26,10 @@ def crawlAlbums(artists, artist):
     artistId = artists[artist]['artistId']
     token = getAccessToken(clientID, clientSecret)
     #  Get artist albums
-    allAblums = getArtistAllAlbums(token, artistId)
+    allAlbums = getArtistAllAlbums(token, artistId)
     # Write json to file
     with open('./files/albums/' + artist + '_albums.json', 'w') as f:
-        json.dump(allAblums, f, ensure_ascii=False)
+        json.dump(allAlbums, f, ensure_ascii=False)
 
     # Process albums
     count = 0
@@ -37,7 +37,7 @@ def crawlAlbums(artists, artist):
     albumCsvFile = open('./files/albums/' + artist + '_albums.csv', 'w')
     print('AlbumName', 'AlbumId', 'AlbumGroup', 'AlbumType',
           'ReleaseDate', 'TracksNum', 'Artists', sep=', ', file=albumCsvFile)
-    for album in allAblums:
+    for album in allAlbums:
         seperation = '--------------------'
         count = count + 1
         albumName = album['name']
@@ -63,7 +63,7 @@ def crawlAlbums(artists, artist):
     albumGroupStat = dict()
     albumTypeStat = dict()
     albumGroupTypeStat = dict()
-    for t in allAblums:
+    for t in allAlbums:
         albumGroup = 'AlbumGroup: ' + t['album_group']
         if albumGroup not in albumGroupStat:
             albumGroupStat[albumGroup] = 1

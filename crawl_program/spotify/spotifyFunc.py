@@ -13,26 +13,26 @@ def getArtistAllAlbums(token, artistId, includeFeatureOn=True):
     print('Crawling Album...')
     limit = 50
     artistAlbums = getArtistAlbums(token, artistId, limit, 0)
-    allAblums = artistAlbums['items']
-    print('albums count: ' + str(len(allAblums)))
+    allAlbums = artistAlbums['items']
+    print('albums count: ' + str(len(allAlbums)))
     # printAlbums(artistAlbums, 0)
     moreRequestTimes = artistAlbums['total'] // limit
     for i in range(moreRequestTimes):
         offset = limit * (i + 1)
         moreArtistAlbums = getArtistAlbums(token, artistId, limit, offset)
-        allAblums.extend(moreArtistAlbums['items'])
-        print('albums count: ' + str(len(allAblums)))
+        allAlbums.extend(moreArtistAlbums['items'])
+        print('albums count: ' + str(len(allAlbums)))
         # printAlbums(moreArtistAlbums, offset)
-    # Filter ablums type to album and single
-    for album in allAblums[::-1]:
+    # Filter albums type to album and single
+    for album in allAlbums[::-1]:
         if (album['album_type'] != 'album' and album['album_type'] != 'single'):
-            allAblums.remove(album)
+            allAlbums.remove(album)
         if not includeFeatureOn and album['album_group'] == 'appears_on':
-            allAblums.remove(album)
-    print('filtered albums count: ' + str(len(allAblums)))
+            allAlbums.remove(album)
+    print('filtered albums count: ' + str(len(allAlbums)))
     # Sort albums by release date
-    allAblums = sorted(allAblums, key=lambda a: a['release_date'])
-    return allAblums
+    allAlbums = sorted(allAlbums, key=lambda album: album['release_date'])
+    return allAlbums
 
 
 # Get artist albums by request once

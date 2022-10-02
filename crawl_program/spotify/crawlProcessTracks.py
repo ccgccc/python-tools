@@ -26,14 +26,14 @@ tokenFile.close()
 
 # Get artist albums
 artistId = artists[artist]['artistId']
-allAblums = []
+allAlbums = []
 with open('./files/albums/' + artist + '_albums.json') as f:
-    allAblums = json.load(f)
+    allAlbums = json.load(f)
 # token = getAccessToken(clientID, clientSecret)
-# allAblums = getArtistAllAlbums(token, artistId)
+# allAlbums = getArtistAllAlbums(token, artistId)
 
 # Get all albums tracks
-allTracks = getAllTracks(spotifyToken, artistId, allAblums)
+allTracks = getAllTracks(spotifyToken, artistId, allAlbums)
 
 # Process tracks
 processedTracks = processTracks(allTracks)
