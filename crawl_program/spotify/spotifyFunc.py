@@ -280,6 +280,12 @@ def removePlayListTracks(spotify, token, playlistId, trackUriList):
 # ******************************
 #         Util Function
 # ******************************
+# Read file content
+def readFileContent(fileName):
+    with open(fileName) as f:
+        return f.read()
+
+
 # Print albums info
 def printAlbums(artistAlbums, count):
     for t in artistAlbums['items']:

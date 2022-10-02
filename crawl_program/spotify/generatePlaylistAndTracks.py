@@ -52,7 +52,7 @@ playlist = createPlayList(spotify, token, userId=myUserId, name=playlistName,
 playlistId = playlist['id']
 
 # Write json to file
-with open('./files/playlists/' + artist + '_playlist.json', 'w') as f:
+with open('./files/playlists/generated_playlists/' + artist + '_playlist.json', 'w') as f:
     print('Response:')
     print(json.dumps(playlist, ensure_ascii=False))
     json.dump(playlist, f, ensure_ascii=False)

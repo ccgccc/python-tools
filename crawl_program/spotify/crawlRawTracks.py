@@ -16,9 +16,7 @@ mustMainArtist = False
 # Token is retrived by spotify web page, e.g. https://open.sqpotify.com/album/1rBr9FeLlp5ueSKtE89FZa (最偉大的作品).
 # Find https://api-partner.spotify.com/pathfinder/v1/query request (search 'query') and copy token from its authorization headers.
 # Then paste it in utils/spotifyToken.txt.
-tokenFile = open('utils/spotifyToken.txt')
-spotifyToken = tokenFile.read()
-tokenFile.close()
+spotifyToken = readFileContent('utils/spotifyToken.txt')
 
 
 def main():

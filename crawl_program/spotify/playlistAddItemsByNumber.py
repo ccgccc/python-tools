@@ -19,7 +19,7 @@ tracksNumber = 25
 
 # Get playlist
 playlist = []
-with open('./files/playlists/' + artist + '_playlist.json') as f:
+with open('./files/playlists/generated_playlists/' + artist + '_playlist.json') as f:
     playlist = json.load(f)
 # print(playlist)
 playlistId = playlist['id']
