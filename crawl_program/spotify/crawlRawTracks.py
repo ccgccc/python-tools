@@ -15,8 +15,10 @@ mustMainArtist = False
 # This workaround needs getting an accesstoken from spotify web page.
 # Token is retrived by spotify web page, e.g. https://open.sqpotify.com/album/1rBr9FeLlp5ueSKtE89FZa (最偉大的作品).
 # Find https://api-partner.spotify.com/pathfinder/v1/query request (search 'query') and copy token from its authorization headers.
-spotifyToken = \
-    'BQBxTHtevvZ9yzYnbiM3bx8yuPsS74eAWdEh8xNhRaa_Rcgn4RqGcpSojgl5wZGdPpPU3n2cx6No4yt-OSnhvvLIhMNy7cL3K0IhFIg6A1_zBCYTvqKyzAPN4rnNPPAzVQrwOFAHgXIc_g7pIV6-LxaO6VY87FmraoE99oeEyBOXVAy8kfAtqkeNa2Nwny-CR2Yv70eLytLQmfWgmyTEImszfgSOWLjseH9pW3rmColJY4hwTLdCxHyZqTwBO375c4R9juLvyWqZAH2BMbfoJjHSA95jZqiE1CSWJufbW4b_PalirKyjBfMe1aGvGpiqKLpDf90r0QnFbX8TU9saTGF9Apoi'
+# Then paste it in utils/spotifyToken.txt.
+tokenFile = open('utils/spotifyToken.txt')
+spotifyToken = tokenFile.read()
+tokenFile.close()
 
 
 def main():

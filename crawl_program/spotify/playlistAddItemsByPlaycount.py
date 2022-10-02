@@ -9,8 +9,6 @@ from spotifyFunc import *
 # **************************************************
 
 # Define artist here
-# artist = 'jay_chou'
-# artist = 'eason_chan'
 artist = 'nobody'
 # artist = artistToCrawl
 

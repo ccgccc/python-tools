@@ -10,20 +10,14 @@ from spotifyFunc import *
 # ************************************************************
 
 # Define artist here
-# artist = 'jacky_cheung'
-# artist = 'jay_chou'
-# artist = 'eason_chan'
-# artist = 'bruno_mars'
-# artist = 'g_e_m'
-# artist = 'jj_lin'
-artist = 'nobody'
-# artist = artistToCrawl
+# artist = 'nobody'
+artist = artistToCrawl
 
 # Define create method: 1 - by number, 2 - by playcount
 createMethod = 1
 # createMethod = 2
 # For method 1: Define track number to add tracks
-tracksNumber = 30
+tracksNumber = 20
 # For method 2: Define minimum playcount to add tracks
 playcount = 6000000
 

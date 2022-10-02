@@ -1,7 +1,7 @@
 import requests
 import json
 import sys
-from utils.auth import *
+from utils.auth import getHeader, postHeader
 
 
 # ******************************
