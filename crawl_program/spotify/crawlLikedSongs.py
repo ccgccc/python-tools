@@ -1,5 +1,6 @@
 import json
 from utils.secrets import clientID, clientSecret
+from utils.auth import getAuthorizationToken
 from spotifyFunc import *
 from crawlPlaylist import writeToCsvFile
 

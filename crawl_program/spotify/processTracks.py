@@ -1,6 +1,6 @@
 import json
-import xlwt
 import time
+import xlwt
 from artists import artists, artistToCrawl
 from spotifyFunc import *
 

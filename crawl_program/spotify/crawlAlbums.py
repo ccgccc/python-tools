@@ -1,6 +1,7 @@
-import json
 import re
+import json
 from utils.secrets import clientID, clientSecret
+from utils.auth import getAccessToken
 from artists import artists, artistToCrawl
 from spotifyFunc import *
 

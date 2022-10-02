@@ -1,5 +1,6 @@
-from spotifyFunc import *
 from utils.secrets import clientID, clientSecret
+from utils.auth import getAccessToken
+from spotifyFunc import *
 
 # ****************************************
 #     Get spotify artist info from id

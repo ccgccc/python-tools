@@ -1,4 +1,5 @@
 from utils.secrets import clientID, clientSecret
+from utils.auth import getAccessToken, getAuthorizationToken
 from spotifyFunc import *
 
 # ******************************

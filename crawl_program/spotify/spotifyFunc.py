@@ -1,6 +1,6 @@
-import requests
-import json
 import sys
+import json
+import requests
 from utils.auth import getHeader, postHeader
 
 

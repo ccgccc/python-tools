@@ -1,7 +1,8 @@
+import sys
 import json
 import time
-import sys
 from utils.secrets import clientID, clientSecret
+from utils.auth import getAuthorizationToken
 from artists import artists, artistToCrawl
 from spotifyFunc import *
 

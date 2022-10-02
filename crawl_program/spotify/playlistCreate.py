@@ -1,7 +1,8 @@
+import sys
 import json
 import time
-import sys
 from utils.secrets import clientID, clientSecret
+from utils.auth import getAuthorizationToken
 from artists import artists, artistToCrawl
 from spotifyFunc import *
 
@@ -10,10 +11,6 @@ from spotifyFunc import *
 # **************************************************
 
 # Define artist here
-# artist = 'jacky_cheung'
-# artist = 'jay_chou'
-# artist = 'eason_chan'
-# artist = 'bruno_mars'
 artist = 'nobody'
 # artist = artistToCrawl
 
