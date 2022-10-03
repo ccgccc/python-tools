@@ -1,8 +1,7 @@
 # Deine artist to crawl
-artistToCrawl = 'beyond'
+artistToCrawl = 'wangfeng'
 
 # Deine artists
-# Search artist on spotfy (e.g. 张学友 on spotify) to get artistId
 artists = {
     'jacky_cheung': {
         'name': '张学友',
@@ -39,5 +38,9 @@ artists = {
     'beyond': {
         'name': 'Beyond',
         'artistId': '11127'
+    },
+    'wangfeng': {
+        'name': '汪峰',
+        'artistId': '5347'
     }
 }

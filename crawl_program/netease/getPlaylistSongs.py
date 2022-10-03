@@ -15,4 +15,4 @@ fileName = 'playlists/playlist_songs_' + \
 writeJsonToFile(playlistSongs, fileName)
 
 printPlaylists([playlist['playlist']])
-printSongs(playlistSongs['songs'], 'files/' + fileName + '.csv')
+printSongs(playlistSongs['songs'], fileName)

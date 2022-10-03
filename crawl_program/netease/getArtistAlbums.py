@@ -20,6 +20,6 @@ while len(resJson['hotAlbums']) == limit:
 
 allAlbums = sorted(allAlbums, key=lambda album: album['publishTime'])
 
-writeJsonToFile(allAlbums, 'albums/' + artistToCrawl + '_albums')
-
-printAlbums(allAlbums)
+fileName = 'albums/' + artistToCrawl + '_albums'
+writeJsonToFile(allAlbums, fileName)
+printAlbums(allAlbums, fileName)

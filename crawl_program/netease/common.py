@@ -62,14 +62,19 @@ def getPlaylistSongs(playlistId):
     return playlistSongs
 
 
-def printAlbums(albums):
+def printAlbums(albums, csvFileName=None):
     print('--------------------')
     print('Albums:')
+    isWriteToFile = csvFileName != None
+    if isWriteToFile:
+        csvFile = open('files/' + csvFileName + '.csv', 'w')
+        csvFile.write('albumCount, albumId, albumName, albumArtists, ' +
+                      'publishTime, albumType, albumSubType, albumSize, company\n')
     albumCount = 0
     for album in albums:
         albumCount = albumCount + 1
         albumId = album['id']
-        albumName = album['name']
+        albumName = re.sub(r'\,', '，', album['name'])
         albumAlias = album['alias']
         albumType = album['type']
         albumSubType = album['subType']
@@ -82,14 +87,20 @@ def printAlbums(albums):
         company = album['company']
         print(albumCount, albumId, albumName, albumArtists,
               publishTime, albumType, albumSubType, albumSize, company, sep=', ')
-
-
-def printSongs(songs, csvFileName=None):
-    print('----------')
-    print('Songs:')
-    isWriteToFile = csvFileName != None
+        if isWriteToFile:
+            print(albumCount, albumId, albumName, albumArtists, publishTime,
+                  albumType, albumSubType, albumSize, company, sep=', ', file=csvFile)
     if isWriteToFile:
-        csvFile = open(csvFileName, 'w')
+        csvFile.close()
+
+
+def printSongs(songs, csvFileName=None, isWriteToConsole=True):
+    isWriteToFile = csvFileName != None
+    if isWriteToConsole:
+        print('----------')
+        print('Songs:')
+    if isWriteToFile:
+        csvFile = open('files/' + csvFileName + '.csv', 'w')
         csvFile.write('songCount, songId, songName, songArtists, ' +
                       'genre, duration, publishTime, popularity, albumName\n')
     songCount = 0
@@ -111,8 +122,9 @@ def printSongs(songs, csvFileName=None):
         popularity = song['pop']
         albumId = song['al']['id']
         albumName = re.sub(r'\,', '，', song['al']['name'])
-        print(songCount, songId, songName, songArtists, genre,
-              duration, publishTime, popularity, albumName, sep=', ')
+        if isWriteToConsole:
+            print(songCount, songId, songName, songArtists, genre,
+                  duration, publishTime, popularity, albumName, sep=', ')
         if isWriteToFile:
             print(songCount, songId, songName, songArtists, genre,
                   duration, publishTime, popularity, albumName, sep=', ', file=csvFile)
@@ -125,7 +137,7 @@ def printPlaylists(playlists, csvFileName=None):
     print('Playlists:')
     isWriteToFile = csvFileName != None
     if isWriteToFile:
-        csvFile = open(csvFileName, 'w')
+        csvFile = open('files/' + csvFileName + '.csv', 'w')
         csvFile.write('playlistCount, playlistId, playlistName, creator, privacy, trackCount, ' +
                       'playCount, createTime, updateTime, trackUpdateTime, trackNumberUpdateTime\n')
     playlistCount = 0

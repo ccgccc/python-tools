@@ -17,4 +17,4 @@ playlists = requests.get(url, headers=headers, params=params).json()
 
 fileName = 'playlists/all_my_playlists_bak_'+ time.strftime("%Y-%m-%d")
 writeJsonToFile(playlists, fileName)
-printPlaylists(playlists['playlist'], 'files/' + fileName + '.csv')
+printPlaylists(playlists['playlist'], fileName)

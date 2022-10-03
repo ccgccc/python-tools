@@ -44,4 +44,4 @@ for playlist in playlists:
         '{:03d}'.format(playlistCount) + '_' + playlistName + \
         '_by ' + creator + '_' + str(playlistId)
     writeJsonToFile(playlistSongs, fileName)
-    printSongs(playlistSongs['songs'], 'files/' + fileName + '.csv')
+    printSongs(playlistSongs['songs'], fileName)

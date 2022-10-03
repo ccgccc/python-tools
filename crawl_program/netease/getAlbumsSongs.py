@@ -43,7 +43,9 @@ def getAllSongs(allAlbums, mustMainArtist=False):
         allSongs.extend(albumSongs['songs'])
         printSongs(albumSongs['songs'])
     # Write json to file
-    writeJsonToFile(allSongs, 'songs/' + artistToCrawl + '_allsongs_raw')
+    fileName = 'songs/' + artistToCrawl + '_allsongs_raw'
+    writeJsonToFile(allSongs, fileName)
+    printSongs(allSongs, fileName, isWriteToConsole=False)
     return allSongs
 
 
