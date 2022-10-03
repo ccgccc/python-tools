@@ -18,6 +18,6 @@ while resJson['more'] == True:
     resJson = requests.get(url, headers=headers, params=params).json()
     allSongs['songs'].extend(resJson['songs'])
 
-writeJsonToFile(allSongs, artistToCrawl + '_tracks')
+writeJsonToFile(allSongs, artistToCrawl + '_songs')
 
 printSongs(allSongs['songs'])

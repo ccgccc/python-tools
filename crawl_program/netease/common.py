@@ -62,6 +62,114 @@ def getPlaylistSongs(playlistId):
     return playlistSongs
 
 
+def createPlaylist(name):
+    url = baseUrl + '/playlist/create'
+    params = {
+        'name': name
+    }
+    res = requests.get(url, headers=headers, params=params)
+    resJson = res.json()
+    if res.status_code == 200 and resJson['code'] == 200:
+        print('\n**********')
+        print('Successfully created playlist.')
+        print('**********\n')
+        print(resJson)
+        return resJson
+    else:
+        print('\n**********')
+        print('Creating playlist failed.')
+        print('**********\n')
+        print(resJson)
+        sys.exit()
+
+
+def updatePlaylistDesc(playlistId,  description):
+    url = baseUrl + '/playlist/desc/update'
+    params = {
+        'id': playlistId,
+        'desc': description
+    }
+    res = requests.get(url, headers=headers, params=params)
+    resJson = res.json()
+    if res.status_code == 200:
+        print('\n**********')
+        print('Successfully updated playlist.')
+        print('**********\n')
+        print(resJson)
+        return resJson
+    else:
+        print('\n**********')
+        print('Updating playlist failed.')
+        print('**********\n')
+        print(resJson)
+        sys.exit()
+
+
+def deletePlaylist(playlistIds):
+    url = baseUrl + '/playlist/delete'
+    params = {
+        'id': playlistIds
+    }
+    res = requests.get(url, headers=headers, params=params)
+    resJson = res.json()
+    if res.status_code == 200 and resJson['code'] == 200:
+        print('\n**********')
+        print('Successfully deleted playlist.')
+        print('**********\n')
+        print(resJson)
+        return resJson
+    else:
+        print('\n**********')
+        print('Deleting playlist failed.')
+        print('**********\n')
+        print(resJson)
+        sys.exit()
+
+
+def addSongsToPlayList(playlistId, tracks):
+    res = addOrDeleteSongsToPlayList('add', playlistId, tracks)
+    resJson = res.json()
+    if res.status_code == 200 and resJson['body']['code'] == 200:
+        print('\n**********')
+        print('Successfully added songs to playlist.')
+        print('**********\n')
+        print(resJson)
+        return resJson
+    else:
+        print('\n**********')
+        print('Adding songs to playlist failed.')
+        print('**********\n')
+        print(resJson)
+        sys.exit()
+
+
+def deleteSongsToPlayList(playlistId, tracks):
+    res = addOrDeleteSongsToPlayList('del', playlistId, tracks)
+    resJson = res.json()
+    if res.status_code == 200 and resJson['body']['code'] == 200:
+        print('\n**********')
+        print('Successfully deleted playlist songs.')
+        print('**********\n')
+        # print(resJson)
+        return resJson
+    else:
+        print('\n**********')
+        print('Deleting playlist songs failed.')
+        print('**********\n')
+        print(resJson)
+        sys.exit()
+
+
+def addOrDeleteSongsToPlayList(opeartion, playlistId, tracks):
+    url = baseUrl + '/playlist/tracks'
+    params = {
+        'op': opeartion,
+        'pid': playlistId,
+        'tracks': tracks
+    }
+    return requests.get(url, headers=headers, params=params)
+
+
 def printAlbums(albums, csvFileName=None):
     print('--------------------')
     print('Albums:')

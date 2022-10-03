@@ -5,35 +5,35 @@ artistToCrawl = 'wangfeng'
 artists = {
     'jacky_cheung': {
         'name': '张学友',
-        'artistId': '1Hu58yHg2CXNfDhlPd7Tdd'
+        'artistId': '6460'
     },
     'jay_chou': {
         'name': '周杰伦',
-        'artistId': '2elBjNSdBE2Y3f0j1mjrql'
+        'artistId': '6452'
     },
     'eason_chan': {
         'name': '陈奕迅',
-        'artistId': '2QcZxAgcs2I1q7CtCkl6MI'
+        'artistId': '2116'
     },
     'bruno_mars': {
         'name': 'Bruno Mars',
-        'artistId': '0du5cEVh5yTK9QJze8zA0C'
+        'artistId': '178059'
     },
     'g_e_m': {
         'name': '邓紫棋',
-        'artistId': '7aRC4L63dBn3CiLDuWaLSI'
+        'artistId': '7763'
     },
     'jj_lin': {
         'name': '林俊杰',
-        'artistId': '7Dx7RhX0mFuXhCOUgB01uM'
+        'artistId': '3684'
     },
     'xusong': {
         'name': '许嵩',
-        'artistId': '2hgxWUG24w1cFLBlPSEVcV'
+        'artistId': '5771'
     },
     'leehom_wang': {
         'name': '王力宏',
-        'artistId': '2F5W6Rsxwzg0plQ0w8dSyt'
+        'artistId': '5346'
     },
     'beyond': {
         'name': 'Beyond',
