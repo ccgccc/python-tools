@@ -150,7 +150,7 @@ def deleteSongsToPlayList(playlistId, tracks):
         print('\n**********')
         print('Successfully deleted playlist songs.')
         print('**********\n')
-        # print(resJson)
+        print(resJson)
         return resJson
     else:
         print('\n**********')

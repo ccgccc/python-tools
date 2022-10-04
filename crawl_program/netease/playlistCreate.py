@@ -17,7 +17,7 @@ def main():
     generatePlaylist(artistToCrawl)
 
 
-def generatePlaylist(artist):
+def generatePlaylist(artist, isUpdateDesc=True):
     # create playlist
     playlistName = artists[artist]['name'] + ' Most Played Songs'
     playlist = createPlaylist(playlistName)
@@ -25,10 +25,11 @@ def generatePlaylist(artist):
     writeJsonToFile(playlist, 'playlists/generated_playlists/' +
                     artist + '_playlist')
 
-    # update playlist description
-    playlistDescription = artists[artist]['name'] + '播放最多歌曲，根据Spotify播放量数据自动生成。' + \
-        'Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
-    updatePlaylistDesc(playlist['playlist']['id'], playlistDescription)
+    if isUpdateDesc:
+        # update playlist description
+        playlistDescription = artists[artist]['name'] + '播放最多歌曲，根据Spotify播放量数据自动生成。' + \
+            'Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
+        updatePlaylistDesc(playlist['playlist']['id'], playlistDescription)
     return playlist
 
 
