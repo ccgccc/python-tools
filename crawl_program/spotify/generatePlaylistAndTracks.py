@@ -9,6 +9,7 @@ from spotifyFunc import *
 from playlistAddItemsByNumber import playlistAddTracksByNumber
 from playlistAddItemsByPlaycount import playlistAddTracksByPlaycount
 from playlistRemoveItems import playlistRemoveAllItems
+from crawlPlaylists import crawlSinglePlaylist
 
 # **********************************************************************
 #    Create or update spotify most played songs playlist & add tracks
@@ -83,3 +84,7 @@ if generateMethod == 1:
 elif generateMethod == 2:
     playlistAddTracksByPlaycount(
         spotify, authorizeToken, playlistId, artist, allTracks, playcount)
+
+# Get new playlist info
+crawlSinglePlaylist(accessToken, playlistId,
+                    './files/playlists/generated_playlists_info/')
