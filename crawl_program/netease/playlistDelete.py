@@ -4,6 +4,12 @@ from os.path import isfile, join
 from artists import *
 from common import *
 
+makeSure = False
+
+if makeSure == False:
+    print('Are you sure?')
+    sys.exit()
+
 headers['cookie'] = readFileContent('cookie.txt')
 
 dir = './files/playlists/generated_playlists/'

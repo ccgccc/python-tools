@@ -9,7 +9,7 @@ from playlistAddSongs import playlistAddSongs
 
 
 # Define create playlist or update playlist
-isCreate = False
+isCreate = True
 # Defin cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
@@ -37,8 +37,11 @@ if isCreate:
     playlistId = playlist['playlist']['id']
 else:
     # Get netease playlist
-    playlist = loadJsonFromFile(
-        'playlists/generated_playlists/' + artistToCrawl + '_playlist')
+    fileName = 'playlists/generated_playlists/' + artistToCrawl + '_playlist'
+    if not isfile('./files/' + fileName + '.json'):
+        print('Playlist not created yet. Please set isCreate to True.')
+        sys.exit()
+    playlist = loadJsonFromFile(fileName)
     playlistId = playlist['playlist']['id']
     # Remove playlist songs
     playlistRomoveSongs(playlistId)
