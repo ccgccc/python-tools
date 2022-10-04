@@ -7,43 +7,53 @@ from syncSongs import getSyncSongs
 def main():
     headers['cookie'] = readFileContent('cookie.txt')
 
+    # Get netease playlist
     playlist = loadJsonFromFile(
         'playlists/generated_playlists/' + artistToCrawl + '_playlist')
     playlistId = playlist['playlist']['id']
 
-    syncSongs, missingSongs = getSyncSongs(artistToCrawl, isRemoveAlias=True)
+    # Get spotify playlist
+    with open('../spotify/files/playlists/generated_playlists_info/playlist_' +
+              artists[artistToCrawl]['name'] + ' Most Played Songs_by ccg ccc.json') as f:
+        spotifyPlaylist = json.load(f)
+    print(spotifyPlaylist['description'])
+    syncSongs, missingSongs = getSyncSongs(
+        artistToCrawl, spotifyPlaylist, isRemoveAlias=True)
 
-    playlistAddSongs(playlistId, syncSongs, missingSongs)
+    playlistAddSongs(playlistId, syncSongs, missingSongs, spotifyPlaylist)
 
 
-def playlistAddSongs(playlistId, syncSongs, missingSongs, isPromptDescMissing=True, confirmOnceMode=False):
+def playlistAddSongs(playlistId, syncSongs, missingSongs, spotifyPlaylist,
+                     isPromptDescMissing=True, confirmOnceMode=False):
     syncSongIds = ','.join(
         reversed(list(map(lambda song: str(list(song.values())[0]), syncSongs))))
     # print(syncSongIds)
     addSongsToPlayList(playlistId, syncSongIds)
 
     # Update playlist description
-    print()
     isDescMissingSongs = True
     if isPromptDescMissing:
-        while True:
-            if len(missingSongs) > 0:
+        if len(missingSongs) == 0:
+            isDescMissingSongs = False
+        else:
+            print('\n------------------------------')
+            while True:
                 continueMsg = input(
                     'Do you want to add missing songs to playlist description? (y/n): ')
-            else:
-                break
-            if continueMsg == 'y' or continueMsg == 'Y':
-                isDescMissingSongs = True
-                break
-            elif confirmOnceMode or continueMsg == 'n' or continueMsg == 'N':
-                isDescMissingSongs = False
-                break
+                if continueMsg == 'y' or continueMsg == 'Y':
+                    isDescMissingSongs = True
+                    break
+                elif confirmOnceMode or continueMsg == 'n' or continueMsg == 'N':
+                    isDescMissingSongs = False
+                    break
     # isDescMissingSongs = True
     missingSongsPart = ('，Missing: ' + '、'.join(missingSongs)
                         if isDescMissingSongs else '')
-    playlistDescription = artists[artistToCrawl]['name'] + '播放最多歌曲，根据Spotify播放量数据自动生成' + \
-        missingSongsPart + '。Generated on ' + \
-        time.strftime("%Y-%m-%d") + ' by ccg.'
+    isUsingSpotifyTime = True
+    captionPart = re.sub(r'.*(Generated.*)', r'\1', spotifyPlaylist['description']) if isUsingSpotifyTime else (
+        'Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.')
+    playlistDescription = artists[artistToCrawl]['name'] + '播放最多歌曲，根据Spotify播放量数据自动生成' + re.sub(
+        r'.*(\(.*?\)).*', r'\1', spotifyPlaylist['description']) + missingSongsPart + '。' + captionPart
     # print(playlistDescription)
     updatePlaylistDesc(playlistId, playlistDescription)
 
