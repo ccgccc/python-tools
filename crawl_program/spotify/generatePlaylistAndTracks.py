@@ -1,22 +1,29 @@
 import sys
 import json
-import time
+from os import listdir
+from os.path import isfile, join
 from utils.secrets import clientID, clientSecret
-from utils.auth import getAuthorizationToken
+from utils.auth import getAccessToken, getAuthorizationToken
 from artists import artists, artistToCrawl
 from spotifyFunc import *
+from playlistAddItemsByNumber import playlistAddTracksByNumber
+from playlistAddItemsByPlaycount import playlistAddTracksByPlaycount
+from playlistRemoveItems import playlistRemoveAllItems
 
-# ************************************************************
-#    Create spotify most played songs playlist & add tracks
-# ************************************************************
+# **********************************************************************
+#    Create or update spotify most played songs playlist & add tracks
+# **********************************************************************
 
 # Define artist here
 # artist = 'nobody'
 artist = artistToCrawl
 
-# Define create method: 1 - by number, 2 - by playcount
-createMethod = 1
-# createMethod = 2
+# Define create playlist or update playlist
+isCreate = False
+
+# Define generate method: 1 - by number, 2 - by playcount
+generateMethod = 1
+# generateMethod = 2
 # For method 1: Define track number to add tracks
 tracksNumber = 20
 # For method 2: Define minimum playcount to add tracks
@@ -26,52 +33,53 @@ playcount = 6000000
 myUserId = '31jvwpn5kplbtp4sqdqaol2x5mcy'  # ccg ccc
 
 
+# Prepare check
 if artists.get(artist) == None:
     print(artist + ' is not defined in artist.py, please define it first.')
     sys.exit()
-if createMethod != 1 and createMethod != 2:
-    print('create method not supported.')
+if isCreate:
+    dir = './files/playlists/generated_playlists/'
+    fileNames = [f for f in listdir(dir) if isfile(join(dir, f))]
+    if artist + '_playlist.json' in fileNames:
+        print('Alreay created playlist. Exit...')
+        sys.exit()
+if generateMethod != 1 and generateMethod != 2:
+    print('generate method not supported.')
     sys.exit()
 
-# Get spotify authorization token by scope
+# Get accessToken
+accessToken = getAccessToken(clientID, clientSecret)
+# Get spotify authorization authorizeToken by scope
 scope = "playlist-modify-public"
-spotify, token = getAuthorizationToken(clientID, clientSecret, scope)
+spotify, authorizeToken = getAuthorizationToken(clientID, clientSecret, scope)
+if isCreate:
+    # Playlist name
+    playlistName = artists[artist]['name'] + ' Most Played Songs'
+    # Create playlist
+    playlist = createPlayList(spotify, authorizeToken, userId=myUserId, name=playlistName,
+                              description='playlist description', ispublic=True)
+    playlistId = playlist['id']
 
-# Playlist name & description
-playlistName = artists[artist]['name'] + ' Most Played Songs'
-if createMethod == 1:
-    playlistDescription = artists[artist]['name'] + ' most played songs (top ' + str(tracksNumber) + ').' + \
-        ' Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
-elif createMethod == 2:
-    playlistDescription = artists[artist]['name'] + ' most played songs (playcount > ' + \
-        (str(playcount // 1000000) + ' million' if playcount >= 1000000 else str(playcount)) + ').' + \
-        ' Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
-# Create playlist
-playlist = createPlayList(spotify, token, userId=myUserId, name=playlistName,
-                          description=playlistDescription, ispublic=True)
-playlistId = playlist['id']
-
-# Write json to file
-with open('./files/playlists/generated_playlists/' + artist + '_playlist.json', 'w') as f:
-    print('Response:')
-    print(json.dumps(playlist, ensure_ascii=False))
-    json.dump(playlist, f, ensure_ascii=False)
-
+    # Write json to file
+    with open('./files/playlists/generated_playlists/' + artist + '_playlist.json', 'w') as f:
+        print('Response:')
+        print(json.dumps(playlist, ensure_ascii=False))
+        json.dump(playlist, f, ensure_ascii=False)
+else:
+    with open('./files/playlists/generated_playlists/' + artist + '_playlist.json') as f:
+        playlist = json.load(f)
+    playlistId = playlist['id']
+    playlistRemoveAllItems(accessToken, spotify, authorizeToken, playlistId)
 
 # Get all tracks
 allTracks = []
 with open('./files/tracks/' + artist + '_alltracks.json') as f:
     allTracks = json.load(f)
 # print(allTracks)
-
 # Add tracks
-if createMethod == 1:
-    resJson = addTracksToPlaylistByNumber(
-        spotify, token, playlistId, allTracks, tracksNumber)
-    print('Response:')
-    print(json.dumps(resJson, ensure_ascii=False))
-elif createMethod == 2:
-    resJson = addTracksToPlaylistByPlaycount(
-        spotify, token, playlistId, allTracks, playcount)
-    print('Response:')
-    print(json.dumps(resJson, ensure_ascii=False))
+if generateMethod == 1:
+    playlistAddTracksByNumber(
+        spotify, authorizeToken, playlistId, artist, allTracks, tracksNumber)
+elif generateMethod == 2:
+    playlistAddTracksByPlaycount(
+        spotify, authorizeToken, playlistId, artist, allTracks, playcount)

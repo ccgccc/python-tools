@@ -1,4 +1,10 @@
-1. define artists & artistToCrawl in artists.py
-2. python3 crawlAlbums.py
-3. python3 crawlProcessTracks.py
-4. python3 generatePlaylistAndTracks.py
+First, define artists & artistToCrawl in artists.py.
+
+Then, execute these commands:
+python3 crawlAlbums.py
+python3 crawlProcessTracks.py
+python3 generatePlaylistAndTracks.py
+
+Or execute these commands:
+python3 spotifyCrawlAndProcess.py
+python3 generatePlaylistAndTracks.py

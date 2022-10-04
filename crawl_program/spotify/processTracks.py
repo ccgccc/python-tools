@@ -34,9 +34,9 @@ def processTracks(allTracks, filterTrackByName=False):
         trackPlaycount = track['playcount']
         durationMs = track['durationMs']
         # ignore repeated tracks by playcount & duration
-        # if trackPlaycount is equal & duration difference is less than 10 seconds, consider them the same track
+        # if trackPlaycount is equal & duration difference is less than 20 seconds, consider them the same track
         if trackPlaycount in trackPlaycountToMs.keys() and int(trackPlaycount) > 0 \
-                and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 10000:
+                and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 20000:
             continue
         else:
             trackPlaycountToMs[trackPlaycount] = durationMs

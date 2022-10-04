@@ -17,33 +17,40 @@ artist = 'nobody'
 tracksNumber = 25
 
 
-# Get playlist
-playlist = []
-with open('./files/playlists/generated_playlists/' + artist + '_playlist.json') as f:
-    playlist = json.load(f)
-# print(playlist)
-playlistId = playlist['id']
-# print(playlistId)
+def main():
+    # Get playlist
+    playlist = []
+    with open('./files/playlists/generated_playlists/' + artist + '_playlist.json') as f:
+        playlist = json.load(f)
+    # print(playlist)
+    playlistId = playlist['id']
+    # print(playlistId)
+    # Get all tracks
+    allTracks = []
+    with open('./files/tracks/' + artist + '_alltracks.json') as f:
+        allTracks = json.load(f)
+    # print(allTracks)
 
-# Get all tracks
-allTracks = []
-with open('./files/tracks/' + artist + '_alltracks.json') as f:
-    allTracks = json.load(f)
-# print(allTracks)
+    # Get spotify authorization token by scope
+    scope = "playlist-modify-public"
+    spotify, token = getAuthorizationToken(clientID, clientSecret, scope)
+    playlistAddTracksByNumber(
+        spotify, token, playlistId, artist, allTracks, tracksNumber)
 
-# Get spotify authorization token by scope
-scope = "playlist-modify-public"
-spotify, token = getAuthorizationToken(clientID, clientSecret, scope)
-resJson = addTracksToPlaylistByNumber(
-    spotify, token, playlistId, allTracks, tracksNumber)
-print('Response:')
-print(json.dumps(resJson, ensure_ascii=False))
 
-# Playlist name & description
-playlistName = artists[artist]['name'] + ' Most Played Songs'
-playlistDescription = artists[artist]['name'] + ' most played songs (top ' + str(tracksNumber) + ').' + \
-    ' Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
-res = updatePlayList(spotify, token, playlistId,
-                     playlistName, playlistDescription, True)
-print('Response:')
-print(res)
+def playlistAddTracksByNumber(spotify, token, playlistId, artist, allTracks, tracksNumber):
+    resJson = addTracksToPlaylistByNumber(
+        spotify, token, playlistId, allTracks, tracksNumber)
+    print('Response:', json.dumps(resJson, ensure_ascii=False))
+
+    # Playlist name & description
+    playlistName = artists[artist]['name'] + ' Most Played Songs'
+    playlistDescription = artists[artist]['name'] + ' most played songs (top ' + str(tracksNumber) + ').' + \
+        ' Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
+    res = updatePlayList(spotify, token, playlistId,
+                         playlistName, playlistDescription, True)
+    print('Response:', res)
+
+
+if __name__ == '__main__':
+    main()

@@ -7,18 +7,30 @@ from spotifyFunc import *
 # ******************************
 
 # Define playlist id here
-playlistID = "0Ip5YtkmYoouZ0YjALg1QA"  # Beyond Most Played Songs
+playlistId = "0Ip5YtkmYoouZ0YjALg1QA"  # Beyond Most Played Songs
 
 
-# API requests
-token = getAccessToken(clientID, clientSecret)
-playlist = getPlaylistAndAllTracks(token, playlistID)
-trackItems = playlist['tracks']['items']
+def main():
+    # Get accessToken
+    accessToken = getAccessToken(clientID, clientSecret)
+    # Get spotify authorization token by scope
+    scope = "playlist-modify-public"
+    spotify, authorizeToken = getAuthorizationToken(
+        clientID, clientSecret, scope)
+    playlistRemoveAllItems(accessToken, spotify, authorizeToken, playlistId)
 
-# Get spotify authorization token by scope
-scope = "playlist-modify-public"
-spotify, token = getAuthorizationToken(clientID, clientSecret, scope)
-trackUriList = []
-for track in trackItems:
-    trackUriList.append(track['track']['uri'])
-removePlayListTracks(spotify, token, playlistID, trackUriList)
+
+def playlistRemoveAllItems(accessToken, spotify, authorizeToken, playlistId):
+    playlist = getPlaylistAndAllTracks(accessToken, playlistId)
+    trackItems = playlist['tracks']['items']
+
+    trackUriList = []
+    for track in trackItems:
+        trackUriList.append(track['track']['uri'])
+    resJson = removePlayListTracks(
+        spotify, authorizeToken, playlistId, trackUriList)
+    print('Response:', resJson)
+
+
+if __name__ == '__main__':
+    main()

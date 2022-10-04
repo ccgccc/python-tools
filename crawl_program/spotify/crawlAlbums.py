@@ -19,12 +19,12 @@ def main():
     for artist in artistToCrawlList:
         print('--------------------')
         print('Processing ' + artists[artist]['name'] + '...')
-        crawlAlbums(artists, artist)
+        token = getAccessToken(clientID, clientSecret)
+        crawlAlbums(token, artists, artist)
 
 
-def crawlAlbums(artists, artist):
+def crawlAlbums(token, artists, artist):
     artistId = artists[artist]['artistId']
-    token = getAccessToken(clientID, clientSecret)
     #  Get artist albums
     allAlbums = getArtistAllAlbums(token, artistId)
     # Write json to file
@@ -82,6 +82,7 @@ def crawlAlbums(artists, artist):
     print(albumGroupStat.items())
     print(albumTypeStat.items())
     print(albumGroupTypeStat.items())
+    return allAlbums
 
 
 if __name__ == '__main__':

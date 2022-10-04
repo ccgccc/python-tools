@@ -1,17 +1,16 @@
-import json
 import time
 from utils.secrets import clientID, clientSecret
+from utils.auth import getAccessToken
 from artists import artists, artistToCrawl
 from spotifyFunc import *
+from crawlAlbums import crawlAlbums
 from crawlRawTracks import getAllTracks
 from processTracks import processTracks, writeToXlsx
 
-# ******************************
-#  Crawl spotify artist tracks
-# ******************************
-
 # Define artist here
 artist = artistToCrawl
+# Define must first artist
+mustMainArtist = False
 # Filter track by track name or not
 filterTrackByName = False
 # Spotify developer api doesn't provide track playcount info, so use spotify's own api to get it.
@@ -22,19 +21,17 @@ filterTrackByName = False
 spotifyToken = readFileContent('utils/spotifyToken.txt')
 
 
-# Get artist albums
-artistId = artists[artist]['artistId']
-allAlbums = []
-with open('./files/albums/' + artist + '_albums.json') as f:
-    allAlbums = json.load(f)
-# token = getAccessToken(clientID, clientSecret)
-# allAlbums = getArtistAllAlbums(token, artistId)
-
+if artist in ['beyond']:
+    mustMainArtist = True
+# Get all albums
+token = getAccessToken(clientID, clientSecret)
+allAlbums = crawlAlbums(token, artists, artist)
 # Get all albums tracks
-allTracks = getAllTracks(spotifyToken, artistId, allAlbums)
+allTracks = getAllTracks(
+    spotifyToken, artists[artist]['artistId'], allAlbums, mustMainArtist=mustMainArtist)
 
 # Process tracks
-processedTracks = processTracks(allTracks, filterTrackByName)
+processedTracks = processTracks(allTracks, filterTrackByName=filterTrackByName)
 writeToXlsx(processedTracks, './files/' + artists[artist]['name'] +
             '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
 print('--------------------')
