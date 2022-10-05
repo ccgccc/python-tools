@@ -1,3 +1,4 @@
+import time
 from common import *
 
 
@@ -20,5 +21,6 @@ print('Total:', len(followUsers))
 # Unfollow all
 for followId, userName in followUsers.items():
     print('Unfollowing', userName)
-    # res = unfollowUser(followId)
-    # print(res, res.text)
+    res = unfollowUser(followId)
+    print(res, res.text)
+    time.sleep(3)

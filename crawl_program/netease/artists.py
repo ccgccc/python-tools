@@ -1,5 +1,5 @@
 # Deine artist to crawl
-artistToCrawl = 'faye_wong'
+artistToCrawl = 'kare_mok'
 
 # Deine artists
 artists = {
@@ -46,5 +46,9 @@ artists = {
     'faye_wong': {
         'name': '王菲',
         'artistId': '9621'
+    },
+    'kare_mok': {
+        'name': '莫文蔚',
+        'artistId': '8926'
     }
 }

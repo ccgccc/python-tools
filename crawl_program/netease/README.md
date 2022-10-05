@@ -7,3 +7,5 @@ python3 processSongs.py
 python3 syncSpotifyPlaylist.py
 
 Or execute these commands:
+python3 neteaseCrawlAndProcess.py
+python3 syncSpotifyPlaylist.py

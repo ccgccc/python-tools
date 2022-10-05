@@ -23,6 +23,25 @@ def getAlbum(id):
     return album
 
 
+def getArtistAlbums(artistId):
+    url = baseUrl + '/artist/album'
+    limit = 100
+    params = {
+        'id': artistId,
+        'limit': limit,
+        'offset': 0
+    }
+    resJson = requests.get(url, headers=headers, params=params).json()
+    allAlbums = resJson['hotAlbums']
+    # while allAlbums['more'] == True: # seems not working
+    while len(resJson['hotAlbums']) == limit:
+        params['offset'] = params['offset'] + limit
+        print(params)
+        resJson = requests.get(url, headers=headers, params=params).json()
+        allAlbums.extend(resJson['hotAlbums'])
+    return allAlbums
+
+
 def getPlaylist(playlistId):
     url = baseUrl + '/playlist/detail'
     params = {

@@ -7,11 +7,11 @@ def main():
     # Get artist albums
     allAlbums = loadJsonFromFile('albums/' + artistToCrawl + '_albums')
 
-    # Get all tracks & write to file
-    getAllSongs(allAlbums)
+    # Get all songs & write to file
+    getAlbumsSongs(allAlbums)
 
 
-def getAllSongs(allAlbums, mustMainArtist=False):
+def getAlbumsSongs(allAlbums, mustMainArtist=False):
     # Get all albums tracks
     allSongs = []
     albumCount = 0
