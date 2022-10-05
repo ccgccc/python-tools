@@ -5,10 +5,9 @@ from common import *
 from specialSongs import *
 
 
-def getSyncSongs(artist, spotifyPlaylist, isRemoveAlias=True, isNeedPrompt=True, confirmOnceMode=True):
+def getSyncSongs(artist, spotifyTrackNames, isRemoveAlias=True, isNeedPrompt=True, confirmOnceMode=True):
     # Get spotify playlist song names
-    spotifyTrackOriginalNames = [track['track']['name']
-                                 for track in spotifyPlaylist['tracks']['items']]
+    spotifyTrackOriginalNames = spotifyTrackNames[artist]
     if isRemoveAlias == True:
         spotifyTrackOriginalNames = [re.sub(r' \(.*', '', re.sub(r' - .*', '', track))
                                      for track in spotifyTrackOriginalNames]
@@ -21,24 +20,22 @@ def getSyncSongs(artist, spotifyPlaylist, isRemoveAlias=True, isNeedPrompt=True,
     # Get netease artist all songs
     fileName = 'songs/' + artist + '_allsongs'
     neteaseArtistSongs = loadJsonFromFile(fileName)
-    neteaseArtistSongIds = [{song['name']: song['id']}
-                            for song in neteaseArtistSongs]
+    neteaseArtistSongIds = {song['name']: song['id']
+                            for song in neteaseArtistSongs}
     if specialSongIds.get(artist) != None:
-        neteaseArtistSongIds.extend(specialSongIds.get(artist))
-    # Get sync songs name & id
-    syncSongs = [dict for dict in neteaseArtistSongIds
-                 if list(dict.keys())[0] in spotifyTrackNames]
-    syncSongs = sorted(
-        syncSongs, key=lambda song: spotifyTrackNames.index(list(song.keys())[0]))
+        neteaseArtistSongIds = neteaseArtistSongIds \
+            | specialSongIds.get(artist)  # since python 3.9
+    # Get sync songs name & id  # dictionary is ordered since python 3.7
+    syncSongs = {name: neteaseArtistSongIds.get(name) for name in spotifyTrackNames
+                 if name in neteaseArtistSongIds and neteaseArtistSongIds.get(name) != None}
     if repeatedSongs.get(artist) != None:
-        syncSongs.extend(repeatedSongs.get(artist))
+        syncSongs = syncSongs | repeatedSongs.get(artist)
     print('------------------------------')
     print('Netease sync songs:', len(syncSongs))
     print(syncSongs, '\n')
 
     # Get missing songs
-    missingSongs = set(spotifyTrackNames) - \
-        {list(songDict.keys())[0] for songDict in syncSongs}
+    missingSongs = set(spotifyTrackNames) - syncSongs.keys()
     missingSongs = sorted(
         list(missingSongs), key=lambda songName: spotifyTrackNames.index(songName))
     missingSongSpotifyNames = [spotifyTrackOriginalNames[spotifyTrackNames.index(songName)]

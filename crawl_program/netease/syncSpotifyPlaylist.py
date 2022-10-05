@@ -8,7 +8,7 @@ from playlistAddSongs import playlistAddSongs
 
 
 # Define create playlist or update playlist
-isCreate = True
+isCreate = False
 # Defin cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
@@ -24,8 +24,10 @@ with open('../spotify/files/playlists/generated_playlists_info/playlist_' +
           artists[artistToCrawl]['name'] + ' Most Played Songs_by ccg ccc.json') as f:
     spotifyPlaylist = json.load(f)
 # Get sync songs
+spotifyTrackNames = {artistToCrawl: [track['track']['name']
+                                     for track in spotifyPlaylist['tracks']['items']]}
 syncSongs, missingSongs = getSyncSongs(
-    artistToCrawl, spotifyPlaylist, isRemoveAlias=True)
+    artistToCrawl, spotifyTrackNames, isRemoveAlias=True)
 
 # Create or clear playlist
 if isCreate:

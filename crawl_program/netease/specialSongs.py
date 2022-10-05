@@ -53,37 +53,37 @@ specialSongNames = {
 # simplified Chinese
 specialSongIds = {
     # 周杰伦
-    'jay_chou': [
-        {'屋顶': 298317},
-        {'画沙': 324859}
-    ],
+    'jay_chou': {
+        '屋顶': 298317,
+        '画沙': 324859
+    },
     # 邓紫棋
-    'g_e_m': [
-        {'手心的蔷薇': 29848657}
-    ],
+    'g_e_m': {
+        '手心的蔷薇': 29848657
+    },
     # Bruno Mars
-    'bruno_mars': [
-        {'Young, Wild & Free': 75389455},
-        {'Billionaire': 21806689}
-    ],
+    'bruno_mars': {
+        'Young, Wild & Free': 75389455,
+        'Billionaire': 21806689
+    },
     # 林俊杰
-    'jj_lin': [
-        {'期待你的爱': 34040694}
-    ],
+    'jj_lin':  {
+        '期待你的爱': 34040694
+    },
     # 王菲
-    'faye_wong': [
-        {'因为爱情': 64317}
-    ]
+    'faye_wong':  {
+        '因为爱情': 64317
+    }
 }
 
-# not included because of repeated song names
+# not included because of spotify repeated song names
 repeatedSongs = {
     # 陈奕迅
-    'eason_chan': [
-        {'K歌之王': 67364}
-    ],
+    'eason_chan': {
+        'K歌之王__国(反正是我)': 67364
+    },
     # 王菲
-    'faye_wong': [
-        {'执迷不悔 (国语版)': 300603}
-    ]
+    'faye_wong': {
+        '执迷不悔 (国语版)': 300603
+    }
 }

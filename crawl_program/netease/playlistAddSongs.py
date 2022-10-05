@@ -17,16 +17,18 @@ def main():
               artists[artistToCrawl]['name'] + ' Most Played Songs_by ccg ccc.json') as f:
         spotifyPlaylist = json.load(f)
     print(spotifyPlaylist['description'])
+    spotifyTrackNames = {artistToCrawl: [track['track']['name']
+                                         for track in spotifyPlaylist['tracks']['items']]}
     syncSongs, missingSongs = getSyncSongs(
-        artistToCrawl, spotifyPlaylist, isRemoveAlias=True)
+        artistToCrawl, spotifyTrackNames, isRemoveAlias=True)
 
     playlistAddSongs(playlistId, syncSongs, missingSongs, spotifyPlaylist)
 
 
 def playlistAddSongs(playlistId, syncSongs, missingSongs, spotifyPlaylist,
                      isPromptDescMissing=True, confirmOnceMode=False):
-    syncSongIds = ','.join(
-        reversed(list(map(lambda song: str(list(song.values())[0]), syncSongs))))
+    syncSongIds = ','.join(reversed(
+        [str(songId) for songId in syncSongs.values()]))
     # print(syncSongIds)
     addSongsToPlayList(playlistId, syncSongIds)
 
