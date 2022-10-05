@@ -1,7 +1,6 @@
+from os.path import isfile
 from artists import *
 from common import *
-from os import listdir
-from os.path import isfile, join
 from syncSongs import getSyncSongs
 from playlistCreate import generatePlaylist
 from playlistRemoveSongs import playlistRomoveSongs
@@ -16,9 +15,7 @@ headers['cookie'] = readFileContent('cookie.txt')
 
 # Prepare check
 if isCreate:
-    dir = './files/playlists/generated_playlists/'
-    fileNames = [f for f in listdir(dir) if isfile(join(dir, f))]
-    if artistToCrawl + '_playlist.json' in fileNames:
+    if isfile('./files/playlists/generated_playlists/' + artistToCrawl + '_playlist.json'):
         print('Alreay created playlist. Exit...')
         sys.exit()
 
@@ -32,7 +29,7 @@ syncSongs, missingSongs = getSyncSongs(
 
 # Create or clear playlist
 if isCreate:
-    # Create playlist
+    # Create netease playlist
     playlist = generatePlaylist(artistToCrawl, isUpdateDesc=False)
     playlistId = playlist['playlist']['id']
 else:
