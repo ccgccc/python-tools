@@ -4,24 +4,25 @@ from os.path import isfile, join
 from artists import *
 from common import *
 
-makeSure = False
 
-if makeSure == False:
-    print('Are you sure?')
-    sys.exit()
-
+# Defin cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
-dir = './files/playlists/generated_playlists/'
-fileNames = [f for f in listdir(dir) if isfile(join(dir, f))]
-if artistToCrawl + '_playlist.json' not in fileNames:
+
+# Sure check
+sureCheck()
+# Check playlsit exist
+if not isfile('./files/playlists/generated_playlists/' + artistToCrawl + '_playlist.json'):
     print('Playlist doesn\'t exitst. Exit...')
     sys.exit()
 
+# Get playlistId
 playlist = loadJsonFromFile(
     'playlists/generated_playlists/' + artistToCrawl + '_playlist')
 playlistId = playlist['playlist']['id']
 
+# Delete playlist
 deletePlaylist(playlistId)
 
+# Remove playlist file
 os.remove(dir + artistToCrawl + '_playlist.json')

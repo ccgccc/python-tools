@@ -9,8 +9,7 @@ myUserId = 389958855
 
 baseUrl = 'https://netease-cloud-music-api-three-rose.vercel.app'
 headers = {
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-    '(KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'
 }
 
 
@@ -170,6 +169,36 @@ def addOrDeleteSongsToPlayList(opeartion, playlistId, tracks):
     return requests.get(url, headers=headers, params=params)
 
 
+def getFollows(userId):
+    url = baseUrl + '/user/follows'
+    limit = 500
+    params = {
+        'uid': userId,
+        'limit': limit,
+        'offset': 0
+    }
+    follows = requests.get(url, headers=headers, params=params).json()
+    return follows
+
+
+def followUser(followUserId):
+    return followOrUnfollow(1, followUserId)
+
+
+def unfollowUser(unfollowUserId):
+    return followOrUnfollow(0, unfollowUserId)
+
+
+def followOrUnfollow(operation, followUserId):
+    url = baseUrl + '/follow'
+    params = {
+        'id': followUserId,
+        't': operation
+    }
+    res = requests.get(url, headers=headers, params=params)
+    return res
+
+
 def printAlbums(albums, csvFileName=None):
     print('--------------------')
     print('Albums:')
@@ -289,3 +318,9 @@ def loadJsonFromFile(fileName):
     # Load json from file
     with open('./files/' + fileName + '.json') as f:
         return json.load(f)
+
+
+def sureCheck():
+    msg = input('Are you sure? Press Y to continue. (y/n): ')
+    if msg != 'y' and msg != 'n':
+        sys.exit()
