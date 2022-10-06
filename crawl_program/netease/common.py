@@ -80,11 +80,15 @@ def getPlaylistSongs(playlistId):
     return playlistSongs
 
 
-def createPlaylist(name):
+def createPlaylist(name, isPrivate=False):
     url = baseUrl + '/playlist/create'
     params = {
         'name': name
     }
+    if isPrivate:
+        params['privacy'] = 10
+    else:
+        params['privacy'] = 0
     res = requests.get(url, headers=headers, params=params)
     resJson = res.json()
     if res.status_code == 200 and resJson['code'] == 200:

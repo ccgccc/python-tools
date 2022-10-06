@@ -7,19 +7,25 @@ currentdir = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
-from spotify.artists import artists as spotifyArtists
-from artists import artists as neteaseArtists
-from common import *
-from syncSongs import getSyncSongs
-from playlistRemoveSongs import playlistRomoveSongs
 from playlistAddSongs import playlistAddSongs
+from playlistRemoveSongs import playlistRomoveSongs
+from syncSongs import getSyncSongs
+from common import *
+from artists import artists as neteaseArtists
+from spotify.artists import artists as spotifyArtists
 
 
-# Define playlist name
-# playlistName = 'Favorite'
-playlistName = 'Like'
+# Define isPrivate & public playlist name
+# isPrivate = False
+# # playlistName = 'Favorite'
+# playlistName = 'Like'
+
+# Define isPrivate & private playlist name
+isPrivate = True
+playlistName = 'To Listen'
+
 # Define create playlist or update playlist
-isCreate = False
+isCreate = True
 # Define is incremental
 isIncremental = False
 # Defin cookie in cookie.txt
@@ -103,7 +109,7 @@ print('All missing songs: ', len(missingSongs),
 # Create or clear playlist
 if isCreate:
     # Create netease playlist
-    playlist = createPlaylist(playlistName)
+    playlist = createPlaylist(playlistName, isPrivate=isPrivate)
     playlistId = playlist['playlist']['id']
 else:
     # Get netease playlist
