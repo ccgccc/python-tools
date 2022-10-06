@@ -26,12 +26,14 @@ def main():
 
 
 def playlistAddSongs(playlistId, syncSongs, missingSongs, spotifyPlaylist,
-                     isPromptDescMissing=True, confirmOnceMode=False):
+                     isUpdateDesc=True, isPromptDescMissing=True, confirmOnceMode=False):
     syncSongIds = ','.join(reversed(
         [str(songId) for songId in syncSongs.values()]))
     # print(syncSongIds)
     addSongsToPlayList(playlistId, syncSongIds)
 
+    if not isUpdateDesc:
+        return
     # Update playlist description
     isDescMissingSongs = True
     if isPromptDescMissing:

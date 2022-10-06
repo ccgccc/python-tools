@@ -4,7 +4,8 @@ specialSongNames = {
     # 张学友  All
     'jacky_cheung': {
         '祇願一生愛一人': '只愿一生爱一人',
-        '袛有情永在': '只有情永在'
+        '袛有情永在': '只有情永在',
+        '我醒著做夢': '我醒着做梦'
     },
     # 周杰伦  All
     'jay_chou': {
@@ -15,6 +16,7 @@ specialSongNames = {
     # 陈奕迅 All
     'eason_chan': {
         'Wu Ren Zhi Jing': '无人之境',
+        '孤獨患者(國)': '孤独患者'
     },
     # Bruno Mars  All
     'bruno_mars': {
@@ -42,10 +44,13 @@ specialSongNames = {
     # 汪峰  All
     'wangfeng': {
     },
-    # 王菲
+    # 王菲  All
     'faye_wong': {
         '執迷不悔': '执迷不悔 (粤语版)',
         '你快樂所以我快樂': '你快乐所以我快乐 (Live)'
+    },
+    # 莫文蔚  All
+    'kare_mok': {
     }
 }
 
@@ -73,6 +78,14 @@ specialSongIds = {
     # 王菲
     'faye_wong':  {
         '因为爱情': 64317
+    }
+}
+
+# netease not good song source，e.g. 你的名字 我的姓氏(友个人演唱会1999)
+replaceSongIds = {
+    # 张学友
+    'jacky_cheung': {
+        '你的名字 我的姓氏': 188728
     }
 }
 
