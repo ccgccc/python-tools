@@ -90,7 +90,10 @@ def getPlaylistAndAllTracks(token, playlistID, isPrivate=False, spotify=None):
     # request more if there is more tracks
     moreTracksUri = playlistObject['tracks']['next']
     while moreTracksUri != None:
-        tracksRes = requests.get(moreTracksUri, headers=getHeaders).json()
+        if isPrivate:
+            tracksRes = spotify.get(moreTracksUri).json()
+        else:
+            tracksRes = requests.get(moreTracksUri, headers=getHeaders).json()
         # print(tracksRes)
         playlistObject['tracks']['items'].extend(tracksRes['items'])
         moreTracksUri = tracksRes['next']
