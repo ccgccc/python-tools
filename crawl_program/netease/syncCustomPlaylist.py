@@ -1,18 +1,17 @@
-
 import os
 import sys
 import inspect
-# Enable import parent directory
+# Enable import parent directory modules
 currentdir = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
-from playlistAddSongs import playlistAddSongs
-from playlistRemoveSongs import playlistRomoveSongs
-from syncSongs import getSyncSongs
-from common import *
-from artists import artists as neteaseArtists
 from spotify.artists import artists as spotifyArtists
+from artists import artists as neteaseArtists
+from common import *
+from syncSongs import getSyncSongs
+from playlistRemoveSongs import playlistRomoveSongs
+from playlistAddSongs import playlistAddSongs
 
 
 # Define isPrivate & public playlist name
@@ -27,7 +26,7 @@ playlistName = 'Like'
 # Define create playlist or update playlist
 isCreate = False
 # Define is incremental
-isIncremental = False
+isIncremental = True
 # Defin cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
@@ -102,7 +101,8 @@ for artist, trackNames in spotifyArtistTrackNames.items():
     syncSongs = syncSongs | curSyncSongs
     missingSongs.extend(curMissingSongs)
     if len(curMissingSongs) > 0:
-        missingSongsStr.append('、'.join(curMissingSongs) + '(' + artistName + ')')
+        missingSongsStr.append(
+            '、'.join(curMissingSongs) + '(' + artistName + ')')
 print('\n')
 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
