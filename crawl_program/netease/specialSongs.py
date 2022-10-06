@@ -68,7 +68,7 @@ specialSongIds = {
     },
     # Bruno Mars
     'bruno_mars': {
-        'Young, Wild & Free': 75389455,
+        'Young, Wild & Free': 1934807,
         'Billionaire': 21806689
     },
     # 林俊杰
@@ -99,4 +99,10 @@ repeatedSongs = {
     'faye_wong': {
         '执迷不悔 (国语版)': 300603
     }
+}
+
+# netease sensitive words
+sensitiveWords = {
+    '长城': '长Cheng',
+    '岁月无声': '岁月WuSheng'
 }

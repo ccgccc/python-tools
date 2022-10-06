@@ -9,6 +9,8 @@ from playlistAddSongs import playlistAddSongs
 
 # Define create playlist or update playlist
 isCreate = False
+# Define if update description
+isUpdateDesc = True
 # Defin cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
@@ -46,7 +48,8 @@ else:
     playlistRomoveSongs(playlistId)
 
 # Add songs & update playlist description
-playlistAddSongs(playlistId, syncSongs, missingSongs, spotifyPlaylist)
+playlistAddSongs(playlistId, syncSongs, missingSongs,
+                 spotifyPlaylist, isUpdateDesc=isUpdateDesc)
 # Get new playlist Info
 playlist = getPlaylist(playlistId)
 writeJsonToFile(playlist, 'playlists/generated_playlists/' +

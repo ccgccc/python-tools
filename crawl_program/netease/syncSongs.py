@@ -57,6 +57,9 @@ def getSyncSongs(artist, spotifyTrackNames, isRemoveAlias=True,
         print('Missing:', missingSongs)
     print('------------------------------')
 
+    # Process netease sensitive words
+    missingSongs = [song if sensitiveWords.get(song) == None else sensitiveWords[song]
+                    for song in missingSongs]
     # Confirmation prompt
     if not isNeedPrompt or not isOkPrompt and len(missingSongs) == 0:
         return syncSongs, missingSongs

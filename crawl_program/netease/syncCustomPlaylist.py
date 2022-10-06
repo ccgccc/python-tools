@@ -16,16 +16,16 @@ from spotify.artists import artists as spotifyArtists
 
 
 # Define isPrivate & public playlist name
-# isPrivate = False
-# # playlistName = 'Favorite'
-# playlistName = 'Like'
+isPrivate = False
+# playlistName = 'Favorite'
+playlistName = 'Like'
 
 # Define isPrivate & private playlist name
-isPrivate = True
-playlistName = 'To Listen'
+# isPrivate = True
+# playlistName = 'To Listen'
 
 # Define create playlist or update playlist
-isCreate = True
+isCreate = False
 # Define is incremental
 isIncremental = False
 # Defin cookie in cookie.txt
@@ -88,17 +88,21 @@ if (totalTrackNames != totalPlaylistTracks):
 
 syncSongs = {}
 missingSongs = []
+missingSongsStr = []
 # Get sync songs
 for artist, trackNames in spotifyArtistTrackNames.items():
     if len(trackNames) == 0:
         continue
+    artistName = neteaseArtists[artist]['name']
     print('\n************************************************************')
     print('************************************************************')
-    print('Processing', neteaseArtists[artist]['name'], '......')
+    print('Processing', artistName, '......')
     curSyncSongs, curMissingSongs = getSyncSongs(
         artist, {artist: trackNames}, isRemoveAlias=True, isNeedPrompt=True, isOkPrompt=False)
     syncSongs = syncSongs | curSyncSongs
     missingSongs.extend(curMissingSongs)
+    if len(curMissingSongs) > 0:
+        missingSongsStr.append('、'.join(curMissingSongs) + '(' + artistName + ')')
 print('\n')
 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
@@ -138,8 +142,8 @@ else:
 playlistAddSongs(playlistId, syncSongs, missingSongs,
                  spotifyPlaylist, isUpdateDesc=False)
 playlistDescription = 'Synced from spotify.' + \
-    ('Missing songs: ' + ', '.join(missingSongs) +
-     '.')if len(missingSongs) > 0 else ''
+    ('Missing songs: ' + ', '.join(missingSongsStr) +
+     '.') if len(missingSongsStr) > 0 else ''
 updatePlaylistDesc(playlistId, playlistDescription)
 
 # Get new playlist Info
