@@ -1,23 +1,26 @@
 import re
 import json
 from utils.secrets import clientID, clientSecret
-from utils.auth import getAccessToken
+from utils.auth import getAccessToken, getAuthorizationToken
 from spotifyFunc import *
 
 # ******************************
 #    Crawl spotify playlists
 # ******************************
 
-# Define playlist id here
+# Define isPrivate & public playlist ids here
+isPrivate = False
 playlistIds = [
-    "7J6PrVFDlPWiQe0m6NF2ie",  # Favorite
-    "2QBH6yCLDJhTiXKqDfCtOA"  # Like
+    # "7J6PrVFDlPWiQe0m6NF2ie",  # Favorite
+    # "2QBH6yCLDJhTiXKqDfCtOA",  # Like
+    "6Ev0ju4qLsqSLznN7fjErt",  # 张学友
+    "7w3Y21vKZuLLq1huUuEWZZ",  # 周杰伦
 ]
-# playlistID = "7J6PrVFDlPWiQe0m6NF2ie"  # Favorite
-# playlistID = "2QBH6yCLDJhTiXKqDfCtOA"  # Like
-# playlistID = "1zIsw5K3WfUq3lcadhqA8n"  # 邓紫棋 Most Played Songs
-# playlistID = "6Ev0ju4qLsqSLznN7fjErt"  # 张学友
-# playlistID = "7w3Y21vKZuLLq1huUuEWZZ"  # 周杰伦
+# Define isPrivate & private playlist ids here
+# isPrivate = True
+# playlistIds = [
+#     "1cd55XqNdveVHn8DUJRJM1",  # To Listen
+# ]
 
 
 def main():
@@ -33,7 +36,14 @@ def crawlPlaylists(token, playlistIds, playlistDir):
 
 def crawlSinglePlaylist(token, playlistID, playlistDir):
     # API request
-    playlist = getPlaylistAndAllTracks(token, playlistID)
+    if isPrivate:
+        scope = "playlist-read-private"
+        spotify, authorizeToken = getAuthorizationToken(
+            clientID, clientSecret, scope)
+        playlist = getPlaylistAndAllTracks(
+            token, playlistID, isPrivate, spotify)
+    else:
+        playlist = getPlaylistAndAllTracks(token, playlistID, isPrivate)
     fileName = playlistDir + 'playlist_' + \
         playlist['name'] + '_by ' + playlist['owner']['display_name']
     # Write json to file

@@ -79,10 +79,13 @@ def getArtistInfo(token, artistList, language=None):
 
 
 # Get playlist and all its tracks
-def getPlaylistAndAllTracks(token, playlistID):
+def getPlaylistAndAllTracks(token, playlistID, isPrivate=False, spotify=None):
     playlistEndPoint = f"https://api.spotify.com/v1/playlists/{playlistID}?offset=100&limit=100"
     getHeaders = getHeader(token)
-    res = requests.get(playlistEndPoint, headers=getHeaders)
+    if isPrivate:
+        res = spotify.get(playlistEndPoint)
+    else:
+        res = requests.get(playlistEndPoint, headers=getHeaders)
     playlistObject = res.json()
     # request more if there is more tracks
     moreTracksUri = playlistObject['tracks']['next']
