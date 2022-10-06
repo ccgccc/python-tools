@@ -29,10 +29,7 @@ allAlbums = crawlAlbums(token, artists, artist)
 # Get all albums tracks
 allTracks = getAllTracks(
     spotifyToken, artists[artist]['artistId'], allAlbums, mustMainArtist=mustMainArtist)
-
 # Process tracks
 processedTracks = processTracks(allTracks, filterTrackByName=filterTrackByName)
-writeToXlsx(processedTracks, './files/' + artists[artist]['name'] +
-            '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
 print('--------------------')
 print('Done!')

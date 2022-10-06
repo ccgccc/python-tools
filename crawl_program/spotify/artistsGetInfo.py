@@ -17,7 +17,9 @@ artistList = [
     '2hgxWUG24w1cFLBlPSEVcV',  # 许嵩
     '2F5W6Rsxwzg0plQ0w8dSyt',  # 王力宏
     '4F5TrtYYxsVM1PhbtISE5m',  # Beyond
-    '10LslMPb7P5j9L2QXGZBmM'  # 汪峰
+    '10LslMPb7P5j9L2QXGZBmM',  # 汪峰
+    '3df3XLKuqTQ6iOSmi0K3Wp',  # 王菲
+    '6jlz5QSUqbKE4vnzo2qfP1',  # 莫文蔚
 ]
 
 

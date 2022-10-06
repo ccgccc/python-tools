@@ -35,7 +35,5 @@ allTracks = getAllTracks(spotifyToken, artistId, allAlbums)
 
 # Process tracks
 processedTracks = processTracks(allTracks, filterTrackByName)
-writeToXlsx(processedTracks, './files/' + artists[artist]['name'] +
-            '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
 print('--------------------')
 print('Done!')

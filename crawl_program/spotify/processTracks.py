@@ -19,9 +19,7 @@ def main():
         allTracks = json.load(f)
     # print(allTracks)
 
-    processedTracks = processTracks(allTracks, True)
-    writeToXlsx(processedTracks, './files/' + artists[artist]['name'] +
-                '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
+    processTracks(allTracks, True)
     print('Done!')
 
 
@@ -57,6 +55,8 @@ def processTracks(allTracks, filterTrackByName=False):
     # Write json to file
     with open('./files/tracks/' + artist + '_alltracks.json', 'w') as f:
         json.dump(sortedTracks, f, ensure_ascii=False)
+    writeToXlsx(sortedTracks, './files/trackSheets/' + artists[artist]['name'] +
+                '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
     return sortedTracks
 
 

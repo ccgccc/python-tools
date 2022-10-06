@@ -24,7 +24,6 @@ def main():
     token = getAccessToken(clientID, clientSecret)
     playlistDir = './files/playlists/'
     crawlPlaylists(token, playlistIds, playlistDir)
-    # crawlPlaylists(token, playlistID, playlistDir)
 
 
 def crawlPlaylists(token, playlistIds, playlistDir):

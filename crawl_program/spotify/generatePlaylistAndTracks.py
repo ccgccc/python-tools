@@ -20,7 +20,7 @@ from crawlPlaylists import crawlSinglePlaylist
 artist = artistToCrawl
 
 # Define create playlist or update playlist
-isCreate = False
+isCreate = True
 
 # Define generate method: 1 - by number, 2 - by playcount
 generateMethod = 1
