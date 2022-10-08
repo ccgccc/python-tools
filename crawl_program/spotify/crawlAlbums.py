@@ -20,13 +20,31 @@ def main():
         print('--------------------')
         print('Processing ' + artists[artist]['name'] + '...')
         token = getAccessToken(clientID, clientSecret)
-        crawlAlbums(token, artists, artist)
+        crawlAlbums(token, artists, artist, includeFeatureOn=True)
 
 
-def crawlAlbums(token, artists, artist):
+def crawlAlbums(token, artists, artist, includeFeatureOn=True):
+    print('--------------------')
+    print('Crawling Albums...')
     artistId = artists[artist]['artistId']
     #  Get artist albums
     allAlbums = getArtistAllAlbums(token, artistId)
+    print('Total albums: ' + str(len(allAlbums)))
+    # Write json to file
+    with open('./files/albums/' + artist + '_albums_raw.json', 'w') as f:
+        json.dump(allAlbums, f, ensure_ascii=False)
+
+    # Filter albums type to album and single
+    for album in allAlbums[::-1]:
+        if (album['album_type'] != 'album' and album['album_type'] != 'single'):
+            allAlbums.remove(album)
+            continue
+        if not includeFeatureOn and album['album_group'] == 'appears_on':
+            allAlbums.remove(album)
+    print('Filtered albums:', str(len(allAlbums)), '(albumtype=album|single' +
+          (')' if includeFeatureOn else ', album_group!=appears_on)'))
+    # Sort albums by release date
+    allAlbums = sorted(allAlbums, key=lambda album: album['release_date'])
     # Write json to file
     with open('./files/albums/' + artist + '_albums.json', 'w') as f:
         json.dump(allAlbums, f, ensure_ascii=False)

@@ -8,49 +8,116 @@ from spotifyFunc import *
 #  Crawl spotify artist tracks
 # ******************************
 
-# Define artist here
-artist = artistToCrawl
+# Define artist to crawl here
+artistToCrawlList = [artistToCrawl]
+# Crawl all artists
+# artistToCrawlList = artists.keys()
 
 
 def main():
-    # Get all tracks
-    allTracks = []
-    with open('./files/tracks/' + artist + '_alltracks_raw.json') as f:
-        allTracks = json.load(f)
-    # print(allTracks)
+    for artist in artistToCrawlList:
+        print('--------------------')
+        print('Processing ' + artists[artist]['name'] + '...')
 
-    processTracks(allTracks, True)
-    print('Done!')
+        # Get all tracks
+        allAlbumsTracks = []
+        with open('./files/tracks/' + artist + '_alltracks_raw.json') as f:
+            allAlbumsTracks = json.load(f)
+        # print(allTracks)
+
+        if artist in {'beyond', 'kare_mok'}:
+            mustMainArtist = True
+        else:
+            mustMainArtist = False
+
+        processTracks(artists, artist, allAlbumsTracks,
+                      filterTrackByName=False, mustMainArtist=mustMainArtist, printInfo=False)
+        print('Done!')
 
 
-def processTracks(allTracks, filterTrackByName=False):
-    # Filter albums tracks
+def processTracks(artists, artist, allAlbumsTracks, filterTrackByName=False, mustMainArtist=False, printInfo=True):
+    artistId = artists[artist]['artistId']
+    # Get all albums tracks
+    albumCount = 0
+    preAlbumId = ''
     filterdTracks = []
     trackNames = set()
     trackPlaycountToMs = {}
-    for track in allTracks:
-        trackPlaycount = track['playcount']
-        durationMs = track['durationMs']
-        # ignore repeated tracks by playcount & duration
-        # if trackPlaycount is equal & duration difference is less than 20 seconds, consider them the same track
-        if trackPlaycount in trackPlaycountToMs.keys() and int(trackPlaycount) > 0 \
-                and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 20000:
-            continue
-        else:
-            trackPlaycountToMs[trackPlaycount] = durationMs
-        if filterTrackByName:
-            # ignore repeated tracks by track name
-            # not recomendded, sometimes repeated track names are alright, e.g. K歌之王 (国+粤)
-            trackName = track['trackName']
-            if trackName in trackNames:
+    for albumTracks in allAlbumsTracks:
+        album = albumTracks['album']
+        albumId = album['id']
+        albumName = album['name']
+        if preAlbumId != albumId:
+            albumCount = albumCount + 1
+            preAlbumId = albumId
+        albumArtists = ', '.join([artist['name']
+                                 for artist in album['artists']])
+        releaseDate = album['release_date']
+        albumAlbumGroup = album['album_group']
+        albumAlbumType = album['album_type']
+        albumType = album['type']
+        totalTracks = album['total_tracks']
+        if printInfo:
+            print('--------------------')
+            print(str(albumCount) + ': ' + albumName)
+            print('Album Id: ' + albumId)
+            print('Album Artist: ' + albumArtists)
+            print('Release Date: ' + releaseDate)
+            print('Total Tracks: ' + str(totalTracks))
+            print('Tracks:')
+        trackCount = 0
+        for track in albumTracks['tracks']['items']:
+            trackCount = trackCount + 1
+            trackUid = track['uid']
+            trackUri = track['track']['uri']
+            trackName = track['track']['name']
+            trackPlaycount = track['track']['playcount']
+            durationMs = track['track']['duration']['totalMilliseconds']
+            duration = str(durationMs // 60000) + "m " + \
+                "{:02d}".format(durationMs // 1000 % 60) + "s"
+            playable = 'Y' if track['track']['playability']['playable'] == True else 'N'
+
+            # Check if mustMainArtist
+            artistsList = track['track']['artists']['items']
+            if mustMainArtist and artistsList[0]['uri'].find(artistId) < 0:
+                continue
+            # Check if filterTrackByName
+            if filterTrackByName:
+                # Ignore repeated tracks by track name
+                # Not recomendded, sometimes repeated track names are alright, e.g. K歌之王 (国+粤)
+                if trackName in trackNames:
+                    continue
+                else:
+                    trackNames.add(trackName)
+
+            # Concatenate artists & filter other artists
+            containsArtist = False
+            allArtists = ''
+            for i in range(len(artistsList)):
+                if artistsList[i]['uri'].find(artistId) >= 0:
+                    containsArtist = True
+                allArtists = allArtists + artistsList[i]['profile']['name'] + \
+                    (', ' if i < len(artistsList) - 1 else '')
+            if not containsArtist:
+                continue
+            # Ignore repeated tracks by playcount & duration
+            # If trackPlaycount is equal & duration difference is less than 20 seconds, consider them the same track
+            if trackPlaycount in trackPlaycountToMs.keys() and int(trackPlaycount) > 0 \
+                    and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 20000:
                 continue
             else:
-                trackNames.add(trackName)
-        filterdTracks.append(track)
+                trackPlaycountToMs[trackPlaycount] = durationMs
+            if printInfo:
+                print(str(trackCount) + ': ' + trackName + ", " + trackPlaycount)
+            filterdTracks.append(
+                {'trackUid': trackUid, 'trackUri': trackUri, 'trackName': trackName, 'artists': allArtists,
+                    'durationMs': durationMs, 'duration': duration, 'playcount': int(trackPlaycount), 'playable': playable,
+                    'albumId': albumId, 'albumName': albumName, 'albumArtists': albumArtists, 'releaseDate': releaseDate,
+                    'albumAlbumGroup': albumAlbumGroup, 'albumAlbumType': albumAlbumType, 'albumType': albumType, 'totalTracks': totalTracks})
+
     # Sort all tracks by playcount
     sortedTracks = sorted(
         filterdTracks, key=lambda track: track['playcount'], reverse=True)
-    # print(sortedTracks)
 
     # Write json to file
     with open('./files/tracks/' + artist + '_alltracks.json', 'w') as f:

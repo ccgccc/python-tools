@@ -8,35 +8,24 @@ from utils.auth import getHeader, postHeader
 #    Client Credentials Flow
 # ******************************
 # Get artist all albums, filtered and sorted
-def getArtistAllAlbums(token, artistId, includeFeatureOn=True):
-    print('--------------------')
-    print('Crawling Album...')
+def getArtistAllAlbums(token, artistId):
+    # First request
     limit = 50
-    artistAlbums = getArtistAlbums(token, artistId, limit, 0)
+    albumsEndPoint = f"https://api.spotify.com/v1/artists/{artistId}/albums?limit={limit}&offset=0"
+    getHeaders = getHeader(token)
+    artistAlbums = requests.get(albumsEndPoint, headers=getHeaders).json()
     allAlbums = artistAlbums['items']
-    print('albums count: ' + str(len(allAlbums)))
-    # printAlbums(artistAlbums, 0)
-    moreRequestTimes = artistAlbums['total'] // limit
-    for i in range(moreRequestTimes):
-        offset = limit * (i + 1)
-        moreArtistAlbums = getArtistAlbums(token, artistId, limit, offset)
-        allAlbums.extend(moreArtistAlbums['items'])
-        print('albums count: ' + str(len(allAlbums)))
-        # printAlbums(moreArtistAlbums, offset)
-    # Filter albums type to album and single
-    for album in allAlbums[::-1]:
-        if (album['album_type'] != 'album' and album['album_type'] != 'single'):
-            allAlbums.remove(album)
-        if not includeFeatureOn and album['album_group'] == 'appears_on':
-            allAlbums.remove(album)
-    print('filtered albums count: ' + str(len(allAlbums)))
-    # Sort albums by release date
-    allAlbums = sorted(allAlbums, key=lambda album: album['release_date'])
+    # More requests
+    moreAlbumUri = artistAlbums['next']
+    while moreAlbumUri != None:
+        albumRes = requests.get(moreAlbumUri, headers=getHeaders).json()
+        allAlbums.extend(albumRes['items'])
+        moreAlbumUri = albumRes['next']
     return allAlbums
 
 
 # Get artist albums by request once
-def getArtistAlbums(token, artistId, limit, offset):
+def getArtistAlbumsOnce(token, artistId, limit, offset):
     albumsEndPoint = f"https://api.spotify.com/v1/artists/{artistId}/albums?limit={limit}&offset={offset}"
     getHeaders = getHeader(token)
     res = requests.get(albumsEndPoint, headers=getHeaders)
@@ -48,7 +37,6 @@ def getArtistAlbums(token, artistId, limit, offset):
 def getAlbumTracks(token, albumId, limit, offset):
     albumTracksEndPoint = f"https://api.spotify.com/v1/albums/{albumId}/tracks?limit={limit}&offset={offset}"
     getHeaders = getHeader(token)
-    # print(albumTracksEndPoint)
     res = requests.get(albumTracksEndPoint, headers=getHeaders)
     albumTracksObject = res.json()
     return albumTracksObject
@@ -58,7 +46,6 @@ def getAlbumTracks(token, albumId, limit, offset):
 def getSingleTrack(token, trackId):
     trackEndPoint = f"https://api.spotify.com/v1/tracks/{trackId}"
     getHeaders = getHeader(token)
-    # print(albumTracksEndPoint)
     res = requests.get(trackEndPoint, headers=getHeaders)
     atrackObject = res.json()
     return atrackObject
@@ -87,14 +74,13 @@ def getPlaylistAndAllTracks(token, playlistID, isPrivate=False, spotify=None):
     else:
         res = requests.get(playlistEndPoint, headers=getHeaders)
     playlistObject = res.json()
-    # request more if there is more tracks
+    # Request more if there is more tracks
     moreTracksUri = playlistObject['tracks']['next']
     while moreTracksUri != None:
         if isPrivate:
             tracksRes = spotify.get(moreTracksUri).json()
         else:
             tracksRes = requests.get(moreTracksUri, headers=getHeaders).json()
-        # print(tracksRes)
         playlistObject['tracks']['items'].extend(tracksRes['items'])
         moreTracksUri = tracksRes['next']
     return playlistObject
@@ -136,14 +122,12 @@ def getUserAllLikedSongs(spotify, token):
     userTracksEndPoint = f"https://api.spotify.com/v1/me/tracks?limit=50&offset=0"
     res = spotify.get(userTracksEndPoint)
     userTracksObject = res.json()
-    # request more if there is more tracks
+    # Request more if there is more tracks
     moreTracksUri = userTracksObject['next']
     while moreTracksUri != None:
         tracksRes = spotify.get(moreTracksUri).json()
-        # print(tracksRes)
         userTracksObject['items'].extend(tracksRes['items'])
         moreTracksUri = tracksRes['next']
-        # print(moreTracksUri)
     return userTracksObject
 
 
@@ -166,7 +150,6 @@ def createPlayList(spotify, token, userId, name, description, ispublic):
     }
     res = spotify.post(createPlaylistEndPoint,
                        headers=postHeaders, data=json.dumps(postData))
-    # print(res)
     if res.status_code == 201:
         print('\n**********')
         print('Successfully created playlist.')
@@ -192,7 +175,6 @@ def updatePlayList(spotify, token, playlistId, name, description, ispublic):
     }
     res = spotify.put(updatePlaylistEndPoint,
                       headers=postHeaders, data=json.dumps(postData))
-    # print(res)
     if res.status_code == 200:
         print('\n**********')
         print('Successfully updated playlist.')
@@ -213,7 +195,6 @@ def addTracksToPlayList(spotify, token, playlistId, trackUriList):
     }
     res = spotify.post(playlistAddTracksEndPoint,
                        headers=postHeaders, data=json.dumps(postData))
-    # print(res)
     resJson = res.json()
     if res.status_code == 201:
         print('\n**********')
@@ -231,15 +212,6 @@ def addTracksToPlayList(spotify, token, playlistId, trackUriList):
 def addTracksToPlaylistByNumber(spotify, token, playlistId, allTracks, tracksNumber):
     toAddTracks = allTracks[0:tracksNumber] if tracksNumber < len(
         allTracks) else allTracks
-    # query string format, not recommended
-    # trackUris = ''
-    # i = 0
-    # for i in range(len(toAddTracks)):
-    #     trackUris = trackUris + \
-    #         toAddTracks[i]['trackUri'] + \
-    #         (',' if i < len(toAddTracks) - 1 else '')
-    # print(trackUris)
-    # post json format
     trackUriList = []
     for track in toAddTracks:
         trackUriList.append(track['trackUri'])
@@ -266,10 +238,8 @@ def removePlayListTracks(spotify, token, playlistId, trackUriList):
     postData = {
         "uris": trackUriList
     }
-    # print(trackUriList)
     res = spotify.delete(playlistAddTracksEndPoint,
                          headers=postHeaders, data=json.dumps(postData))
-    # print(res)
     resJson = res.json()
     if res.status_code == 200:
         print('\n**********')

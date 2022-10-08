@@ -4,7 +4,7 @@ from utils.auth import getAccessToken
 from artists import artists, artistToCrawl
 from spotifyFunc import *
 from crawlAlbums import crawlAlbums
-from crawlRawTracks import getAllTracks
+from crawlRawTracks import getAllAlbumsTracks
 from processTracks import processTracks, writeToXlsx
 
 # Define artist here
@@ -21,15 +21,15 @@ filterTrackByName = False
 spotifyToken = readFileContent('utils/spotifyToken.txt')
 
 
-if artist in ['beyond']:
+if artist in {'beyond', 'kare_mok'}:
     mustMainArtist = True
 # Get all albums
 token = getAccessToken(clientID, clientSecret)
 allAlbums = crawlAlbums(token, artists, artist)
 # Get all albums tracks
-allTracks = getAllTracks(
-    spotifyToken, artists[artist]['artistId'], allAlbums, mustMainArtist=mustMainArtist)
+allTracks = getAllAlbumsTracks(spotifyToken, allAlbums)
 # Process tracks
-processedTracks = processTracks(allTracks, filterTrackByName=filterTrackByName)
+processedTracks = processTracks(artists[artist]['artistId'], allTracks,
+                                filterTrackByName=filterTrackByName, mustMainArtist=mustMainArtist)
 print('--------------------')
 print('Done!')
