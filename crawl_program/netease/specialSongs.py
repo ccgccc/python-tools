@@ -51,6 +51,13 @@ specialSongNames = {
     },
     # 莫文蔚  All
     'kare_mok': {
+    },
+    # 五月天
+    'mayday': {
+        '好好': '好好 (想把你写成一首歌)',
+        '青春の彼方 / 盛夏光年': '盛夏光年',
+        '愛情的模樣 Life Live': '爱情的模样',
+        '知足(07\'最知足版)': '知足 (07 最知足版)',
     }
 }
 
@@ -78,6 +85,10 @@ specialSongIds = {
     # 王菲
     'faye_wong':  {
         '因为爱情': 64317
+    },
+    # 五月天
+    'mayday': {
+        '黑暗骑士': '25794008'
     }
 }
 
@@ -92,13 +103,13 @@ replaceSongIds = {
 # not included because of spotify repeated song names
 repeatedSongs = {
     # 陈奕迅
-    'eason_chan': {
+    'eason_chan': [{
         'K歌之王__国(反正是我)': 67364
-    },
+    }],
     # 王菲
-    'faye_wong': {
+    'faye_wong': [{
         '执迷不悔 (国语版)': 300603
-    }
+    }]
 }
 
 # netease sensitive words

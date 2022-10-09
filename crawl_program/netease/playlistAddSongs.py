@@ -27,8 +27,9 @@ def main():
 
 def playlistAddSongs(playlistId, syncSongs, missingSongs, spotifyPlaylist,
                      isUpdateDesc=True, isPromptDescMissing=True, confirmOnceMode=False):
-    syncSongIds = ','.join(reversed(
-        [str(songId) for songId in syncSongs.values()]))
+    syncSongIds = ','.join(
+        reversed([str(list(song.values())[0]) for song in syncSongs]))
+
     # print(syncSongIds)
     addSongsToPlayList(playlistId, syncSongIds)
 

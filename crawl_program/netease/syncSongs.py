@@ -29,18 +29,21 @@ def getSyncSongs(artist, spotifyTrackNames, isRemoveAlias=True,
     if replaceSongIds.get(artist) != None:
         for k, v in replaceSongIds.get(artist).items():
             neteaseArtistSongIds[k] = v
-    # Get sync songs name & id  # dictionary is ordered since python 3.7
-    syncSongs = {name: neteaseArtistSongIds[name] for name in spotifyTrackNames
-                 if neteaseArtistSongIds.get(name) != None}
+
+    # Get sync songs name & id
+    seen = set()
+    syncSongs = [{name: neteaseArtistSongIds.get(name)} for name in spotifyTrackNames
+                 if neteaseArtistSongIds.get(name) != None and name not in seen and not seen.add(name)]
     missingCount = len(spotifyTrackOriginalNames) - len(syncSongs)
     if missingCount > 0 and repeatedSongs.get(artist) != None:
-        syncSongs = syncSongs | repeatedSongs.get(artist)
+        syncSongs.extend(repeatedSongs.get(artist))
     print('------------------------------')
     print('Netease sync songs:', len(syncSongs))
     print(syncSongs, '\n')
 
     # Get missing songs
-    missingSongs = set(spotifyTrackNames) - syncSongs.keys()
+    missingSongs = set(spotifyTrackNames) - \
+        {list(songDict.keys())[0] for songDict in syncSongs}
     missingSongs = sorted(
         list(missingSongs), key=lambda songName: spotifyTrackNames.index(songName))
     missingSongSpotifyNames = [spotifyTrackOriginalNames[spotifyTrackNames.index(songName)]

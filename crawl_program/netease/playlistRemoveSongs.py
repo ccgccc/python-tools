@@ -9,17 +9,23 @@ def main():
         'playlists/generated_playlists/' + artistToCrawl + '_playlist')
     playlistId = playlist['playlist']['id']
 
-    playlistRomoveSongs(playlistId)
+    # Liked songs playlist id
+    # playlistId = 553778357
+
+    playlistRomoveSongs(playlistId, isSureCheck=True)
 
 
-def playlistRomoveSongs(playlistId):
+def playlistRomoveSongs(playlistId, isSureCheck=False):
     playlistSongs = getPlaylistSongs(playlistId)
     if (len(playlistSongs['songs']) == 0):
         print('Nothing to delete, continue...')
         return
     removeSongIds = ','.join(
         reversed(list(map(lambda song: str(song['id']), playlistSongs['songs']))))
-    print('To delete:', removeSongIds)
+    print('To delete: ', len(playlistSongs['songs']), '\n', removeSongIds, sep='')
+
+    if isSureCheck:
+        sureCheck()
 
     deleteSongsToPlayList(playlistId, removeSongIds)
 

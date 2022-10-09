@@ -151,7 +151,7 @@ def deletePlaylist(playlistIds):
 def addSongsToPlayList(playlistId, tracks):
     res = addOrDeleteSongsToPlayList('add', playlistId, tracks)
     resJson = res.json()
-    if res.status_code == 200 and resJson['body']['code'] == 200:
+    if res.status_code == 200 and resJson.get('body') != None and resJson['body']['code'] == 200:
         print('\n**********')
         print('Successfully added songs to playlist.')
         print('**********\n')
@@ -170,13 +170,13 @@ def deleteSongsToPlayList(playlistId, tracks):
     resJson = res.json()
     if res.status_code == 200 and resJson['body']['code'] == 200:
         print('\n**********')
-        print('Successfully deleted playlist songs.')
+        print('Successfully removed playlist songs.')
         print('**********\n')
         print(resJson)
         return resJson
     else:
         print('\n**********')
-        print('Deleting playlist songs failed.')
+        print('Removing playlist songs failed.')
         print('**********\n')
         print(resJson)
         sys.exit()
@@ -220,6 +220,14 @@ def followOrUnfollow(operation, followUserId):
     }
     res = requests.get(url, headers=headers, params=params)
     return res
+
+
+def likeSong(songId):
+    url = baseUrl + '/like'
+    params = {
+        'id': songId
+    }
+    return requests.get(url, headers=headers, params=params)
 
 
 def printAlbums(albums, csvFileName=None):

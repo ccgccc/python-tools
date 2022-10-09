@@ -8,7 +8,7 @@ from playlistAddSongs import playlistAddSongs
 
 
 # Define create playlist or update playlist
-isCreate = False
+isCreate = True
 # Define if update description
 isUpdateDesc = True
 # Defin cookie in cookie.txt
