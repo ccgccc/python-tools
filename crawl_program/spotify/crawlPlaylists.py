@@ -11,10 +11,11 @@ from spotifyFunc import *
 # Define isPrivate & public playlist ids here
 isPrivate = False
 playlistIds = [
-    # "7J6PrVFDlPWiQe0m6NF2ie",  # Favorite
-    # "2QBH6yCLDJhTiXKqDfCtOA",  # Like
-    "6Ev0ju4qLsqSLznN7fjErt",  # 张学友
-    "7w3Y21vKZuLLq1huUuEWZZ",  # 周杰伦
+    "7J6PrVFDlPWiQe0m6NF2ie",  # Favorite
+    "2QBH6yCLDJhTiXKqDfCtOA",  # Like
+    '4SqLcwtjZJXdkH8twICyOa',  # Nice
+    # "6Ev0ju4qLsqSLznN7fjErt",  # 张学友
+    # "7w3Y21vKZuLLq1huUuEWZZ",  # 周杰伦
 ]
 # Define isPrivate & private playlist ids here
 # isPrivate = True

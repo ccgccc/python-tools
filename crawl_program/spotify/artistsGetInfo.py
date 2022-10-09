@@ -20,6 +20,8 @@ artistList = [
     '10LslMPb7P5j9L2QXGZBmM',  # 汪峰
     '3df3XLKuqTQ6iOSmi0K3Wp',  # 王菲
     '6jlz5QSUqbKE4vnzo2qfP1',  # 莫文蔚
+    '16s0YTFcyjP4kgFwt7ktrY',  # 五月天
+    '0SIXZXJCAhNU8sxK0qm7hn',  # 孙燕姿
 ]
 
 

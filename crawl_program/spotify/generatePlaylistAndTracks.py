@@ -26,7 +26,7 @@ isCreate = True
 generateMethod = 1
 # generateMethod = 2
 # For method 1: Define track number to add tracks
-tracksNumber = 20
+tracksNumber = 30
 # For method 2: Define minimum playcount to add tracks
 playcount = 6000000
 

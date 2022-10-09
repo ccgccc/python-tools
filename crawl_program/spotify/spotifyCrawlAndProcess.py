@@ -1,4 +1,3 @@
-import time
 from utils.secrets import clientID, clientSecret
 from utils.auth import getAccessToken
 from artists import artists, artistToCrawl
@@ -27,9 +26,9 @@ if artist in {'beyond', 'kare_mok'}:
 token = getAccessToken(clientID, clientSecret)
 allAlbums = crawlAlbums(token, artists, artist)
 # Get all albums tracks
-allTracks = getAllAlbumsTracks(spotifyToken, allAlbums)
+allAlbumsTracks = getAllAlbumsTracks(spotifyToken, artist, allAlbums)
 # Process tracks
-processedTracks = processTracks(artists[artist]['artistId'], allTracks,
-                                filterTrackByName=filterTrackByName, mustMainArtist=mustMainArtist)
+processTracks(artists, artist, allAlbumsTracks,
+              mustMainArtist=mustMainArtist, filterTrackByName=False, printInfo=True)
 print('--------------------')
 print('Done!')

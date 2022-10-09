@@ -1,5 +1,5 @@
 # Deine artist to crawl
-artistToCrawl = 'kare_mok'
+artistToCrawl = 'stefanie_sun'
 
 # Deine artists
 # Search artist on spotfy (e.g. 张学友 on spotify) to get artistId
@@ -48,8 +48,16 @@ artists = {
         'name': '王菲',
         'artistId': '3df3XLKuqTQ6iOSmi0K3Wp'
     },
-    'kare_mok': {
+    'karen_mok': {
         'name': '莫文蔚',
         'artistId': '6jlz5QSUqbKE4vnzo2qfP1'
+    },
+    'mayday': {
+        'name': '五月天',
+        'artistId': '16s0YTFcyjP4kgFwt7ktrY'
+    },
+    'stefanie_sun': {
+        'name': '孙燕姿',
+        'artistId': '0SIXZXJCAhNU8sxK0qm7hn'
     }
 }

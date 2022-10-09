@@ -31,11 +31,11 @@ def main():
             mustMainArtist = False
 
         processTracks(artists, artist, allAlbumsTracks,
-                      filterTrackByName=False, mustMainArtist=mustMainArtist, printInfo=False)
+                      mustMainArtist=mustMainArtist, filterTrackByName=False, printInfo=True)
         print('Done!')
 
 
-def processTracks(artists, artist, allAlbumsTracks, filterTrackByName=False, mustMainArtist=False, printInfo=True):
+def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False, filterTrackByName=False, printInfo=True):
     artistId = artists[artist]['artistId']
     # Get all albums tracks
     albumCount = 0
@@ -108,7 +108,8 @@ def processTracks(artists, artist, allAlbumsTracks, filterTrackByName=False, mus
             else:
                 trackPlaycountToMs[trackPlaycount] = durationMs
             if printInfo:
-                print(str(trackCount) + ': ' + trackName + ", " + trackPlaycount)
+                print(str(trackCount) + ': ' +
+                      trackName + ", " + trackPlaycount)
             filterdTracks.append(
                 {'trackUid': trackUid, 'trackUri': trackUri, 'trackName': trackName, 'artists': allArtists,
                     'durationMs': durationMs, 'duration': duration, 'playcount': int(trackPlaycount), 'playable': playable,

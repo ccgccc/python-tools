@@ -41,7 +41,6 @@ def crawlRawTracks(spotifyToken, artist):
 
 def getAllAlbumsTracks(spotifyToken, artist, allAlbums):
     # Get all albums tracks
-    allTracks = []
     albumCount = 0
     allAlbumTracks = []
     for album in allAlbums:
@@ -68,7 +67,7 @@ def getAllAlbumsTracks(spotifyToken, artist, allAlbums):
         allAlbumTracks.append(albumTracks)
     with open('./files/tracks/' + artist + '_alltracks_raw.json', 'w') as f:
         json.dump(allAlbumTracks, f, ensure_ascii=False)
-    return allTracks
+    return allAlbumTracks
 
 
 if __name__ == '__main__':
