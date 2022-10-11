@@ -1,6 +1,8 @@
 from common import *
 
-playlistId = 7669698351
+playlistId = 7673625615  # Favorite
+# Liked songs playlist id
+# playlistId = 553778357
 
 playlist = getPlaylist(playlistId)
 

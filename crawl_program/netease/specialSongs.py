@@ -20,8 +20,6 @@ specialSongNames = {
     },
     # Bruno Mars  All
     'bruno_mars': {
-        'name': 'Bruno Mars',
-        'artistId': '178059'
     },
     # 邓紫棋  Missing: 漂向北方(with 黄明志)
     'g_e_m': {

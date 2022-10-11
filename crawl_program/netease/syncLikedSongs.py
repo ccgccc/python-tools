@@ -22,13 +22,11 @@ headers['cookie'] = readFileContent('cookie.txt')
 # Get spotify Favorite playlist
 with open('../spotify/files/playlists/playlist_' + 'Favorite' + '_by ccg ccc.json') as f:
     spotifyPlaylist = json.load(f)
-# Get songs to sync
 spotifyArtistTrackNames = getSpotifyArtistTrackNames(
     spotifyPlaylist['tracks'])
 # Get spotify Like playlist
 with open('../spotify/files/playlists/playlist_' + 'Like' + '_by ccg ccc.json') as f:
     spotifyPlaylist = json.load(f)
-# Get songs to sync
 spotifyArtistTrackNames2 = getSpotifyArtistTrackNames(
     spotifyPlaylist['tracks'])
 
