@@ -20,8 +20,9 @@ def main():
     playlistRemoveAllItems(accessToken, spotify, authorizeToken, playlistId)
 
 
-def playlistRemoveAllItems(accessToken, spotify, authorizeToken, playlistId):
-    playlist = getPlaylistAndAllTracks(accessToken, playlistId)
+def playlistRemoveAllItems(accessToken, spotify, authorizeToken, playlistId, isPrivate=False):
+    playlist = getPlaylistAndAllTracks(
+        accessToken, playlistId, isPrivate=isPrivate, spotify=spotify)
     trackItems = playlist['tracks']['items']
 
     trackUriList = []

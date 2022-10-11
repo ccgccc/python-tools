@@ -20,22 +20,24 @@ playlistIds = [
 # Define isPrivate & private playlist ids here
 # isPrivate = True
 # playlistIds = [
-#     "1cd55XqNdveVHn8DUJRJM1",  # To Listen
+#     # '1cd55XqNdveVHn8DUJRJM1',  # To Listen
+#     '2UuyNeehZW9HQXhTkmFKBj',  # Netease Liked
 # ]
 
 
 def main():
     token = getAccessToken(clientID, clientSecret)
     playlistDir = './files/playlists/'
-    crawlPlaylists(token, playlistIds, playlistDir)
+    crawlPlaylists(token, playlistIds, playlistDir, isPrivate=isPrivate)
 
 
-def crawlPlaylists(token, playlistIds, playlistDir):
+def crawlPlaylists(token, playlistIds, playlistDir, isPrivate=False):
     for playlistID in playlistIds:
-        crawlSinglePlaylist(token, playlistID, playlistDir)
+        crawlSinglePlaylist(token, playlistID, playlistDir,
+                            isPrivate=isPrivate)
 
 
-def crawlSinglePlaylist(token, playlistID, playlistDir):
+def crawlSinglePlaylist(token, playlistID, playlistDir, isPrivate=False):
     # API request
     if isPrivate:
         scope = "playlist-read-private"
