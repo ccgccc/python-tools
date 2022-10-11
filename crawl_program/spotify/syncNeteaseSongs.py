@@ -111,7 +111,7 @@ def main():
     print('------------------------------')
     print('Spotify processed track names:', len(spotifyTrackNames))
     print([list(track.values())[0] for track in spotifyTrackNames], '\n')
-    # Get sync songs from netease
+    # Get matching songs from netease
     spotifyTracksFromNetease = [dict for dict in spotifyTrackNames if list(
         dict.values())[0] in neteaseAllSyncSongNames]
     print('------------------------------')
@@ -123,13 +123,14 @@ def main():
     print('\n')
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-    # Get spotify authorization token by scope
+    # Get spotify authorization token by scope and accessToken
     scope = ["playlist-read-private", "playlist-modify-private"]
     spotify, authorizeToken = getAuthorizationToken(
         clientID, clientSecret, scope)
     accessToken = getAccessToken(clientID, clientSecret)
     trackUriList = [list(dict.keys())[0] for dict in spotifyTracksFromNetease]
     if isIncremental:
+        # Get incremental sync trackuri
         playlist = getPlaylistAndAllTracks(
             accessToken, spotifyPlaylistId, isPrivate=isPrivate, spotify=spotify)
         playlistTrackUris = [track['track']['uri']
@@ -141,6 +142,7 @@ def main():
         playlistRemoveAllItems(
             accessToken, spotify, authorizeToken, spotifyPlaylistId, isPrivate=isPrivate)
         print()
+    # Check before sync
     print('------------------------------')
     print('Incremental:', isIncremental)
     print('To sync trackUris:', len(trackUriList))
@@ -153,11 +155,13 @@ def main():
     if msg != 'y' and msg != 'n':
         sys.exit()
     print(len(trackUriList))
+    # Add tracks to spotify playlist
     addTracksToPlayList(spotify, authorizeToken,
                         spotifyPlaylistId, trackUriList)
 
 
 def getSpotifyArtistTrackNames(spotifyPlaylistName, spotifyPlaylistTracks):
+    # Print spoitfy playlist track names
     print('------------------------------')
     allPlaylistTrackNames = [track['track']['name']
                              for track in spotifyPlaylistTracks['items']]
@@ -169,7 +173,7 @@ def getSpotifyArtistTrackNames(spotifyPlaylistName, spotifyPlaylistTracks):
     # Get spotify artists IDs
     spotifyArtistIds = {v['artistId']: k for k, v in spotifyArtists.items()}
     spotifyArtistIdsSet = spotifyArtistIds.keys()
-    # Initialize spotify artist track names, like this: {'artist': ['trackname', 'trackname2']}
+    # Get spotify artist track names, like this: {'artist': ['trackname', 'trackname2']}
     spotifyArtistTrackNames = {k: [] for k, v in neteaseArtists.items()}
     artistsNotFound = set()
     for track in spotifyPlaylistTracks['items']:
