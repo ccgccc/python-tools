@@ -75,10 +75,10 @@ def getPlaylistAndAllTracks(token, playlistID, isPrivate=False, spotify=None):
         res = requests.get(playlistEndPoint, headers=getHeaders)
     playlistObject = res.json()
     if res.status_code != 200:
-        print(isPrivate)
-        print(playlistID)
-        print(playlistEndPoint)
         print('Get playlist error:', res, playlistObject)
+        print('playlistID:', playlistID)
+        print('isPrivate:', isPrivate)
+        print('playlistEndPoint:', playlistEndPoint)
         sys.exit()
     # Request more if there is more tracks
     moreTracksUri = playlistObject['tracks']['next']
