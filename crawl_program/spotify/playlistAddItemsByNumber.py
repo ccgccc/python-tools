@@ -5,6 +5,7 @@ from utils.auth import getAccessToken, getAuthorizationToken
 from artists import artists, artistToCrawl
 from spotifyFunc import *
 from playlistRemoveItems import playlistRemoveAllItems
+from crawlPlaylists import crawlSinglePlaylist
 
 # **************************************************
 #  Add tracks to spotify most played songs playlist
@@ -17,6 +18,15 @@ artist = artistToCrawl
 # Define track number to add
 tracksNumber = 20
 
+# Generate playlist
+# # Define if playlist is private
+# isPrivate = False
+# # Define if update description
+# isUpdateDesc = True
+# # Define playlist id
+# playlistID = None
+
+# Specify playlist
 # Define playlist id
 playlistID = '2R48aLSO7QmOaHAGaV0zIM'  # Listening Artist
 # Define if playlist is private
@@ -50,13 +60,20 @@ def main():
             "playlist-modify-private"
         ]
     else:
-        scope = "playlist-modify-public"
+        scope = [
+            "playlist-read-public",
+            "playlist-modify-public"
+        ]
     spotify, authorizeToken = getAuthorizationToken(
         clientID, clientSecret, scope)
     playlistRemoveAllItems(accessToken, spotify,
                            authorizeToken, playlistId, isPrivate=isPrivate)
     playlistAddTracksByNumber(
         spotify, authorizeToken, playlistId, artist, allTracks, tracksNumber, isUpdateDesc=isUpdateDesc)
+    # Get new playlist info
+    if playlistID != None:
+        crawlSinglePlaylist(accessToken, playlistId,
+                            './files/playlists/', isPrivate=isPrivate, spotify=spotify)
 
 
 def playlistAddTracksByNumber(spotify, token, playlistId, artist, allTracks, tracksNumber, isUpdateDesc=True):

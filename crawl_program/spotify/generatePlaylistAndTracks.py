@@ -23,12 +23,12 @@ artist = artistToCrawl
 isCreate = True
 
 # Define generate method: 1 - by number, 2 - by playcount
-generateMethod = 1
-# generateMethod = 2
+# generateMethod = 1
+generateMethod = 2
 # For method 1: Define track number to add tracks
 tracksNumber = 20
 # For method 2: Define minimum playcount to add tracks
-playcount = 6000000
+playcount = 10000000
 
 # Define my user id here
 myUserId = '31jvwpn5kplbtp4sqdqaol2x5mcy'  # ccg ccc

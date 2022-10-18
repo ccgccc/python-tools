@@ -5,6 +5,7 @@ from utils.auth import getAccessToken, getAuthorizationToken
 from artists import artists, artistToCrawl
 from spotifyFunc import *
 from playlistRemoveItems import playlistRemoveAllItems
+from crawlPlaylists import crawlSinglePlaylist
 
 # **************************************************
 #  Add tracks to spotify most played songs playlist
@@ -15,18 +16,26 @@ from playlistRemoveItems import playlistRemoveAllItems
 artist = artistToCrawl
 
 # Define minimum playcount to add tracks
-playcount = 5000000
+playcount = 100000000
 
-# Define playlist id
-playlistID = '2R48aLSO7QmOaHAGaV0zIM'  # Listening Artist
+# # Generate playlist
+# # Define if playlist is private
+# isPrivate = False
+# # Define if update description
+# isUpdateDesc = True
+# # Define playlist id
+# playlistID = None
+
+# Specify playlist
 # Define if playlist is private
 isPrivate = True
 # Define if update description
 isUpdateDesc = False
+# Define playlist id
+playlistID = '2R48aLSO7QmOaHAGaV0zIM'  # Listening Artist
 
 
 def main():
-
     # Get playlist
     if playlistID == None:
         with open('./files/playlists/generated_playlists/' + artist + '_playlist.json') as f:
@@ -58,6 +67,10 @@ def main():
                            authorizeToken, playlistId, isPrivate=isPrivate)
     playlistAddTracksByPlaycount(
         spotify, authorizeToken, playlistId, artist, allTracks, playcount, isUpdateDesc=isUpdateDesc)
+    # Get new playlist info
+    if playlistID != None:
+        crawlSinglePlaylist(accessToken, playlistId,
+                            './files/playlists/', isPrivate=isPrivate, spotify=spotify)
 
 
 def playlistAddTracksByPlaycount(spotify, token, playlistId, artist, allTracks, playcount, isUpdateDesc=True):

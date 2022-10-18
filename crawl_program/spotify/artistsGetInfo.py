@@ -21,6 +21,7 @@ artistList = [
     '3df3XLKuqTQ6iOSmi0K3Wp',  # 王菲
     '6jlz5QSUqbKE4vnzo2qfP1',  # 莫文蔚
     '16s0YTFcyjP4kgFwt7ktrY',  # 五月天
+    '4dpARuHxo51G3z768sgnrY',  # Adele
     '0SIXZXJCAhNU8sxK0qm7hn',  # 孙燕姿
 ]
 
