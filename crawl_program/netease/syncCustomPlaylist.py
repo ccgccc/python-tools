@@ -6,28 +6,34 @@ currentdir = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
+from spotify.artists import artists as spotifyArtists
+from artists import artists as neteaseArtists
+from common import *
+from syncSongs import getSyncSongs
 from playlistAddSongs import playlistAddSongs
 from playlistRemoveSongs import playlistRomoveSongs
-from syncSongs import getSyncSongs
-from common import *
-from artists import artists as neteaseArtists
-from spotify.artists import artists as spotifyArtists
 
 
-# Define isPrivate & public playlist name
-isPrivate = False
-playlistName = 'Favorite'
+# # Define isPrivate & public playlist name
+# isPrivate = False
+# # playlistName = 'Favorite'
 # playlistName = 'Like'
+# # playlistName = '张学友'
+# # playlistName = '周杰伦'
 
 # Define isPrivate & private playlist name
-# isPrivate = True
+isPrivate = True
 # playlistName = 'Nice'
+# playlistName = 'Netease Liked'
 # playlistName = 'To Listen'
+playlistName = 'Listening Artist'
 
 # Define create playlist or update playlist
-isCreate = True
+isCreate = False
 # Define is incremental
 isIncremental = False
+# Define is reversed
+isReversed = False
 # Defin cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
@@ -70,8 +76,8 @@ def main():
             playlistSongIdsSet = {song['id']
                                   for song in playlistSongs['songs']}
             # Find not added songs
-            syncSongs = {k: v for k, v in syncSongs.items()
-                         if v not in playlistSongIdsSet}
+            syncSongs = [song for song in syncSongs
+                         if list(song.values())[0] not in playlistSongIdsSet]
             print('Incremental sync songs: ', len(
                 syncSongs), '\n', syncSongs, '\n', sep='')
             if (len(syncSongs) == 0):
@@ -79,6 +85,8 @@ def main():
                 sys.exit()
 
     # Add songs & update playlist description
+    if isReversed:
+        syncSongs = reversed(syncSongs)
     playlistAddSongs(playlistId, syncSongs, missingSongs,
                      spotifyPlaylist, isUpdateDesc=False)
     playlistDescription = 'Synced from spotify. ' + \

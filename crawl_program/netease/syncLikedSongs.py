@@ -1,24 +1,16 @@
 from common import *
 from syncCustomPlaylist import getSpotifyToNeteaseSongs, getSpotifyArtistTrackNames
+from playlistRemoveSongs import playlistRomoveSongs
 
 # My like songs playlist id
 likePlaylistId = 553778357
+# Define is incremental
+isIncremental = True
 # Use right cookie to retrive private playlists
 headers['cookie'] = readFileContent('cookie.txt')
 
 
-# Not recommended, only like one song and constrain to copyright
-# songId = 29822033
-# # songId = 29822044
-# res = likeSong(songId)
-# print(res, res.text)
-
-# Get spotify liked songs
-# with open('../spotify/files/playlists/my_liked_songs.json') as f:
-#     spotifyLikedTracks = json.load(f)
-# syncSongs, missingSongs, missingSongsStr = getSpotifyToNeteaseSongs(
-#     spotifyLikedTracks)
-
+# Sync from spotify Favorite & Like playlist
 # Get spotify Favorite playlist
 with open('../spotify/files/playlists/playlist_' + 'Favorite' + '_by ccg ccc.json') as f:
     spotifyPlaylist = json.load(f)
@@ -30,6 +22,11 @@ with open('../spotify/files/playlists/playlist_' + 'Like' + '_by ccg ccc.json') 
 spotifyArtistTrackNames2 = getSpotifyArtistTrackNames(
     spotifyPlaylist['tracks'])
 
+# Get spotify liked songs
+# with open('../spotify/files/playlists/my_liked_songs.json') as f:
+#     spotifyLikedTracks = json.load(f)
+# syncSongs, missingSongs, missingSongsStr = getSpotifyToNeteaseSongs(
+#     spotifyLikedTracks)
 
 print('\n')
 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
@@ -51,5 +48,9 @@ syncSongIds = ','.join([str(list(song.values())[0]) for song in syncSongs])
 print('To sync: ', len(syncSongs), '\n', syncSongIds, sep='')
 
 sureCheck()
+
+if not isIncremental:
+    # Remove playlist songs
+    playlistRomoveSongs(likePlaylistId)
 
 addSongsToPlayList(likePlaylistId, syncSongIds)
