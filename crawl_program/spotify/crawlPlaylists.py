@@ -8,7 +8,7 @@ from spotifyFunc import *
 #    Crawl spotify playlists
 # ******************************
 
-# Define isPrivate & public playlist ids here
+# # Define isPrivate & public playlist ids here
 # isPrivate = False
 # playlistIds = [
 #     "7J6PrVFDlPWiQe0m6NF2ie",  # Favorite
@@ -39,8 +39,10 @@ def main():
         scope = "playlist-read-private"
         spotify, authorizeToken = getAuthorizationToken(
             clientID, clientSecret, scope)
+        accessToken = None
     else:
         accessToken = getAccessToken(clientID, clientSecret)
+        spotify = None
     crawlPlaylists(accessToken, playlistIds, playlistDir,
                    isPrivate=isPrivate, spotify=spotify)
 
@@ -73,6 +75,7 @@ def writeToCsvFile(trackItems, csvFileName, simplePrint=False):
     with open(csvFileName, 'w') as f:
         f.write('Track Id, Track, Artists, Album, Album Artist, Release Date\n')
     file = open(csvFileName, 'a')
+    print('--------------------')
     count = 0
     for item in trackItems:
         count = count + 1

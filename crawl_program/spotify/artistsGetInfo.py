@@ -23,6 +23,7 @@ artistList = [
     '16s0YTFcyjP4kgFwt7ktrY',  # 五月天
     '4dpARuHxo51G3z768sgnrY',  # Adele
     '0SIXZXJCAhNU8sxK0qm7hn',  # 孙燕姿
+    '4AJcTAMOLkRl3vf4syay8Q',  # 萧敬腾
 ]
 
 

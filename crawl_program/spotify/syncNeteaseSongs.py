@@ -9,13 +9,13 @@ currentdir = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
-from playlistRemoveItems import playlistRemoveAllItems
-from spotifyFunc import *
-from utils.auth import getAccessToken, getAuthorizationToken
-from utils.secrets import clientID, clientSecret
-from netease.specialSongs import *
 from netease.artists import artists as neteaseArtists
 from artists import artists as spotifyArtists
+from utils.auth import getAccessToken, getAuthorizationToken
+from utils.secrets import clientID, clientSecret
+from spotifyFunc import *
+from netease.specialSongs import *
+from playlistRemoveItems import playlistRemoveAllItems
 
 # ****************************************
 #     Sync netease non-playable songs

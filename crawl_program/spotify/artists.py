@@ -1,5 +1,5 @@
 # Deine artist to crawl
-artistToCrawl = 'adele'
+artistToCrawl = 'jam_hsiao'
 
 # Deine artists
 # Search artist on spotfy (e.g. 张学友 on spotify) to get artistId
@@ -59,6 +59,10 @@ artists = {
     'adele': {
         'name': 'Adele',
         'artistId': '4dpARuHxo51G3z768sgnrY'
+    },
+    'jam_hsiao': {
+        'name': '萧敬腾',
+        'artistId': '4AJcTAMOLkRl3vf4syay8Q'
     },
     'stefanie_sun': {
         'name': '孙燕姿',
