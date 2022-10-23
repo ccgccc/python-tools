@@ -3,12 +3,14 @@
 *.csv
 *.xls
 *.xlsx
-crawl_program/spotify/secrets.py
+temp/
 crawl_program/spotify/utils/secrets.py
+crawl_program/spotify/utils/spotifyToken.txt
 crawl_program/spotify/*.json
 crawl_program/spotify/*.txt
 crawl_program/spotify/*.xlsx
 crawl_program/spotify/files/
+crawl_program/netease/cookie.txt
 crawl_program/netease/files/
 regex/phone_process/*.txt
 regex/phone_process/files
