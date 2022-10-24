@@ -32,7 +32,8 @@ specialSongNames = {
     },
     # 林俊杰  Missing: Lose Control(电影尚气主题曲)
     'jj_lin': {
-        'Bedroom': 'Bedroom (feat. Anne-Marie)'
+        'Bedroom': 'Bedroom (feat. Anne-Marie)',
+        'Stay With You': 'Stay With You (英文版)'
     },
     # 许嵩  All
     'xusong': {
@@ -70,6 +71,11 @@ specialSongNames = {
     'jam_hsiao': {
         '矜持': '矜持 (Studio Live)',
         '袖手旁觀': '袖手旁观 (Studio Live)'
+    },
+    # 孙燕姿  All
+    'stefanie_sun': {
+        'Stay With You': 'Stay With You (英文版)',
+        '克卜勒': '克卜勒'
     }
 }
 

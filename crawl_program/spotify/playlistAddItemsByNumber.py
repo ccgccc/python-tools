@@ -60,7 +60,6 @@ def main():
         ]
     else:
         scope = [
-            "playlist-read-public",
             "playlist-modify-public"
         ]
     spotify, authorizeToken = getAuthorizationToken(

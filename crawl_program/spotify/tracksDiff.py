@@ -7,6 +7,7 @@ from spotifyFunc import *
 # ******************************
 
 
+# Get liked songs
 scope = [
     "user-library-read"
 ]
@@ -18,6 +19,7 @@ trackIds = set(map(lambda track: track['track']['id'], trackItems))
 print('--------------------')
 print('\u2764\uFE0F:', len(trackItems))  # heart symbol
 
+# Get playlist songs
 playlists = {
     "Favorite": "7J6PrVFDlPWiQe0m6NF2ie",
     "Like": "2QBH6yCLDJhTiXKqDfCtOA",
@@ -38,15 +40,23 @@ trackIds2 = set(map(lambda track: track['track']['id'], trackItems2))
 # print(trackIds2)
 
 
+# Only in Like
 print('\n--------------------')
 # print('Only in Like:')
 print('Only in \u2764\uFE0F:')  # heart symbol
 for track in trackItems:
     if track['track']['id'] not in trackIds2:
         print(track['track']['name'])
+
+# Only in Playlists
 print('--------------------')
 print('Only in Playlists:')
+playlistOnlyTrackIds = []
 for track in trackItems2:
     if track['track']['id'] not in trackIds:
         print(track['track']['name'])
+        playlistOnlyTrackIds.append(track['track']['id'])
+if len(playlistOnlyTrackIds) > 0:
+    print('\nTrack ids:', len(playlistOnlyTrackIds))
+    print(','.join(playlistOnlyTrackIds))
 print('--------------------')

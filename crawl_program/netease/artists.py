@@ -1,5 +1,5 @@
 # Deine artist to crawl
-artistToCrawl = 'jam_hsiao'
+artistToCrawl = 'stefanie_sun'
 
 # Deine artists
 artists = {

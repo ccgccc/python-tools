@@ -173,7 +173,11 @@ def main():
     if isIncremental:
         # Get spotify authorization token by scope and accessToken
         if isPrivate:
-            scope = ["playlist-read-private", "playlist-modify-private"]
+            scope = [
+                "playlist-read-private",
+                "playlist-modify-private",
+                "playlist-modify-public"
+            ]
             spotify, authorizeToken = getAuthorizationToken(
                 clientID, clientSecret, scope)
             accessToken = None

@@ -145,6 +145,13 @@ def getUserSavedTracks(spotify, token, limit=50, offset=0):
     return userTracksObject
 
 
+# Get my liked songs by request once
+def saveUserTracks(spotify, token, ids):
+    userTracksEndPoint = f"https://api.spotify.com/v1/me/tracks?ids={ids}"
+    res = spotify.put(userTracksEndPoint)
+    return res
+
+
 # Create playlist
 def createPlayList(spotify, token, userId, name, description, ispublic):
     createPlaylistEndPoint = f"https://api.spotify.com/v1/users/{userId}/playlists"
