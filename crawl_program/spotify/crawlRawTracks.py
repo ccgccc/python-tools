@@ -3,9 +3,9 @@ from utils.secrets import clientID, clientSecret
 from artists import artists, artistToCrawl
 from spotifyFunc import *
 
-# ******************************
-#  Crawl spotify artist tracks
-# ******************************
+# ****************************************
+#  Crawl spotify artist tracks by albums
+# ****************************************
 
 # Define artist to crawl here
 artistToCrawlList = [artistToCrawl]

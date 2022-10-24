@@ -3,7 +3,7 @@ from utils.auth import getAccessToken, getAuthorizationToken
 from spotifyFunc import *
 
 # ******************************
-#     Playlists difference
+#  Like vs Playlists difference
 # ******************************
 
 

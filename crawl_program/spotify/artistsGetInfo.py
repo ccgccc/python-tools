@@ -3,7 +3,7 @@ from utils.auth import getAccessToken
 from spotifyFunc import *
 
 # ****************************************
-#     Get spotify artist info from id
+#     Get spotify artist info by ids
 # ****************************************
 
 # Define artists id here

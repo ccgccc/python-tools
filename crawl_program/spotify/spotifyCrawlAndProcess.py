@@ -4,7 +4,12 @@ from artists import artists, artistToCrawl
 from spotifyFunc import *
 from crawlAlbums import crawlAlbums
 from crawlRawTracks import getAllAlbumsTracks
-from processTracks import processTracks, writeToXlsx
+from processTracks import processTracks
+
+# ****************************************
+#   Crawl spotify artist albums & tracks
+# ****************************************
+
 
 # Define artist here
 artist = artistToCrawl

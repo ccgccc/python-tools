@@ -14,7 +14,6 @@ from crawlPlaylists import crawlSinglePlaylist
 # Define artist here
 # artist = 'nobody'
 artist = artistToCrawl
-
 # Define minimum playcount to add tracks
 playcount = 5000000
 

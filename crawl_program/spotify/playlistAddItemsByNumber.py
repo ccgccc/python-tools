@@ -14,11 +14,10 @@ from crawlPlaylists import crawlSinglePlaylist
 # Define artist here
 # artist = 'nobody'
 artist = artistToCrawl
-
 # Define track number to add
 tracksNumber = 20
 
-# Generate playlist
+# # Generate playlist
 # # Define if playlist is private
 # isPrivate = False
 # # Define if update description

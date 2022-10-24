@@ -4,9 +4,9 @@ import xlwt
 from artists import artists, artistToCrawl
 from spotifyFunc import *
 
-# ******************************
-#  Crawl spotify artist tracks
-# ******************************
+# ****************************************
+#  Process spotify artist crawled tracks
+# ****************************************
 
 # Define artist to crawl here
 artistToCrawlList = [artistToCrawl]
