@@ -4,6 +4,9 @@ from os.path import isfile, join
 from artists import *
 from common import *
 
+# **************************************************
+#     Delete netease most played songs playlist
+# **************************************************
 
 # Defin cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')

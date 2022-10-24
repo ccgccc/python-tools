@@ -2,6 +2,11 @@ import requests
 from artists import *
 from common import *
 
+# ****************************************
+#    Get netease artist songs directly
+# ****************************************
+
+
 url = baseUrl + '/artist/songs'
 # url = baseUrl + '/artist/top/song'
 limit = 200  # max 200

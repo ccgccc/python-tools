@@ -1,6 +1,11 @@
 from artists import *
 from common import *
 
+# ****************************************
+#  Process netease artist crawled tracks
+# ****************************************
+
+# Define if filter song by name
 filterSongByName = True
 
 

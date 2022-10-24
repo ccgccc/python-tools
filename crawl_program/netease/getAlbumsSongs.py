@@ -2,6 +2,10 @@ from datetime import datetime
 from artists import *
 from common import *
 
+# ******************************
+#  Get netease songs by albums
+# ******************************
+
 
 def main():
     # Get artist albums

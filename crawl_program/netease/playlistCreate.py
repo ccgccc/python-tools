@@ -4,6 +4,10 @@ from os.path import isfile, join
 from artists import *
 from common import *
 
+# **************************************************
+#     Create netease most played songs playlist
+# **************************************************
+
 
 def main():
     headers['cookie'] = readFileContent('cookie.txt')

@@ -2,11 +2,15 @@ from common import *
 from syncCustomPlaylist import getSpotifyToNeteaseSongs, getSpotifyArtistTrackNames
 from playlistRemoveSongs import playlistRomoveSongs
 
+# **********************************************************************
+#    Sync spotify Favorite & Like playlists to netease liked songs
+# **********************************************************************
+
 # My like songs playlist id
 likePlaylistId = 553778357
 # Define is incremental
 isIncremental = True
-# Use right cookie to retrive private playlists
+# Defin cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
 

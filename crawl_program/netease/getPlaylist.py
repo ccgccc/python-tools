@@ -1,8 +1,14 @@
 from common import *
 
+# ******************************
+#   Get netease playlist by id
+# ******************************
+
+# Defin palylist id
 playlistId = 7673625615  # Favorite
 # Liked songs playlist id
 # playlistId = 553778357
+
 
 playlist = getPlaylist(playlistId)
 

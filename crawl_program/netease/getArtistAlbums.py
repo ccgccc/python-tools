@@ -1,6 +1,10 @@
 from artists import *
 from common import *
 
+# ******************************
+#    Get netease all albums
+# ******************************
+
 
 def main():
     crawlAlbums(artists, artistToCrawl)

@@ -2,10 +2,14 @@ import os
 import time
 from common import *
 
-# Note: don't contain mv
+# ****************************************
+#   Backup netease user's all playlists
+# ****************************************
+# Note: doesn't contain mv
 
-# Use right cookie to retrive private playlists
+# Defin cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
+
 
 playlistName = 'playlists/all_my_playlists'
 playlists = loadJsonFromFile(playlistName)

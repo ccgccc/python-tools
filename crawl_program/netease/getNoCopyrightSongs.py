@@ -2,6 +2,9 @@
 import os
 from common import *
 
+# **************************************************
+#    Get netease no copyright songs in playlists
+# **************************************************
 
 # Define netease playlist name
 playlistName = 'Favorite'

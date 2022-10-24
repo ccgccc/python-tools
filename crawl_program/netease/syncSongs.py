@@ -4,6 +4,10 @@ from artists import *
 from common import *
 from specialSongs import *
 
+# **************************************************
+#  Get spotify synced songs by artist & track names
+# **************************************************
+
 
 def getSyncSongs(artist, spotifyTrackNames, isRemoveAlias=True,
                  isNeedPrompt=True, isOkPrompt=True, confirmOnceMode=True):

@@ -13,6 +13,9 @@ from syncSongs import getSyncSongs
 from playlistAddSongs import playlistAddSongs
 from playlistRemoveSongs import playlistRomoveSongs
 
+# **************************************************
+#    Sync spotify custom playlists to netease
+# **************************************************
 
 # # Define isPrivate & public playlist name
 # isPrivate = False

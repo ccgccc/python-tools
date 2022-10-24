@@ -3,6 +3,10 @@ from artists import *
 from common import *
 from syncSongs import getSyncSongs
 
+# ************************************************************
+#  Add synced songs to netease playlists by spotify playlists
+# ************************************************************
+
 
 def main():
     headers['cookie'] = readFileContent('cookie.txt')

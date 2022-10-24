@@ -1,6 +1,9 @@
 import time
 from common import *
 
+# ******************************
+#   Clear netease all follows
+# ******************************
 
 # Defin cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')

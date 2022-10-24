@@ -1,6 +1,10 @@
 from artists import *
 from common import *
 
+# **************************************************
+#  Remove netease most played songs playlist songs
+# **************************************************
+
 
 def main():
     headers['cookie'] = readFileContent('cookie.txt')
@@ -22,7 +26,8 @@ def playlistRomoveSongs(playlistId, isSureCheck=False):
         return
     removeSongIds = ','.join(
         reversed(list(map(lambda song: str(song['id']), playlistSongs['songs']))))
-    print('To delete: ', len(playlistSongs['songs']), '\n', removeSongIds, sep='')
+    print('To delete: ', len(
+        playlistSongs['songs']), '\n', removeSongIds, sep='')
 
     if isSureCheck:
         sureCheck()

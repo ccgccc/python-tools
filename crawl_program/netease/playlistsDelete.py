@@ -4,6 +4,10 @@ from os.path import isfile, join
 from artists import *
 from common import *
 
+# ****************************************
+#   Remove netease user's all playlists
+# ****************************************
+
 # Excel formula: =CONCATENATE(B2,": '",TRIM(C2),"',")
 playlistToKeep = {
     553778357: 'ccgccc喜欢的音乐',
@@ -32,7 +36,7 @@ playlistToKeep = {
     7140236506: 'Learn Waitlist',
     6936670073: 'her like',
 }
-
+# Defin cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
 

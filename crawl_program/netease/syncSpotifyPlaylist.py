@@ -6,6 +6,9 @@ from playlistCreate import generatePlaylist
 from playlistRemoveSongs import playlistRomoveSongs
 from playlistAddSongs import playlistAddSongs
 
+# ************************************************************
+#     Sync spotify most played songs playlists to netease
+# ************************************************************
 
 # Define create playlist or update playlist
 isCreate = True

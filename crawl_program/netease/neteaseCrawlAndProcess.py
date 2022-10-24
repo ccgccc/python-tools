@@ -4,6 +4,10 @@ from getArtistAlbums import crawlAlbums
 from getAlbumsSongs import getAlbumsSongs
 from processSongs import processSongs
 
+# ****************************************
+#   Crawl netease artist albums & tracks
+# ****************************************
+
 
 # Get artist all albums
 allAlbums = crawlAlbums(artists, artistToCrawl)
