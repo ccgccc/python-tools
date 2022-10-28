@@ -17,28 +17,38 @@ from playlistRemoveSongs import playlistRomoveSongs
 #    Sync spotify custom playlists to netease
 # **************************************************
 
+# Define create playlist or update playlist
+isCreate = False
+# Define is reversed
+isReversed = False
+# Defin cookie in cookie.txt
+headers['cookie'] = readFileContent('cookie.txt')
+
+# ***** Sync public playlists *****
 # # Define isPrivate & public playlist name
 # isPrivate = False
+
+# # --- incremental is true
+# # Define is incremental
+# isIncremental = True
 # # playlistName = 'Favorite'
 # playlistName = 'Like'
 # # playlistName = '张学友'
 # # playlistName = '周杰伦'
 
+# ***** Sync private playlists *****
 # Define isPrivate & private playlist name
 isPrivate = True
-# playlistName = 'Nice'
-# playlistName = 'Netease Liked'
-# playlistName = 'To Listen'
-playlistName = 'Listening Artist'
 
-# Define create playlist or update playlist
-isCreate = False
-# Define is incremental
+# # --- incremental is true
+# isIncremental = True
+# playlistName = 'Nice'
+# # playlistName = 'Netease Liked'
+# # playlistName = 'To Listen'
+
+# --- incremental is false
 isIncremental = False
-# Define is reversed
-isReversed = False
-# Defin cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
+playlistName = 'Listening Artist'
 
 
 def main():
