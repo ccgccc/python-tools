@@ -1,37 +1,40 @@
 from utils.secrets import clientID, clientSecret
 from utils.auth import getAccessToken
+from artists import artists
 from spotifyFunc import *
 
 # ****************************************
-#     Get spotify artist info by ids
+#     Get spotify artistZh info by ids
 # ****************************************
 
-# Define artists id here
-artistList = [
-    '1Hu58yHg2CXNfDhlPd7Tdd',  # 张学友
-    '2elBjNSdBE2Y3f0j1mjrql',  # 周杰伦
-    '2QcZxAgcs2I1q7CtCkl6MI',  # 陈奕迅
-    '0du5cEVh5yTK9QJze8zA0C',  # Bruno Mars
-    '7aRC4L63dBn3CiLDuWaLSI',  # 邓紫棋
-    '7Dx7RhX0mFuXhCOUgB01uM',  # 林俊杰
-    '2hgxWUG24w1cFLBlPSEVcV',  # 许嵩
-    '2F5W6Rsxwzg0plQ0w8dSyt',  # 王力宏
-    '4F5TrtYYxsVM1PhbtISE5m',  # Beyond
-    '10LslMPb7P5j9L2QXGZBmM',  # 汪峰
-    '3df3XLKuqTQ6iOSmi0K3Wp',  # 王菲
-    '6jlz5QSUqbKE4vnzo2qfP1',  # 莫文蔚
-    '16s0YTFcyjP4kgFwt7ktrY',  # 五月天
-    '4dpARuHxo51G3z768sgnrY',  # Adele
-    '0SIXZXJCAhNU8sxK0qm7hn',  # 孙燕姿
-    '4AJcTAMOLkRl3vf4syay8Q',  # 萧敬腾
-]
+# Define all artist ids
+artistList = [v['artistId'] for k, v in artists.items()]
+# # Define artists id here
+# artistList = [
+#     # '1Hu58yHg2CXNfDhlPd7Tdd',  # 张学友
+#     # '2elBjNSdBE2Y3f0j1mjrql',  # 周杰伦
+#     # '2QcZxAgcs2I1q7CtCkl6MI',  # 陈奕迅
+#     # '0du5cEVh5yTK9QJze8zA0C',  # Bruno Mars
+#     # '7aRC4L63dBn3CiLDuWaLSI',  # 邓紫棋
+#     # '7Dx7RhX0mFuXhCOUgB01uM',  # 林俊杰
+#     # '2hgxWUG24w1cFLBlPSEVcV',  # 许嵩
+#     # '2F5W6Rsxwzg0plQ0w8dSyt',  # 王力宏
+#     # '4F5TrtYYxsVM1PhbtISE5m',  # Beyond
+#     # '10LslMPb7P5j9L2QXGZBmM',  # 汪峰
+#     # '3df3XLKuqTQ6iOSmi0K3Wp',  # 王菲
+#     # '6jlz5QSUqbKE4vnzo2qfP1',  # 莫文蔚
+#     # '16s0YTFcyjP4kgFwt7ktrY',  # 五月天
+#     # '4dpARuHxo51G3z768sgnrY',  # Adele
+#     # '0SIXZXJCAhNU8sxK0qm7hn',  # 孙燕姿
+#     '4AJcTAMOLkRl3vf4syay8Q',  # 萧敬腾
+# ]
 
 
 # Request artists info
 token = getAccessToken(clientID, clientSecret)
-artists = getArtistInfo(token, artistList)
+artists = getArtistInfo(token, artistList)['artists']
 # print(json.dumps(artists, ensure_ascii=False))
-artistsZh = getArtistInfo(token, artistList, language='zh-CN')
+artistsZh = getArtistInfo(token, artistList, language='zh-CN')['artists']
 # print(json.dumps(artistsZh, ensure_ascii=False))
 
 fileName = './files/artists/artists'
@@ -39,25 +42,36 @@ fileName = './files/artists/artists'
 with open(fileName + '.json', 'w') as f:
     json.dump(artistsZh, f, ensure_ascii=False)
 
-# Print artists info
-csvFileName = fileName + '.csv'
-file = open(csvFileName, 'w')
-print('Artist Id, Name, Name(Zh), Popularity, Followers, Genres', file=file)
-for i in range(len(artistsZh['artists'])):
-    print('--------------------')
-    artist = artistsZh['artists'][i]
-    artistId = artist['id']
-    artistName = artists['artists'][i]['name']
-    artistZhName = artistsZh['artists'][i]['name']
-    popularity = str(artist['popularity'])
-    followers = artist['followers']['total']
-    genres = ', '.join(artist['genres'])
-    print('Artist Id: ' + artistId)
-    print('Artist Name: ' + artistName)
-    print('Artist Name(Zh): ' + artistZhName)
-    print('Popularity: ' + popularity)
-    print('Followers: ' + format(followers, ','))
-    print('Genres: ' + genres)
-    print(artistId, artistName, artistZhName, popularity,
-          followers, genres, sep=', ', file=file)
-file.close()
+
+def wirteToCsvFile(artists, artistsZh, csvFileName, isPrint=True):
+    file = open(csvFileName, 'w')
+    print('Artist Id, Name, Name(Zh), Popularity, Followers, Genres', file=file)
+    for i in range(len(artistsZh)):
+        artistZh = artistsZh[i]
+        artistId = artistZh['id']
+        artistName = artists[i]['name']
+        artistZhName = artistZh['name']
+        popularity = str(artistZh['popularity'])
+        followers = artistZh['followers']['total']
+        genres = ', '.join(artistZh['genres'])
+        if isPrint:
+            print('--------------------')
+            print('Artist Id: ' + artistId)
+            print('Artist Name: ' + artistName)
+            print('Artist Name(Zh): ' + artistZhName)
+            print('Popularity: ' + popularity)
+            print('Followers: ' + format(followers, ','))
+            print('Genres: ' + genres)
+        print(artistId, artistName, artistZhName, popularity,
+              followers, genres, sep=', ', file=file)
+    file.close()
+
+
+wirteToCsvFile(artists, artistsZh, fileName + '.csv', isPrint=True)
+
+sortedArtists = sorted(
+    artists, key=lambda artist: artist['followers']['total'], reverse=True)
+sortedArtistsZh = sorted(
+    artistsZh, key=lambda artistZh: artistZh['followers']['total'], reverse=True)
+wirteToCsvFile(sortedArtists, sortedArtistsZh,
+               fileName + '_sorted_by_followers.csv', isPrint=False)

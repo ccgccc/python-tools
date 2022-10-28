@@ -1,7 +1,6 @@
+import os
 import sys
 import json
-from os import listdir
-from os.path import isfile, join
 from utils.secrets import clientID, clientSecret
 from utils.auth import getAccessToken, getAuthorizationToken
 from artists import artists, artistToCrawl
@@ -16,15 +15,14 @@ from crawlPlaylists import crawlSinglePlaylist
 # **********************************************************************
 
 # Define artist here
-# artist = 'nobody'
 artist = artistToCrawl
 
 # Define create playlist or update playlist
 isCreate = True
 
 # Define generate method: 1 - by number, 2 - by playcount
-# generateMethod = 1
-generateMethod = 2
+generateMethod = 1
+# generateMethod = 2
 # For method 1: Define track number to add tracks
 tracksNumber = 20
 # For method 2: Define minimum playcount to add tracks
@@ -38,12 +36,10 @@ myUserId = '31jvwpn5kplbtp4sqdqaol2x5mcy'  # ccg ccc
 if artists.get(artist) == None:
     print(artist + ' is not defined in artist.py, please define it first.')
     sys.exit()
-if isCreate:
-    dir = './files/playlists/generated_playlists/'
-    fileNames = [f for f in listdir(dir) if isfile(join(dir, f))]
-    if artist + '_playlist.json' in fileNames:
-        print('Alreay created playlist. Exit...')
-        sys.exit()
+generateDir = './files/playlists/generated_playlists/'
+if isCreate and os.path.isfile(generateDir + artist + '_playlist.json'):
+    print('Alreay created playlist. Exit...')
+    sys.exit()
 if generateMethod != 1 and generateMethod != 2:
     print('generate method not supported.')
     sys.exit()
@@ -62,12 +58,12 @@ if isCreate:
     playlistId = playlist['id']
 
     # Write json to file
-    with open('./files/playlists/generated_playlists/' + artist + '_playlist.json', 'w') as f:
+    with open(generateDir + artist + '_playlist.json', 'w') as f:
         print('Response:')
         print(json.dumps(playlist, ensure_ascii=False))
         json.dump(playlist, f, ensure_ascii=False)
 else:
-    with open('./files/playlists/generated_playlists/' + artist + '_playlist.json') as f:
+    with open(generateDir + artist + '_playlist.json') as f:
         playlist = json.load(f)
     playlistId = playlist['id']
     playlistRemoveAllItems(accessToken, spotify, authorizeToken, playlistId)

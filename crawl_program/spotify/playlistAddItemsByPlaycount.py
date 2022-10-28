@@ -12,7 +12,6 @@ from crawlPlaylists import crawlSinglePlaylist
 # **************************************************
 
 # Define artist here
-# artist = 'nobody'
 artist = artistToCrawl
 # Define minimum playcount to add tracks
 playcount = 5000000
@@ -67,7 +66,10 @@ def main():
     playlistAddTracksByPlaycount(
         spotify, authorizeToken, playlistId, artist, allTracks, playcount, isUpdateDesc=isUpdateDesc)
     # Get new playlist info
-    if playlistID != None:
+    if playlistID == None:
+        crawlSinglePlaylist(accessToken, playlistId,
+                            './files/playlists/generated_playlists_info/')
+    else:
         crawlSinglePlaylist(accessToken, playlistId,
                             './files/playlists/', isPrivate=isPrivate, spotify=spotify)
 

@@ -25,6 +25,7 @@ from playlistRemoveItems import playlistRemoveAllItems
 # and sync them to another spotify playlist(spotifyPlaylistId)
 
 # ********** Syncmode == 1 **********
+# ***** Sync Netease Liked *****
 # # Define sync mode. 0: sync all, 1: sync non-palyable songs.
 # syncMode = 1
 # # Define is incremental
@@ -44,15 +45,17 @@ syncMode = 0
 # Define is incremental
 isIncremental = True
 
-# Spotify playlist id
-spotifyPlaylistId = '7J6PrVFDlPWiQe0m6NF2ie'  # Favorite
-# Define spotify playlist isPrivate
-isPrivate = False
-# Spotify source playlists names
-spotifySourcePlaylistNames = ['Favorite', 'Listening Artist']
-# Netease match playlist name
-neteaseMatchPlaylistName = 'playlist_songs_Favorite_by ccgccc'
+# # ***** Sync Favorite *****
+# # Spotify playlist id
+# spotifyPlaylistId = '7J6PrVFDlPWiQe0m6NF2ie'  # Favorite
+# # Define spotify playlist isPrivate
+# isPrivate = False
+# # Spotify source playlists names
+# spotifySourcePlaylistNames = ['Favorite', 'Listening Artist']
+# # Netease match playlist name
+# neteaseMatchPlaylistName = 'playlist_songs_Favorite_by ccgccc'
 
+# # ***** Sync Like *****
 # # Spotify playlist id
 # spotifyPlaylistId = '2QBH6yCLDJhTiXKqDfCtOA'  # Like
 # # Define spotify playlist isPrivate
@@ -62,14 +65,15 @@ neteaseMatchPlaylistName = 'playlist_songs_Favorite_by ccgccc'
 # # Netease match playlist name
 # neteaseMatchPlaylistName = 'playlist_songs_Like_by ccgccc'
 
-# # Spotify playlist id
-# spotifyPlaylistId = '4SqLcwtjZJXdkH8twICyOa'  # Nice
-# # Define spotify playlist isPrivate
-# isPrivate = True
-# # Spotify source playlists names
-# spotifySourcePlaylistNames = ['Nice', 'Listening Artist']
-# # Netease match playlist name
-# neteaseMatchPlaylistName = 'playlist_songs_Nice_by ccgccc'
+# ***** Sync Nice *****
+# Spotify playlist id
+spotifyPlaylistId = '4SqLcwtjZJXdkH8twICyOa'  # Nice
+# Define spotify playlist isPrivate
+isPrivate = True
+# Spotify source playlists names
+spotifySourcePlaylistNames = ['Nice', 'Listening Artist']
+# Netease match playlist name
+neteaseMatchPlaylistName = 'playlist_songs_Nice_by ccgccc'
 
 
 def main():

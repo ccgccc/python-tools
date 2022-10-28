@@ -11,11 +11,15 @@ from crawlPlaylists import crawlPlaylists
 #   Crawl generated playlists
 # ******************************
 
-# All generated playlists
+# Generated playlists directory
 dir = './files/playlists/generated_playlists/'
+
+# # Crawl all generated playlists
 # fileNames = [f for f in listdir(dir) if isfile(join(dir, f))]
+
 # Specify crawling playlists
 fileNames = [artistToCrawl + '_playlist.json']
+
 
 playlistIds = []
 for fileName in fileNames:

@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 import time
@@ -11,8 +12,7 @@ from spotifyFunc import *
 # **************************************************
 
 # Define artist here
-artist = 'nobody'
-# artist = artistToCrawl
+artist = artistToCrawl
 
 # Define my user id here
 myUserId = '31jvwpn5kplbtp4sqdqaol2x5mcy'  # ccg ccc
@@ -20,6 +20,10 @@ myUserId = '31jvwpn5kplbtp4sqdqaol2x5mcy'  # ccg ccc
 
 if artists.get(artist) == None:
     print(artist + ' is not defined in artist.py, please define it first.')
+    sys.exit()
+fileName = './files/playlists/generated_playlists/' + artist + '_playlist.json'
+if os.path.isfile(fileName):
+    print('Alreay created playlist. Exit...')
     sys.exit()
 # playlist name & description
 playlistName = artists[artist]['name'] + ' Most Played Songs'
@@ -32,7 +36,7 @@ playlist = createPlayList(spotify, token, userId=myUserId, name=playlistName,
                           description=playlistDescription, ispublic=True)
 
 # Write json to file
-with open('./files/playlists/generated_playlists/' + artist + '_playlist.json', 'w') as f:
+with open(fileName, 'w') as f:
     print('Response:')
     print(json.dumps(playlist, ensure_ascii=False))
     json.dump(playlist, f, ensure_ascii=False)

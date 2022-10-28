@@ -1,5 +1,5 @@
 # Deine artist to crawl
-artistToCrawl = 'stefanie_sun'
+artistToCrawl = 'billie_eilish'
 
 # Deine artists
 # Search artist on spotfy (e.g. 张学友 on spotify) to get artistId
@@ -67,5 +67,9 @@ artists = {
     'stefanie_sun': {
         'name': '孙燕姿',
         'artistId': '0SIXZXJCAhNU8sxK0qm7hn'
+    },
+    'billie_eilish': {
+        'name': 'Billie Eilish',
+        'artistId': '6qqNVTkY8uBg9cP3Jd7DAH'
     }
 }

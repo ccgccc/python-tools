@@ -12,7 +12,6 @@ from crawlPlaylists import crawlSinglePlaylist
 # **************************************************
 
 # Define artist here
-# artist = 'nobody'
 artist = artistToCrawl
 # Define track number to add
 tracksNumber = 20
@@ -69,7 +68,10 @@ def main():
     playlistAddTracksByNumber(
         spotify, authorizeToken, playlistId, artist, allTracks, tracksNumber, isUpdateDesc=isUpdateDesc)
     # Get new playlist info
-    if playlistID != None:
+    if playlistID == None:
+        crawlSinglePlaylist(accessToken, playlistId,
+                            './files/playlists/generated_playlists_info/')
+    else:
         crawlSinglePlaylist(accessToken, playlistId,
                             './files/playlists/', isPrivate=isPrivate, spotify=spotify)
 
@@ -82,7 +84,9 @@ def playlistAddTracksByNumber(spotify, token, playlistId, artist, allTracks, tra
     if isUpdateDesc:
         # Playlist name & description
         playlistName = artists[artist]['name'] + ' Most Played Songs'
-        playlistDescription = artists[artist]['name'] + ' most played songs (top ' + str(tracksNumber) + ').' + \
+        minimumPlaycount = allTracks[tracksNumber - 1]['playcount']
+        playlistDescription = artists[artist]['name'] + ' most played songs (top ' + str(tracksNumber) + ', minimum play: ' + \
+            (str(minimumPlaycount // 1000000) + ' million' if minimumPlaycount >= 1000000 else str(minimumPlaycount)) + '). ' + \
             ' Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
         res = updatePlayList(spotify, token, playlistId,
                              playlistName, playlistDescription, True)
