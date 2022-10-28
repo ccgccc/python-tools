@@ -22,10 +22,11 @@ artistIdNames = {v['artistId']: k for k, v in artists.items()}
 # Define is incremental
 isIncremental = True
 # Specify artists
-artistIds = [
-    '6460',  # 张学友
-    '6452',  # 周杰伦
-]
+artistIds = [artists[artistToCrawl]['artistId']]
+# artistIds = [
+#     '6460',  # 张学友
+#     '6452',  # 周杰伦
+# ]
 
 
 if isRequest:
@@ -52,16 +53,13 @@ if isRequest:
         # print(json.dumps(resJson, ensure_ascii=False))
         allArtistsFans = allArtistsFans | {
             artistIdNames[artistId]: resJson['data']}
-    if not isIncremental:
-        writeJsonToFile(allArtistsDetails, 'artists/artists')
-        writeJsonToFile(allArtistsFans, 'artists/artistsFans')
-    else:
-        # existArtistsDetails = loadJsonFromFile('artists/artists')
-        # existArtistsFans = loadJsonFromFile('artists/artistsFans')
+    if isIncremental:
         allArtistsDetails = loadJsonFromFile(
             'artists/artists') | allArtistsDetails
         allArtistsFans = loadJsonFromFile(
             'artists/artistsFans') | allArtistsFans
+    writeJsonToFile(allArtistsDetails, 'artists/artists')
+    writeJsonToFile(allArtistsFans, 'artists/artistsFans')
 else:
     allArtistsDetails = loadJsonFromFile('artists/artists')
     allArtistsFans = loadJsonFromFile('artists/artistsFans')
