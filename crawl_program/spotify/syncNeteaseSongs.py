@@ -55,25 +55,25 @@ isIncremental = True
 # # Netease match playlist name
 # neteaseMatchPlaylistName = 'playlist_songs_Favorite_by ccgccc'
 
-# # ***** Sync Like *****
-# # Spotify playlist id
-# spotifyPlaylistId = '2QBH6yCLDJhTiXKqDfCtOA'  # Like
-# # Define spotify playlist isPrivate
-# isPrivate = False
-# # Spotify source playlists names
-# spotifySourcePlaylistNames = ['Like', 'Listening Artist']
-# # Netease match playlist name
-# neteaseMatchPlaylistName = 'playlist_songs_Like_by ccgccc'
-
-# ***** Sync Nice *****
+# ***** Sync Like *****
 # Spotify playlist id
-spotifyPlaylistId = '4SqLcwtjZJXdkH8twICyOa'  # Nice
+spotifyPlaylistId = '2QBH6yCLDJhTiXKqDfCtOA'  # Like
 # Define spotify playlist isPrivate
-isPrivate = True
+isPrivate = False
 # Spotify source playlists names
-spotifySourcePlaylistNames = ['Nice', 'Listening Artist']
+spotifySourcePlaylistNames = ['Like', 'Listening Artist']
 # Netease match playlist name
-neteaseMatchPlaylistName = 'playlist_songs_Nice_by ccgccc'
+neteaseMatchPlaylistName = 'playlist_songs_Like_by ccgccc'
+
+# # ***** Sync Nice *****
+# # Spotify playlist id
+# spotifyPlaylistId = '4SqLcwtjZJXdkH8twICyOa'  # Nice
+# # Define spotify playlist isPrivate
+# isPrivate = True
+# # Spotify source playlists names
+# spotifySourcePlaylistNames = ['Nice', 'Listening Artist']
+# # Netease match playlist name
+# neteaseMatchPlaylistName = 'playlist_songs_Nice_by ccgccc'
 
 
 def main():

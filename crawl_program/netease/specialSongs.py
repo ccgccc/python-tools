@@ -1,4 +1,4 @@
-# spotify name : netease name
+# Spotify name : Netease name
 # traditional Chinese
 specialSongNames = {
     # 张学友  All
@@ -76,10 +76,16 @@ specialSongNames = {
     'stefanie_sun': {
         'Stay With You': 'Stay With You (英文版)',
         '克卜勒': '克卜勒'
+    },
+    # Billie Eilish  All
+    'billie_eilish': {
+    },
+    # 华晨宇  All
+    'huahua': {
     }
 }
 
-# not included in netease artist songs
+# Not included in netease artist songs
 # simplified Chinese
 specialSongIds = {
     # 周杰伦
@@ -111,10 +117,14 @@ specialSongIds = {
     # 萧敬腾
     'jam_hsiao': {
         '一眼瞬间': '326899'
+    },
+    # Billie Eilish
+    'billie_eilish': {
+        'Bored': '468738965'
     }
 }
 
-# netease not good song source，e.g. 你的名字 我的姓氏(友个人演唱会1999)
+# Netease not good song source，e.g. 你的名字 我的姓氏(友个人演唱会1999)
 replaceSongIds = {
     # 张学友
     'jacky_cheung': {
@@ -122,7 +132,7 @@ replaceSongIds = {
     }
 }
 
-# not included because of spotify repeated song names
+# Not included because of spotify repeated song names
 repeatedSongs = {
     # 陈奕迅
     'eason_chan': [{
@@ -134,7 +144,7 @@ repeatedSongs = {
     }]
 }
 
-# netease sensitive words
+# Netease sensitive words
 sensitiveWords = {
     '长城': '长Cheng',
     '岁月无声': '岁月WuSheng'

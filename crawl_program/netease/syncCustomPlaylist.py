@@ -43,8 +43,8 @@ isPrivate = True
 # # --- incremental is true
 # isIncremental = True
 # playlistName = 'Nice'
-# # playlistName = 'Netease Liked'
 # # playlistName = 'To Listen'
+# # playlistName = 'Netease Liked'
 
 # --- incremental is false
 isIncremental = False

@@ -13,5 +13,6 @@ python3 syncSpotifyPlaylist.py
 
 
 ### Sync spotify custom playlists
+(e.g. Listening Artist, Favorite, Like, Nice, To Listen, Netease Liked, etc.)
 python3 crawlPlaylists.py  (in ../spotify)
 python3 syncCustomPlaylist.py
