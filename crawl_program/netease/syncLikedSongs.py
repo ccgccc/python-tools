@@ -10,7 +10,7 @@ from playlistRemoveSongs import playlistRomoveSongs
 likePlaylistId = 553778357
 # Define is incremental
 isIncremental = True
-# Defin cookie in cookie.txt
+# Define cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
 

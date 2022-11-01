@@ -6,6 +6,7 @@ from common import *
 
 # Defin palylist id
 playlistIds = [
+    553778357,  # 我喜欢的音乐
     7673625615,  # Favorite
     7673790351,  # Like
     7680312360,  # Nice
@@ -15,7 +16,7 @@ playlistIds = [
 # # Liked songs playlist id
 # playlistIds = [553778357]
 
-# Defin cookie in cookie.txt
+# Define cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
 

@@ -82,6 +82,10 @@ specialSongNames = {
     },
     # 华晨宇  All
     'huahua': {
+    },
+    # Ariana Grande  All
+    'ariana_grande': {
+        'Save Your Tears': 'Save Your Tears (Remix)'
     }
 }
 
@@ -112,15 +116,15 @@ specialSongIds = {
     },
     # 五月天
     'mayday': {
-        '黑暗骑士': '25794008'
+        '黑暗骑士': 25794008
     },
     # 萧敬腾
     'jam_hsiao': {
-        '一眼瞬间': '326899'
+        '一眼瞬间': 326899
     },
     # Billie Eilish
     'billie_eilish': {
-        'Bored': '468738965'
+        'Bored': 468738965
     }
 }
 

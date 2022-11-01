@@ -352,6 +352,6 @@ def loadJsonFromFile(fileName):
 
 
 def sureCheck():
-    msg = input('Are you sure? Press Y to continue. (y/n): ')
-    if msg != 'y' and msg != 'n':
+    msg = input('Are you sure? Press Y to continue: ')
+    if msg != 'y' and msg != 'Y':
         sys.exit()

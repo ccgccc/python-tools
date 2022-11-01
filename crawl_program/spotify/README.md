@@ -17,10 +17,11 @@ python3 playlistAddItemsByPlaycount.py
 
 
 
-### Sync netease playlists
+### Sync netease playlists (& filter netease non-playable songs)
+(e.g. Favorite, Like, Nice, Netease Non-playable)
 python3 getPlaylistSongs.py  (in ../netease)
 python3 syncNeteaseSongs.py
 
-### Sync liked songs
+### Like songs
 python3 tracksDiff.py
 python3 saveUserTracks.py

@@ -8,24 +8,24 @@ from spotifyFunc import *
 #    Crawl spotify playlists
 # ******************************
 
-# # Define isPrivate & public playlist ids here
-# isPrivate = False
-# playlistIds = [
-#     "7J6PrVFDlPWiQe0m6NF2ie",  # Favorite
-#     "2QBH6yCLDJhTiXKqDfCtOA",  # Like
-#     '4SqLcwtjZJXdkH8twICyOa',  # Nice
-#     # "6Ev0ju4qLsqSLznN7fjErt",  # 张学友
-#     # "7w3Y21vKZuLLq1huUuEWZZ",  # 周杰伦
-#     # "4DLB8que4WlMKhdg96wrvh",  # 五月天 Most Played Songs
-# ]
-
-# Define isPrivate & private playlist ids here
-isPrivate = True
+# Define isPrivate & public playlist ids here
+isPrivate = False
 playlistIds = [
-    # '1cd55XqNdveVHn8DUJRJM1',  # To Listen
-    # '2UuyNeehZW9HQXhTkmFKBj',  # Netease Liked
-    '2R48aLSO7QmOaHAGaV0zIM'  # Listening Artist
+    "7J6PrVFDlPWiQe0m6NF2ie",  # Favorite
+    "2QBH6yCLDJhTiXKqDfCtOA",  # Like
+    '4SqLcwtjZJXdkH8twICyOa',  # Nice
+    # "6Ev0ju4qLsqSLznN7fjErt",  # 张学友
+    # "7w3Y21vKZuLLq1huUuEWZZ",  # 周杰伦
+    # "4DLB8que4WlMKhdg96wrvh",  # 五月天 Most Played Songs
 ]
+
+# # Define isPrivate & private playlist ids here
+# isPrivate = True
+# playlistIds = [
+#     # '1cd55XqNdveVHn8DUJRJM1',  # To Listen
+#     # '2UuyNeehZW9HQXhTkmFKBj',  # Netease Non-playable
+#     '2R48aLSO7QmOaHAGaV0zIM'  # Listening Artist
+# ]
 
 # Define if simple print
 simplePrint = True

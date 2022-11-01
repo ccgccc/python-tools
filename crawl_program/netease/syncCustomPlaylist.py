@@ -21,8 +21,9 @@ from playlistRemoveSongs import playlistRomoveSongs
 isCreate = False
 # Define is reversed
 isReversed = False
-# Defin cookie in cookie.txt
+# Define cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
+
 
 # ***** Sync public playlists *****
 # # Define isPrivate & public playlist name
@@ -31,31 +32,32 @@ headers['cookie'] = readFileContent('cookie.txt')
 # # --- incremental is true
 # # Define is incremental
 # isIncremental = True
-# # playlistName = 'Favorite'
-# playlistName = 'Like'
+# playlistName = 'Favorite'
+# # playlistName = 'Like'
 # # playlistName = '张学友'
 # # playlistName = '周杰伦'
+
 
 # ***** Sync private playlists *****
 # Define isPrivate & private playlist name
 isPrivate = True
 
-# # --- incremental is true
-# isIncremental = True
-# playlistName = 'Nice'
-# # playlistName = 'To Listen'
-# # playlistName = 'Netease Liked'
-
-# --- incremental is false
+# --- incremental is true
 isIncremental = False
-playlistName = 'Listening Artist'
+playlistName = 'Nice'
+# playlistName = 'To Listen'
+# playlistName = 'Netease Non-playable'
+
+# # --- incremental is false
+# isIncremental = False
+# playlistName = 'Listening Artist'
 
 
 def main():
     # Prepare check
-    playlistFileName = 'playlists/custom_playlists/playlist_' + playlistName
+    neteasePlaylistFileName = 'playlists/custom_playlists/playlist_' + playlistName
     if isCreate:
-        if os.path.isfile('./files/' + playlistFileName + '.json'):
+        if os.path.isfile('./files/' + neteasePlaylistFileName + '.json'):
             print('Alreay created playlist. Exit...')
             sys.exit()
 
@@ -67,7 +69,7 @@ def main():
     spotifyArtistTrackNames = getSpotifyArtistTrackNames(
         spotifyPlaylist['tracks'])
     syncSongs, missingSongs, missingSongsStr = getSpotifyToNeteaseSongs(
-        spotifyArtistTrackNames)
+        spotifyArtistTrackNames, isNeedMissingPrompt=False)
 
     # Create or clear playlist
     if isCreate:
@@ -76,21 +78,22 @@ def main():
         playlistId = playlist['playlist']['id']
     else:
         # Get netease playlist
-        if not os.path.isfile('./files/' + playlistFileName + '.json'):
+        if not os.path.isfile('./files/' + neteasePlaylistFileName + '.json'):
             print('Playlist not created yet. Please set isCreate to True.')
             sys.exit()
-        playlist = loadJsonFromFile(playlistFileName)
+        playlist = loadJsonFromFile(neteasePlaylistFileName)
         playlistId = playlist['playlist']['id']
         if not isIncremental:
             # Remove playlist songs
             playlistRomoveSongs(playlistId)
         else:
-            playlistSongs = getPlaylistSongs(playlistId)
+            playlistSongs = getPlaylistSongs(playlistId)['songs']
             playlistSongIdsSet = {song['id']
-                                  for song in playlistSongs['songs']}
+                                  for song in playlistSongs}
             # Find not added songs
             syncSongs = [song for song in syncSongs
                          if list(song.values())[0] not in playlistSongIdsSet]
+            print('Playlist ' + playlistName + ' songs:', len(playlistSongs))
             print('Incremental sync songs: ', len(
                 syncSongs), '\n', syncSongs, '\n', sep='')
             if (len(syncSongs) == 0):
@@ -100,6 +103,7 @@ def main():
     # Add songs & update playlist description
     if isReversed:
         syncSongs = reversed(syncSongs)
+    sureCheck()
     playlistAddSongs(playlistId, syncSongs, missingSongs,
                      spotifyPlaylist, isUpdateDesc=False)
     playlistDescription = 'Synced from spotify. ' + \
@@ -109,7 +113,7 @@ def main():
 
     # Get new playlist Info
     playlist = getPlaylist(playlistId)
-    writeJsonToFile(playlist, playlistFileName)
+    writeJsonToFile(playlist, neteasePlaylistFileName)
 
 
 def getSpotifyToNeteaseSongs(spotifyArtistTrackNames, isNeedMissingPrompt=True):
@@ -125,7 +129,7 @@ def getSpotifyToNeteaseSongs(spotifyArtistTrackNames, isNeedMissingPrompt=True):
         print('************************************************************')
         print('Processing', artistName, '......')
         curSyncSongs, curMissingSongs = getSyncSongs(
-            artist, {artist: trackNames}, isRemoveAlias=True, isNeedPrompt=isNeedMissingPrompt, isOkPrompt=False)
+            artist, {artist: trackNames}, isRemoveAlias=True, isNeedPrompt=False, isOkPrompt=False)
         syncSongs.extend(curSyncSongs)
         missingSongs.extend(curMissingSongs)
         if len(curMissingSongs) > 0:
@@ -139,6 +143,8 @@ def getSpotifyToNeteaseSongs(spotifyArtistTrackNames, isNeedMissingPrompt=True):
         syncSongs, ensure_ascii=False), '\n', sep='')
     print('All missing songs: ', len(missingSongs),
           '\n', json.dumps(missingSongs, ensure_ascii=False), '\n', sep='')
+    if isNeedMissingPrompt and len(missingSongs) > 0:
+        sureCheck()
     return syncSongs, missingSongs, missingSongsStr
 
 

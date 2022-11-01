@@ -7,7 +7,7 @@ from common import *
 # ****************************************
 # Note: doesn't contain mv
 
-# Defin cookie in cookie.txt
+# Define cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
 

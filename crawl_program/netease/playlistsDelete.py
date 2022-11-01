@@ -36,7 +36,7 @@ playlistToKeep = {
     7140236506: 'Learn Waitlist',
     6936670073: 'her like',
 }
-# Defin cookie in cookie.txt
+# Define cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
 

@@ -24,36 +24,22 @@ from playlistRemoveItems import playlistRemoveAllItems
 # match songs in netease playlist(neteaseMatchPlaylistName)
 # and sync them to another spotify playlist(spotifyPlaylistId)
 
-# ********** Syncmode == 1 **********
-# ***** Sync Netease Liked *****
-# # Define sync mode. 0: sync all, 1: sync non-palyable songs.
-# syncMode = 1
-# # Define is incremental
-# isIncremental = True
-# # Spotify playlist id
-# spotifyPlaylistId = '2UuyNeehZW9HQXhTkmFKBj'  # Netease Liked
-# # Define spotify playlist isPrivate
-# isPrivate = True
-# # Spotify source playlists names
-# spotifySourcePlaylistNames = ['Favorite', 'Like']
-# # Netease match playlist name
-# neteaseMatchPlaylistName = 'playlist_songs_ccgccc喜欢的音乐_by ccgccc'
 
 # ********** Syncmode == 0 **********
-# Define sync mode. 0: sync all, 1: sync non-palyable songs.
-syncMode = 0
-# Define is incremental
-isIncremental = True
+# # Define sync mode. 0: sync all, 1: sync non-palyable songs.
+# syncMode = 0
+# # Define is incremental
+# isIncremental = True
 
-# # ***** Sync Favorite *****
-# # Spotify playlist id
-# spotifyPlaylistId = '7J6PrVFDlPWiQe0m6NF2ie'  # Favorite
-# # Define spotify playlist isPrivate
-# isPrivate = False
-# # Spotify source playlists names
-# spotifySourcePlaylistNames = ['Favorite', 'Listening Artist']
-# # Netease match playlist name
-# neteaseMatchPlaylistName = 'playlist_songs_Favorite_by ccgccc'
+# # # ***** Sync Favorite *****
+# # # Spotify playlist id
+# # spotifyPlaylistId = '7J6PrVFDlPWiQe0m6NF2ie'  # Favorite
+# # # Define spotify playlist isPrivate
+# # isPrivate = False
+# # # Spotify source playlists names
+# # spotifySourcePlaylistNames = ['Favorite', 'Listening Artist']
+# # # Netease match playlist name
+# # neteaseMatchPlaylistName = 'playlist_songs_Favorite_by ccgccc'
 
 # ***** Sync Like *****
 # Spotify playlist id
@@ -65,15 +51,31 @@ spotifySourcePlaylistNames = ['Like', 'Listening Artist']
 # Netease match playlist name
 neteaseMatchPlaylistName = 'playlist_songs_Like_by ccgccc'
 
-# # ***** Sync Nice *****
+# # # ***** Sync Nice *****
+# # # Spotify playlist id
+# # spotifyPlaylistId = '4SqLcwtjZJXdkH8twICyOa'  # Nice
+# # # Define spotify playlist isPrivate
+# # isPrivate = True
+# # # Spotify source playlists names
+# # spotifySourcePlaylistNames = ['Nice', 'Listening Artist']
+# # # Netease match playlist name
+# # neteaseMatchPlaylistName = 'playlist_songs_Nice_by ccgccc'
+
+
+# ********** Syncmode == 1 **********
+# ***** Sync Netease Non-playable *****
+# # Define sync mode. 0: sync all, 1: sync non-palyable songs.
+# syncMode = 1
+# # Define is incremental
+# isIncremental = True
 # # Spotify playlist id
-# spotifyPlaylistId = '4SqLcwtjZJXdkH8twICyOa'  # Nice
+# spotifyPlaylistId = '2UuyNeehZW9HQXhTkmFKBj'  # Netease Non-playable
 # # Define spotify playlist isPrivate
 # isPrivate = True
 # # Spotify source playlists names
-# spotifySourcePlaylistNames = ['Nice', 'Listening Artist']
+# spotifySourcePlaylistNames = ['Favorite', 'Like']
 # # Netease match playlist name
-# neteaseMatchPlaylistName = 'playlist_songs_Nice_by ccgccc'
+# neteaseMatchPlaylistName = 'playlist_songs_ccgccc喜欢的音乐_by ccgccc'
 
 
 def main():
@@ -105,8 +107,10 @@ def main():
                 neteaseAllSyncSongs.append(neteasePlaylistSongs[i])
                 continue
             # if neteasePlaylistSongs[i]['fee'] == 4:
-            # TODO reliable??
-            if neteasePlaylistSongs[i]['fee'] == 4 and neteasePlaylistPrivileges[i]['flag'] % 4 == 0:
+            # TODO reliable?? hahaha
+            if neteasePlaylistSongs[i]['fee'] == 4 and (
+                    neteasePlaylistPrivileges[i]['flag'] % 4 == 0
+                    or neteasePlaylistPrivileges[i]['flag'] == 8197):
                 # print(neteasePlaylistSongs[i]['name'], neteasePlaylistPrivileges[i]['flag'])
                 neteaseNeedPurchaseSongs.append(neteasePlaylistSongs[i])
                 neteaseAllSyncSongs.append(neteasePlaylistSongs[i])
@@ -174,21 +178,21 @@ def main():
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     trackUriList = [list(dict.keys())[0] for dict in spotifyTracksFromNetease]
+    # Get spotify authorization token by scope and accessToken
+    if isPrivate:
+        scope = [
+            "playlist-read-private",
+            "playlist-modify-private",
+            "playlist-modify-public"
+        ]
+        spotify, authorizeToken = getAuthorizationToken(
+            clientID, clientSecret, scope)
+        accessToken = None
+    else:
+        accessToken = getAccessToken(clientID, clientSecret)
+        spotify = None
+        authorizeToken = None
     if isIncremental:
-        # Get spotify authorization token by scope and accessToken
-        if isPrivate:
-            scope = [
-                "playlist-read-private",
-                "playlist-modify-private",
-                "playlist-modify-public"
-            ]
-            spotify, authorizeToken = getAuthorizationToken(
-                clientID, clientSecret, scope)
-            accessToken = None
-        else:
-            accessToken = getAccessToken(clientID, clientSecret)
-            spotify = None
-            authorizeToken = None
         # Get incremental sync trackuri
         playlist = getPlaylistAndAllTracks(
             accessToken, spotifyPlaylistId, isPrivate=isPrivate, spotify=spotify)

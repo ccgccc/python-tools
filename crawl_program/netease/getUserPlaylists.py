@@ -6,7 +6,7 @@ from common import *
 #    Get netease user's all playlists
 # ****************************************
 
-# Use right cookie to retrive private playlists
+# Define cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
 
