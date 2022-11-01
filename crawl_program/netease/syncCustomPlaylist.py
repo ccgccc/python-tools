@@ -19,37 +19,41 @@ from playlistRemoveSongs import playlistRomoveSongs
 
 # Define create playlist or update playlist
 isCreate = False
-# Define is reversed
-isReversed = False
 # Define cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
 
-# ***** Sync public playlists *****
+# ****** Sync public playlists ******
 # # Define isPrivate & public playlist name
 # isPrivate = False
 
-# # --- incremental is true
+# # ------ incremental is true
 # # Define is incremental
 # isIncremental = True
+# # --- Define is reversed
+# isReversed = True
 # playlistName = 'Favorite'
 # # playlistName = 'Like'
 # # playlistName = '张学友'
 # # playlistName = '周杰伦'
 
 
-# ***** Sync private playlists *****
+# ****** Sync private playlists ******
 # Define isPrivate & private playlist name
 isPrivate = True
 
-# --- incremental is true
-isIncremental = False
+# ------ incremental is true
+isIncremental = True
+# --- Define is reversed
+isReversed = True
 playlistName = 'Nice'
 # playlistName = 'To Listen'
 # playlistName = 'Netease Non-playable'
 
-# # --- incremental is false
+# # ----- incremental is false
 # isIncremental = False
+# # --- Define is reversed
+# isReversed = False
 # playlistName = 'Listening Artist'
 
 
@@ -84,6 +88,8 @@ def main():
         playlist = loadJsonFromFile(neteasePlaylistFileName)
         playlistId = playlist['playlist']['id']
         if not isIncremental:
+            print('Incremental: False')
+            sureCheck()
             # Remove playlist songs
             playlistRomoveSongs(playlistId)
         else:
@@ -99,11 +105,11 @@ def main():
             if (len(syncSongs) == 0):
                 print('Nothing to sync. Exiting...')
                 sys.exit()
+            sureCheck()
 
     # Add songs & update playlist description
     if isReversed:
         syncSongs = reversed(syncSongs)
-    sureCheck()
     playlistAddSongs(playlistId, syncSongs, missingSongs,
                      spotifyPlaylist, isUpdateDesc=False)
     playlistDescription = 'Synced from spotify. ' + \

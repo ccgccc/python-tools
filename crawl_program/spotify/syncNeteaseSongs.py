@@ -26,22 +26,22 @@ from playlistRemoveItems import playlistRemoveAllItems
 
 
 # ********** Syncmode == 0 **********
-# # Define sync mode. 0: sync all, 1: sync non-palyable songs.
-# syncMode = 0
-# # Define is incremental
-# isIncremental = True
+# Define sync mode. 0: sync all, 1: sync non-palyable songs.
+syncMode = 0
+# Define is incremental
+isIncremental = True
 
-# # # ***** Sync Favorite *****
-# # # Spotify playlist id
-# # spotifyPlaylistId = '7J6PrVFDlPWiQe0m6NF2ie'  # Favorite
-# # # Define spotify playlist isPrivate
-# # isPrivate = False
-# # # Spotify source playlists names
-# # spotifySourcePlaylistNames = ['Favorite', 'Listening Artist']
-# # # Netease match playlist name
-# # neteaseMatchPlaylistName = 'playlist_songs_Favorite_by ccgccc'
+# # ----- Sync Favorite -----
+# # Spotify playlist id
+# spotifyPlaylistId = '7J6PrVFDlPWiQe0m6NF2ie'  # Favorite
+# # Define spotify playlist isPrivate
+# isPrivate = False
+# # Spotify source playlists names
+# spotifySourcePlaylistNames = ['Favorite', 'Listening Artist']
+# # Netease match playlist name
+# neteaseMatchPlaylistName = 'playlist_songs_Favorite_by ccgccc'
 
-# ***** Sync Like *****
+# ----- Sync Like -----
 # Spotify playlist id
 spotifyPlaylistId = '2QBH6yCLDJhTiXKqDfCtOA'  # Like
 # Define spotify playlist isPrivate
@@ -51,19 +51,19 @@ spotifySourcePlaylistNames = ['Like', 'Listening Artist']
 # Netease match playlist name
 neteaseMatchPlaylistName = 'playlist_songs_Like_by ccgccc'
 
-# # # ***** Sync Nice *****
-# # # Spotify playlist id
-# # spotifyPlaylistId = '4SqLcwtjZJXdkH8twICyOa'  # Nice
-# # # Define spotify playlist isPrivate
-# # isPrivate = True
-# # # Spotify source playlists names
-# # spotifySourcePlaylistNames = ['Nice', 'Listening Artist']
-# # # Netease match playlist name
-# # neteaseMatchPlaylistName = 'playlist_songs_Nice_by ccgccc'
+# # ----- Sync Nice -----
+# # Spotify playlist id
+# spotifyPlaylistId = '4SqLcwtjZJXdkH8twICyOa'  # Nice
+# # Define spotify playlist isPrivate
+# isPrivate = True
+# # Spotify source playlists names
+# spotifySourcePlaylistNames = ['Nice', 'Listening Artist']
+# # Netease match playlist name
+# neteaseMatchPlaylistName = 'playlist_songs_Nice_by ccgccc'
 
 
 # ********** Syncmode == 1 **********
-# ***** Sync Netease Non-playable *****
+# ----- Sync Netease Non-playable -----
 # # Define sync mode. 0: sync all, 1: sync non-palyable songs.
 # syncMode = 1
 # # Define is incremental
