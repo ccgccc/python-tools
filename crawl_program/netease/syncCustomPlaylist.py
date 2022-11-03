@@ -42,19 +42,41 @@ headers['cookie'] = readFileContent('cookie.txt')
 # Define isPrivate & private playlist name
 isPrivate = True
 
-# ------ incremental is true
-isIncremental = True
-# --- Define is reversed
-isReversed = True
-playlistName = 'Nice'
-# playlistName = 'To Listen'
-# playlistName = 'Netease Non-playable'
-
-# # ----- incremental is false
-# isIncremental = False
+# # ------ incremental is true
+# isIncremental = True
 # # --- Define is reversed
-# isReversed = False
-# playlistName = 'Listening Artist'
+# isReversed = True
+# playlistName = 'Nice'
+# # playlistName = 'To Listen'
+# # playlistName = 'Netease Non-playable'
+
+# ----- incremental is false
+isIncremental = False
+# --- Define is reversed
+isReversed = False
+playlistName = 'Listening Artist'
+
+# Read parameters from command line
+if len(sys.argv) >= 2:
+    playlistName = sys.argv[1]
+    if playlistName in {'Nice', 'To Listen', 'Netease Non-playable', 'Listening Artist'}:
+        isPrivate = True
+        isIncremental = True
+        isReversed = True
+        if playlistName in {'Listening Artist'}:
+            isIncremental = False
+            isReversed = False
+    else:
+        isPrivate = False
+        isIncremental = True
+        isReversed = True
+print('--------------------')
+print('*** Sync Info ***')
+print('Playlist:', playlistName)
+print('IsPrivate:', isPrivate)
+print('IsIncremental:', isIncremental)
+print('IsReversed:', isReversed)
+print('--------------------')
 
 
 def main():

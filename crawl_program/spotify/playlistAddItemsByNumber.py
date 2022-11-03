@@ -34,6 +34,13 @@ isUpdateDesc = False
 
 
 def main():
+    # Read parameters from command line
+    if len(sys.argv) >= 2:
+        tracksNumber = int(sys.argv[1])
+    if tracksNumber > 100:
+        print('Track number too big.')
+        sys.exit()
+
     # Get playlist
     if playlistID == None:
         with open('./files/playlists/generated_playlists/' + artist + '_playlist.json') as f:

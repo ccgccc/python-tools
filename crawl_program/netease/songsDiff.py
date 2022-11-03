@@ -21,9 +21,9 @@ playlists = {
     "Favorite": 7673625615,
     "Like": 7673790351
 }
-playlists = {
-    "Netease Liked_Playable": 7721015504
-}
+# playlists = {
+#     "Netease Liked_Playable": 7721015504
+# }
 playlistSongs = []
 print('--------------------')
 totalSongs = 0

@@ -1,3 +1,4 @@
+import os
 import re
 import json
 from utils.secrets import clientID, clientSecret
@@ -8,47 +9,52 @@ from spotifyFunc import *
 #    Crawl spotify playlists
 # ******************************
 
-# Define isPrivate & public playlist ids here
-isPrivate = False
-playlistIds = [
-    "7J6PrVFDlPWiQe0m6NF2ie",  # Favorite
-    "2QBH6yCLDJhTiXKqDfCtOA",  # Like
-    '4SqLcwtjZJXdkH8twICyOa',  # Nice
-    # "6Ev0ju4qLsqSLznN7fjErt",  # 张学友
-    # "7w3Y21vKZuLLq1huUuEWZZ",  # 周杰伦
-    # "4DLB8que4WlMKhdg96wrvh",  # 五月天 Most Played Songs
-]
-
-# # Define isPrivate & private playlist ids here
-# isPrivate = True
-# playlistIds = [
-#     # '1cd55XqNdveVHn8DUJRJM1',  # To Listen
-#     # '2UuyNeehZW9HQXhTkmFKBj',  # Netease Non-playable
-#     '2R48aLSO7QmOaHAGaV0zIM'  # Listening Artist
-# ]
+# Define playlistId:isPrivate here
+playlistIDs = {
+    "7J6PrVFDlPWiQe0m6NF2ie": False,  # Favorite
+    "2QBH6yCLDJhTiXKqDfCtOA": False,  # Like
+    '4SqLcwtjZJXdkH8twICyOa': False,  # Nice
+    '64s4sAZyFPc9v2siw2XdX7': True,  # Hmm
+    # "6Ev0ju4qLsqSLznN7fjErt": False,  # 张学友
+    # "7w3Y21vKZuLLq1huUuEWZZ": False,  # 周杰伦
+    # "4DLB8que4WlMKhdg96wrvh": False,  # 五月天 Most Played Songs
+    # '1cd55XqNdveVHn8DUJRJM1': True,  # To Listen
+    # '2UuyNeehZW9HQXhTkmFKBj': True,  # Netease Non-playable
+    # '2R48aLSO7QmOaHAGaV0zIM': True  # Listening Artist
+}
 
 # Define if simple print
 simplePrint = True
 
 
 def main():
+    # Read parameters from command line
+    os.chdir(os.path.dirname(__file__))
+    if len(sys.argv) >= 2:
+        playlistNames = sys.argv[1:]
+        playlistIds = {}
+        for playlistName in playlistNames:
+            with open('./files/playlists/playlist_' + playlistName + '_by ccg ccc.json') as f:
+                playlist = json.load(f)
+                playlistIds[playlist['id']] = not playlist['public']
+    else:
+        playlistIds = playlistIDs
+    # Playlist directory
     playlistDir = './files/playlists/'
 
     # API request
-    if isPrivate:
+    if True in playlistIds.values():
         scope = "playlist-read-private"
         spotify, authorizeToken = getAuthorizationToken(
             clientID, clientSecret, scope)
-        accessToken = None
     else:
-        accessToken = getAccessToken(clientID, clientSecret)
         spotify = None
-    crawlPlaylists(accessToken, playlistIds, playlistDir,
-                   isPrivate=isPrivate, spotify=spotify)
+    accessToken = getAccessToken(clientID, clientSecret)
+    crawlPlaylists(accessToken, playlistIds, playlistDir, spotify=spotify)
 
 
 def crawlPlaylists(accessToken, playlistIds, playlistDir, isPrivate=False, spotify=None):
-    for playlistID in playlistIds:
+    for playlistID, isPrivate in playlistIds.items():
         crawlSinglePlaylist(accessToken, playlistID, playlistDir,
                             isPrivate=isPrivate, spotify=spotify)
 

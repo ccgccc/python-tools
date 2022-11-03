@@ -86,6 +86,13 @@ specialSongNames = {
     # Ariana Grande  All
     'ariana_grande': {
         'Save Your Tears': 'Save Your Tears (Remix)'
+    },
+    # Michael Jackson  Missing: Don’t Matter To Me
+    'michael_jackson': {
+        'Rock with You': 'Rock With You',
+        'P.Y.T.': 'P.Y.T. (Pretty Young Thing)',
+        'We Are The World': 'We Are The World (Demo)',
+        'Give In to Me': 'Give in to Me'
     }
 }
 
@@ -125,6 +132,10 @@ specialSongIds = {
     # Billie Eilish
     'billie_eilish': {
         'Bored': 468738965
+    },
+    # Michael Jackson
+    'michael_jackson': {
+        'Don’t Matter To Me': 574926603
     }
 }
 
@@ -145,6 +156,10 @@ repeatedSongs = {
     # 王菲
     'faye_wong': [{
         '执迷不悔 (国语版)': 300603
+    }],
+    # Michael Jackson
+    'michael_jackson': [{
+        'Love Never Felt So Good': 1299086142
     }]
 }
 

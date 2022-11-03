@@ -11,7 +11,7 @@ from playlistAddSongs import playlistAddSongs
 # ************************************************************
 
 # Define create playlist or update playlist
-isCreate = True
+isCreate = False
 # Define if update description
 isUpdateDesc = True
 # Define cookie in cookie.txt

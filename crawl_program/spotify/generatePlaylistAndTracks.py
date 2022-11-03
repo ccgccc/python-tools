@@ -28,11 +28,32 @@ tracksNumber = 20
 # For method 2: Define minimum playcount to add tracks
 playcount = 5000000
 
+# Read parameters from command line
+if len(sys.argv) >= 3:
+    generateMethod = int(sys.argv[1])
+    if generateMethod == 1:
+        tracksNumber = int(sys.argv[2])
+    elif generateMethod == 2:
+        playcount = int(sys.argv[2].replace(',', ''))
+
 # Define my user id here
 myUserId = '31jvwpn5kplbtp4sqdqaol2x5mcy'  # ccg ccc
 
 
 # Prepare check
+print('--------------------')
+print('*** Generate Info ***')
+print('Artist:', artists[artistToCrawl]['name'])
+print('IsCreate:', isCreate)
+print('Generate Method:', generateMethod)
+if generateMethod == 1:
+    print('Tracks Number:', tracksNumber)
+elif generateMethod == 2:
+    print('Playcount:', playcount)
+else:
+    print('Generate method not supported.')
+    sys.exit()
+print('--------------------')
 if artists.get(artist) == None:
     print(artist + ' is not defined in artist.py, please define it first.')
     sys.exit()
@@ -40,9 +61,13 @@ generateDir = './files/playlists/generated_playlists/'
 if isCreate and os.path.isfile(generateDir + artist + '_playlist.json'):
     print('Alreay created playlist. Exit...')
     sys.exit()
-if generateMethod != 1 and generateMethod != 2:
-    print('generate method not supported.')
+if generateMethod == 1 and tracksNumber > 100:
+    print('Generate Method 1: Track number too big.')
     sys.exit()
+if generateMethod == 2 and playcount < 100000:
+    print('Generate Method 2: Playcount too small.')
+    sys.exit()
+
 
 # Get accessToken
 accessToken = getAccessToken(clientID, clientSecret)

@@ -34,6 +34,13 @@ playlistID = '2R48aLSO7QmOaHAGaV0zIM'  # Listening Artist
 
 
 def main():
+    # Read parameters from command line
+    if len(sys.argv) >= 2:
+        playcount = int(sys.argv[1].replace(',', ''))
+    if playcount < 100000:
+        print('Playcount too small.')
+        sys.exit()
+
     # Get playlist
     if playlistID == None:
         with open('./files/playlists/generated_playlists/' + artist + '_playlist.json') as f:

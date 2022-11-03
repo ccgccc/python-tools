@@ -1,3 +1,4 @@
+import os
 from common import *
 
 # ****************************************
@@ -10,11 +11,22 @@ playlistIds = [
     7673625615,  # Favorite
     7673790351,  # Like
     7680312360,  # Nice
-    7690539370  # Listening Artist
+    7690539370,  # Listening Artist
+    7674298063,  # To Listen
+    7722735074  # Hmm
 ]
-
 # # Liked songs playlist id
 # playlistIds = [553778357]
+
+# Read parameters from command line
+os.chdir(os.path.dirname(__file__))
+if len(sys.argv) >= 2:
+    playlistNames = sys.argv[1:]
+    playlistIds = []
+    for playlistName in playlistNames:
+        with open('./files/playlists/playlist_songs_' + playlistName + '_by ccgccc.json') as f:
+            playlist = json.load(f)
+            playlistIds.append(playlist['playlist']['playlist']['id'])
 
 # Define cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
@@ -23,6 +35,7 @@ headers['cookie'] = readFileContent('cookie.txt')
 for playlistId in playlistIds:
     playlist = getPlaylist(playlistId)
     playlistSongs = getPlaylistSongs(playlistId)
+    playlistSongs['playlist'] = playlist
 
     fileName = 'playlists/playlist_songs_' + \
         playlist['playlist']['name'] + '_by ' + \

@@ -61,6 +61,16 @@ neteaseMatchPlaylistName = 'playlist_songs_Like_by ccgccc'
 # # Netease match playlist name
 # neteaseMatchPlaylistName = 'playlist_songs_Nice_by ccgccc'
 
+# # ----- Sync To Listen -----
+# # Spotify playlist id
+# spotifyPlaylistId = '1cd55XqNdveVHn8DUJRJM1'  # To Listen
+# # Define spotify playlist isPrivate
+# isPrivate = True
+# # Spotify source playlists names
+# spotifySourcePlaylistNames = ['To Listen', 'Listening Artist']
+# # Netease match playlist name
+# neteaseMatchPlaylistName = 'playlist_songs_To Listen_by ccgccc'
+
 
 # ********** Syncmode == 1 **********
 # ----- Sync Netease Non-playable -----
@@ -77,6 +87,34 @@ neteaseMatchPlaylistName = 'playlist_songs_Like_by ccgccc'
 # # Netease match playlist name
 # neteaseMatchPlaylistName = 'playlist_songs_ccgccc喜欢的音乐_by ccgccc'
 
+# Read parameters from command line
+if len(sys.argv) >= 2:
+    playlistName = sys.argv[1]
+    with open('../spotify/files/playlists/playlist_' + playlistName + '_by ccg ccc.json') as f:
+        spotifyPlaylist = json.load(f)
+        spotifyPlaylistId = spotifyPlaylist['id']
+    if playlistName in {'Favorite', 'Like', 'Nice', 'Hmm', 'To Listen'}:
+        syncMode = 0
+        isIncremental = True
+        isPrivate = True if playlistName in {'Nice', 'Hmm', 'To Listen'} else False
+        spotifySourcePlaylistNames = [playlistName, 'Listening Artist']
+    elif playlistName in {'Netease Non-playable'}:
+        syncMode = 1
+        isIncremental = True
+        isPrivate = True
+        spotifySourcePlaylistNames = ['Favorite', 'Like']
+    neteaseMatchPlaylistName = 'playlist_songs_' + playlistName + '_by ccgccc'
+print('--------------------')
+print('*** Sync Info ***')
+print('Sync Mode:', syncMode,
+      '(' + ('All' if syncMode == 0 else 'Non-playable') + ')')
+print('Playlist:', playlistName if 'playlistName' in globals() else spotifyPlaylistId)
+print('IsPrivate:', isPrivate)
+print('IsIncremental:', isIncremental)
+print('SpotifySourcePlaylistNames:', spotifySourcePlaylistNames)
+print('NeteaseMatchPlaylistName:', neteaseMatchPlaylistName)
+print('--------------------')
+
 
 def main():
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
@@ -90,8 +128,8 @@ def main():
     with open(neteasePlaylistFileName) as f:
         neteasePlaylist = json.load(f)
     if syncMode == 0:
-        neteaseAllSyncSongNames = {song['name']
-                                   for song in neteasePlaylist['songs']}
+        neteaseAllSyncSongNames = [song['name']
+                                   for song in neteasePlaylist['songs']]
         print('Netease all songs:', len(neteaseAllSyncSongNames))
         print(neteaseAllSyncSongNames, '\n')
     elif syncMode == 1:
