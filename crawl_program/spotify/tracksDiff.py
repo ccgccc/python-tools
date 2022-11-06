@@ -35,6 +35,10 @@ for playlistName, playlistId in playlists.items():
     trackItems2.extend(curTrackItems)
     totalTrack = totalTrack + len(curTrackItems)
     print(playlistName + ':', len(curTrackItems))
+seen = set()
+dupes = [x['track']['name'] for x in trackItems2
+         if x['track']['id'] in seen or seen.add(x['track']['id'])]
+print('Dupes:', dupes)
 print('Total:', totalTrack)
 trackIds2 = set(map(lambda track: track['track']['id'], trackItems2))
 # print(trackIds2)

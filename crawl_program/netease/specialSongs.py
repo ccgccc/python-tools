@@ -91,8 +91,9 @@ specialSongNames = {
     'michael_jackson': {
         'Rock with You': 'Rock With You',
         'P.Y.T.': 'P.Y.T. (Pretty Young Thing)',
-        'We Are The World': 'We Are The World (Demo)',
-        'Give In to Me': 'Give in to Me'
+        'We Are The World': 'We Are the World (Live)',
+        'Give In to Me': 'Give in to Me',
+        'Another Part of Me': 'Another Part Of Me'
     }
 }
 

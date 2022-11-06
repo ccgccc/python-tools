@@ -47,14 +47,26 @@ print(spotifyArtistTrackNames, '\n')
 
 syncSongs, missingSongs, missingSongsStr = getSpotifyToNeteaseSongs(
     spotifyArtistTrackNames, isNeedMissingPrompt=False)
+syncSongDict = {str(list(song.values())[0]): list(song.keys())[0]
+                for song in syncSongs}
 
-syncSongIds = ','.join([str(list(song.values())[0]) for song in syncSongs])
-print('To sync: ', len(syncSongs), '\n', syncSongIds, sep='')
-
+print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+if isIncremental:
+    # Get liked songs
+    likedSongs = getPlaylistSongs(likePlaylistId)['songs']
+    syncSongIds = {str(list(song.values())[0]) for song in syncSongs}\
+        - {str(song['id']) for song in likedSongs}
+    if len(syncSongIds) > 0:
+        syncSongIds = list(reversed(list(syncSongIds)))
+else:
+    syncSongIds = [str(list(song.values())[0])
+                   for song in syncSongs]
+print('To sync: ', len(syncSongIds))
+print({k: v for k, v in syncSongDict.items() if k in syncSongIds})
+print('\nIsIncremental:', isIncremental)
 sureCheck()
 
 if not isIncremental:
     # Remove playlist songs
     playlistRomoveSongs(likePlaylistId)
-
-addSongsToPlayList(likePlaylistId, syncSongIds)
+addSongsToPlayList(likePlaylistId, ','.join(syncSongIds))

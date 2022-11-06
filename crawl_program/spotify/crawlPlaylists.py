@@ -1,5 +1,6 @@
 import os
 import re
+import copy
 import json
 from utils.secrets import clientID, clientSecret
 from utils.auth import getAccessToken, getAuthorizationToken
@@ -14,7 +15,7 @@ playlistIDs = {
     "7J6PrVFDlPWiQe0m6NF2ie": False,  # Favorite
     "2QBH6yCLDJhTiXKqDfCtOA": False,  # Like
     '4SqLcwtjZJXdkH8twICyOa': False,  # Nice
-    '64s4sAZyFPc9v2siw2XdX7': True,  # Hmm
+    # '64s4sAZyFPc9v2siw2XdX7': True,  # Hmm
     # "6Ev0ju4qLsqSLznN7fjErt": False,  # 张学友
     # "7w3Y21vKZuLLq1huUuEWZZ": False,  # 周杰伦
     # "4DLB8que4WlMKhdg96wrvh": False,  # 五月天 Most Played Songs
@@ -54,9 +55,21 @@ def main():
 
 
 def crawlPlaylists(accessToken, playlistIds, playlistDir, isPrivate=False, spotify=None):
+    allPlaylists = []
+    mergedPlaylist = None
     for playlistID, isPrivate in playlistIds.items():
-        crawlSinglePlaylist(accessToken, playlistID, playlistDir,
-                            isPrivate=isPrivate, spotify=spotify)
+        curPlaylist = crawlSinglePlaylist(accessToken, playlistID, playlistDir,
+                                          isPrivate=isPrivate, spotify=spotify)
+        allPlaylists.append(curPlaylist)
+        if mergedPlaylist == None:
+            mergedPlaylist = copy.deepcopy(curPlaylist)
+            mergedPlaylist['name'] = 'Merged_Playlist'
+        else:
+            mergedPlaylist['tracks']['items'].extend(
+                curPlaylist['tracks']['items'])
+    for playlist in allPlaylists:
+        playlistStatistics(playlist)
+    playlistStatistics(mergedPlaylist)
 
 
 def crawlSinglePlaylist(accessToken, playlistID, playlistDir, isPrivate=False, spotify=None):
@@ -73,17 +86,18 @@ def crawlSinglePlaylist(accessToken, playlistID, playlistDir, isPrivate=False, s
         json.dump(playlist, f, ensure_ascii=False)
     # Write playlist tracks to csv file
     csvFileName = fileName + '.csv'
-    writeToCsvFile(playlist['tracks']['items'],
-                   csvFileName, simplePrint=simplePrint)
+    writeToCsvFile(playlist, csvFileName, simplePrint=simplePrint)
+    return playlist
 
 
-def writeToCsvFile(trackItems, csvFileName, simplePrint=False):
+def writeToCsvFile(playlist, csvFileName, simplePrint=False):
     with open(csvFileName, 'w') as f:
         f.write('Track Id, Track, Artists, Album, Album Artist, Release Date\n')
     file = open(csvFileName, 'a')
-    print('--------------------')
+    print('----------------------------------------')
+    print(playlist['name'] + ':')
     count = 0
-    for item in trackItems:
+    for item in playlist['tracks']['items']:
         count = count + 1
         # Album info
         album = item['track']['album']
@@ -115,6 +129,21 @@ def writeToCsvFile(trackItems, csvFileName, simplePrint=False):
         file.write(trackId + ', ' + re.sub(r'\,', '，', trackName) + ', ' + trackArtists + ', '
                    + re.sub(r'\,', '，', albumName) + ', ' + albumArtists + ', ' + releaseDate + '\n')
     file.close()
+
+
+def playlistStatistics(playlist):
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    print(playlist['name'] + ' Statistics:')
+    playlistStats = {}
+    for item in playlist['tracks']['items']:
+        track = item['track']
+        mainArtist = track['artists'][0]['name']
+        if playlistStats.get(mainArtist) == None:
+            playlistStats[mainArtist] = 1
+        else:
+            playlistStats[mainArtist] = playlistStats[mainArtist] + 1
+    print(dict(sorted(playlistStats.items(),
+          key=lambda item: item[1], reverse=True)))
 
 
 if __name__ == '__main__':
