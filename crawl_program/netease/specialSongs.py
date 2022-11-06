@@ -87,7 +87,7 @@ specialSongNames = {
     'ariana_grande': {
         'Save Your Tears': 'Save Your Tears (Remix)'
     },
-    # Michael Jackson  Missing: Don’t Matter To Me
+    # Michael Jackson  All
     'michael_jackson': {
         'Rock with You': 'Rock With You',
         'P.Y.T.': 'P.Y.T. (Pretty Young Thing)',
