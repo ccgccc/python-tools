@@ -36,8 +36,10 @@ isUpdateDesc = False
 def main():
     # Read parameters from command line
     if len(sys.argv) >= 2:
-        tracksNumber = int(sys.argv[1])
-    if tracksNumber > 100:
+        trackNumber = int(sys.argv[1])
+    else:
+        trackNumber = tracksNumber
+    if trackNumber > 100:
         print('Track number too big.')
         sys.exit()
 
@@ -73,7 +75,7 @@ def main():
     playlistRemoveAllItems(accessToken, spotify,
                            authorizeToken, playlistId, isPrivate=isPrivate)
     playlistAddTracksByNumber(
-        spotify, authorizeToken, playlistId, artist, allTracks, tracksNumber, isUpdateDesc=isUpdateDesc)
+        spotify, authorizeToken, playlistId, artist, allTracks, trackNumber, isUpdateDesc=isUpdateDesc)
     # Get new playlist info
     if playlistID == None:
         crawlSinglePlaylist(accessToken, playlistId,
@@ -92,9 +94,17 @@ def playlistAddTracksByNumber(spotify, token, playlistId, artist, allTracks, tra
         # Playlist name & description
         playlistName = artists[artist]['name'] + ' Most Played Songs'
         minimumPlaycount = allTracks[tracksNumber - 1]['playcount']
-        playlistDescription = artists[artist]['name'] + ' most played songs (top ' + str(tracksNumber) + ', minimum play: ' + \
-            (str(minimumPlaycount // 1000000) + ' million' if minimumPlaycount >= 1000000 else str(minimumPlaycount)) + '). ' + \
-            ' Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
+        if minimumPlaycount >= 10000000:
+            minimumPlaycountStr = str(minimumPlaycount // 1000000) + ' million'
+        elif minimumPlaycount >= 1000000:
+            minimumPlaycountStr = str(
+                minimumPlaycount // 100000 / 10) + ' million'
+        else:
+            minimumPlaycountStr = str(minimumPlaycount)
+        playlistDescription = artists[artist]['name'] \
+            + ' most played songs (top ' + str(tracksNumber) \
+            + ', minimum playcount: ' + minimumPlaycountStr + '). ' + \
+            'Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
         res = updatePlayList(spotify, token, playlistId,
                              playlistName, playlistDescription, True)
         print('Response:', res)

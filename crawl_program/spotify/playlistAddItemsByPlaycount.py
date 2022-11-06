@@ -36,8 +36,10 @@ playlistID = '2R48aLSO7QmOaHAGaV0zIM'  # Listening Artist
 def main():
     # Read parameters from command line
     if len(sys.argv) >= 2:
-        playcount = int(sys.argv[1].replace(',', ''))
-    if playcount < 100000:
+        playCount = int(sys.argv[1].replace(',', ''))
+    else:
+        playCount = playcount
+    if playCount < 100000:
         print('Playcount too small.')
         sys.exit()
 
@@ -71,7 +73,7 @@ def main():
     playlistRemoveAllItems(accessToken, spotify,
                            authorizeToken, playlistId, isPrivate=isPrivate)
     playlistAddTracksByPlaycount(
-        spotify, authorizeToken, playlistId, artist, allTracks, playcount, isUpdateDesc=isUpdateDesc)
+        spotify, authorizeToken, playlistId, artist, allTracks, playCount, isUpdateDesc=isUpdateDesc)
     # Get new playlist info
     if playlistID == None:
         crawlSinglePlaylist(accessToken, playlistId,

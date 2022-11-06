@@ -21,14 +21,13 @@ dir = './files/playlists/generated_playlists/'
 fileNames = [artistToCrawl + '_playlist.json']
 
 
-playlistIds = []
+playlistIds = {}
 for fileName in fileNames:
     # Get playlist
     playlist = []
     with open(dir + fileName) as f:
         playlist = json.load(f)
-    playlistId = playlist['id']
-    playlistIds.append(playlistId)
+    playlistIds[playlist['id']] = not playlist['public']
 
 token = getAccessToken(clientID, clientSecret)
 crawlPlaylists(token, playlistIds,
