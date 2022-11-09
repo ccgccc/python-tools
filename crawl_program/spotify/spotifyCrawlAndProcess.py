@@ -12,7 +12,9 @@ from processTracks import processTracks
 
 
 # Define artist here
-artist = artistToCrawl
+artistToCrawlList = [artistToCrawl]
+# artistToCrawlList = artists.keys()
+
 # Define must first artist
 mustMainArtist = False
 # Filter track by track name or not
@@ -25,15 +27,27 @@ filterTrackByName = False
 spotifyToken = readFileContent('utils/spotifyToken.txt')
 
 
-if artist in {'beyond', 'kare_mok'}:
-    mustMainArtist = True
-# Get all albums
-token = getAccessToken(clientID, clientSecret)
-allAlbums = crawlAlbums(token, artists, artist)
-# Get all albums tracks
-allAlbumsTracks = getAllAlbumsTracks(spotifyToken, artist, allAlbums)
-# Process tracks
-processTracks(artists, artist, allAlbumsTracks,
-              mustMainArtist=mustMainArtist, filterTrackByName=False, printInfo=True)
-print('--------------------')
-print('Done!')
+def main():
+    for artist in artistToCrawlList:
+        if artist in {'beyond', 'kare_mok'}:
+            mustMainArtist = True
+        else:
+            mustMainArtist = False
+        crawlAndProcess(artist, mustMainArtist, filterTrackByName)
+
+
+def crawlAndProcess(artist, mustMainArtist, filterTrackByName):
+    # Get all albums
+    token = getAccessToken(clientID, clientSecret)
+    allAlbums = crawlAlbums(token, artists, artist)
+    # Get all albums tracks
+    allAlbumsTracks = getAllAlbumsTracks(spotifyToken, artist, allAlbums)
+    # Process tracks
+    processTracks(artists, artist, allAlbumsTracks,
+                  mustMainArtist=mustMainArtist, filterTrackByName=False, printInfo=True)
+    print('--------------------')
+    print('Done!')
+
+
+if __name__ == '__main__':
+    main()

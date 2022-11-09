@@ -1,3 +1,4 @@
+import os
 import json
 import time
 import xlwt
@@ -123,7 +124,14 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False, filter
     # Write json to file
     with open('./files/tracks/' + artist + '_alltracks.json', 'w') as f:
         json.dump(sortedTracks, f, ensure_ascii=False)
-    writeToXlsx(sortedTracks, './files/trackSheets/' + artists[artist]['name'] +
+    trackSheetDir = './files/trackSheets/'
+    fileNames = [f for f in os.listdir(trackSheetDir)
+                 if os.path.isfile(os.path.join(trackSheetDir, f))]
+    existFile = True if len({True for fileName in fileNames if fileName.find(
+        artists[artist]['name']) >= 0}) > 0 else False
+    if existFile:
+        trackSheetDir = trackSheetDir + 'update/'
+    writeToXlsx(sortedTracks, trackSheetDir + artists[artist]['name'] +
                 '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
     return sortedTracks
 

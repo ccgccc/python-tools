@@ -2,22 +2,19 @@
 First, define artists & artistToCrawl in artists.py.
 
 Then, execute these commands:
-python3 spotifyCrawlAndProcess.py
-python3 generatePlaylistAndTracks.py
-python3 generatePlaylistAndTracks.py 1 20
-python3 generatePlaylistAndTracks.py 2 5,000,000
-
-Or execute these commands:
 python3 crawlAlbums.py
 python3 crawlProcessTracks.py
 python3 generatePlaylistAndTracks.py
 
+Or execute these commands:
+python3 spotifyCrawlAndProcess.py
+python3 generatePlaylistAndTracks.py
+python3 generatePlaylistAndTracks.py update
+
 #### Add tracks to Listening Artist playlist
 python3 playlistAddItemsByNumber.py
-python3 playlistAddItemsByNumber.py 20
 or
 python3 playlistAddItemsByPlaycount.py
-python3 playlistAddItemsByPlaycount.py 5,000,000
 
 
 

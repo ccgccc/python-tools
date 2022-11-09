@@ -8,7 +8,7 @@ from spotifyFunc import *
 # ****************************************
 
 # Define all artist ids
-artistList = [v['artistId'] for k, v in artists.items()]
+artistList = list(reversed([v['artistId'] for k, v in artists.items()]))
 # # Define artists id here
 # artistList = [
 #     # '1Hu58yHg2CXNfDhlPd7Tdd',  # 张学友

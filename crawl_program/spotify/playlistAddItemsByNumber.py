@@ -1,3 +1,4 @@
+import re
 import json
 import time
 from utils.secrets import clientID, clientSecret
@@ -12,9 +13,8 @@ from crawlPlaylists import crawlSinglePlaylist
 # **************************************************
 
 # Define artist here
-artist = artistToCrawl
-# Define track number to add
-tracksNumber = 20
+artistToCrawlList = [artistToCrawl]
+# artistToCrawlList = list(artists.keys())
 
 # # Generate playlist
 # # Define if playlist is private
@@ -36,27 +36,10 @@ isUpdateDesc = False
 def main():
     # Read parameters from command line
     if len(sys.argv) >= 2:
+        if len(artistToCrawlList) > 1:
+            print('Can\'t specify tracknumber for multi artists.')
+            sys.exit()
         trackNumber = int(sys.argv[1])
-    else:
-        trackNumber = tracksNumber
-    if trackNumber > 100:
-        print('Track number too big.')
-        sys.exit()
-
-    # Get playlist
-    if playlistID == None:
-        with open('./files/playlists/generated_playlists/' + artist + '_playlist.json') as f:
-            playlist = json.load(f)
-        # print(playlist)
-        playlistId = playlist['id']
-        # print(playlistId)
-    else:
-        playlistId = playlistID
-    # Get all tracks
-    allTracks = []
-    with open('./files/tracks/' + artist + '_alltracks.json') as f:
-        allTracks = json.load(f)
-    # print(allTracks)
 
     # Get accessToken
     accessToken = getAccessToken(clientID, clientSecret)
@@ -72,39 +55,87 @@ def main():
         ]
     spotify, authorizeToken = getAuthorizationToken(
         clientID, clientSecret, scope)
+
+    for artist in artistToCrawlList:
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        print('Updating ' + artists[artist]['name'] + '...')
+        generateInfo = artists[artist].get('generateInfo')
+        if generateInfo != None:
+            generateMethod = generateInfo['generateMethod']
+            trackNumber = generateInfo['number']
+            if generateMethod != 1:
+                print('GenerateMethod != 1, continue\n')
+                continue
+        elif len(artistToCrawlList) > 1:
+            print('Can\'t find generate info in artists.py.')
+            sys.exit()
+        playlistAddItemsByNumber(
+            artist, trackNumber, accessToken, spotify, authorizeToken)
+
+
+def playlistAddItemsByNumber(artist, trackNumber, accessToken, spotify, authorizeToken):
+    if trackNumber > 100:
+        print('Track number too big.')
+        sys.exit()
+
+    # Get playlist
+    if playlistID == None:
+        with open('./files/playlists/generated_playlists/' + artist + '_playlist.json') as f:
+            playlist = json.load(f)
+        # print(playlist)
+        playlistId = playlist['id']
+        # print(playlistId)
+    else:
+        playlistId = playlistID
+        playlist = None
+    # Get all tracks
+    allTracks = []
+    with open('./files/tracks/' + artist + '_alltracks.json') as f:
+        allTracks = json.load(f)
+    # print(allTracks)
+
     playlistRemoveAllItems(accessToken, spotify,
                            authorizeToken, playlistId, isPrivate=isPrivate)
-    playlistAddTracksByNumber(
-        spotify, authorizeToken, playlistId, artist, allTracks, trackNumber, isUpdateDesc=isUpdateDesc)
+    playlistAddTracksByNumber(spotify, authorizeToken, playlistId, playlist,
+                              artist, allTracks, trackNumber, isUpdateDesc=isUpdateDesc)
     # Get new playlist info
     if playlistID == None:
         crawlSinglePlaylist(accessToken, playlistId,
-                            './files/playlists/generated_playlists_info/')
+                            './files/playlists/generated_playlists_info/', isPrivate=isPrivate)
     else:
         crawlSinglePlaylist(accessToken, playlistId,
                             './files/playlists/', isPrivate=isPrivate, spotify=spotify)
 
 
-def playlistAddTracksByNumber(spotify, token, playlistId, artist, allTracks, tracksNumber, isUpdateDesc=True):
+def playlistAddTracksByNumber(spotify, token, playlistId, playlist, artist, allTracks, trackNumber, isUpdateDesc=True):
     resJson = addTracksToPlaylistByNumber(
-        spotify, token, playlistId, allTracks, tracksNumber)
+        spotify, token, playlistId, allTracks, trackNumber)
     print('Response:', json.dumps(resJson, ensure_ascii=False))
 
     if isUpdateDesc:
-        # Playlist name & description
-        playlistName = artists[artist]['name'] + ' Most Played Songs'
-        minimumPlaycount = allTracks[tracksNumber - 1]['playcount']
+        minimumPlaycount = allTracks[trackNumber - 1]['playcount']
         if minimumPlaycount >= 10000000:
-            minimumPlaycountStr = str(minimumPlaycount // 1000000) + ' million'
+            minimumPlaycountStr = str(
+                minimumPlaycount // 1000000) + ' million'
         elif minimumPlaycount >= 1000000:
             minimumPlaycountStr = str(
                 minimumPlaycount // 100000 / 10) + ' million'
         else:
             minimumPlaycountStr = str(minimumPlaycount)
-        playlistDescription = artists[artist]['name'] \
-            + ' most played songs (top ' + str(tracksNumber) \
-            + ', minimum playcount: ' + minimumPlaycountStr + '). ' + \
-            'Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
+        # Playlist name & description
+        playlistName = artists[artist]['name'] + ' Most Played Songs'
+        if playlist == None:  # Create playlist
+            playlistDescription = artists[artist]['name'] \
+                + ' most played songs (top ' + str(trackNumber) \
+                + ', minimum playcount: ' + minimumPlaycountStr + '). ' + \
+                'Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
+        else:  # Update playlist
+            oldDescription = playlist['description']
+            playlistDescription = artists[artist]['name'] \
+                + ' most played songs (top ' + str(trackNumber) \
+                + ', minimum playcount: ' + minimumPlaycountStr + '). ' + \
+                'Generated on ' + re.match(r'.*Generated on (.*)by ccg.*', oldDescription).group(1) + ' by ccg. ' + \
+                'Updated on ' + time.strftime("%Y-%m-%d") + '.'
         res = updatePlayList(spotify, token, playlistId,
                              playlistName, playlistDescription, True)
         print('Response:', res)

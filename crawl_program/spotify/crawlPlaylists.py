@@ -72,7 +72,8 @@ def crawlPlaylists(accessToken, playlistIds, playlistDir, isPrivate=False, spoti
     playlistStatistics(mergedPlaylist)
 
 
-def crawlSinglePlaylist(accessToken, playlistID, playlistDir, isPrivate=False, spotify=None):
+def crawlSinglePlaylist(accessToken, playlistID, playlistDir, isPrivate=False,
+                        spotify=None, printPlaylist=True, simplePrint=True):
     # API request
     if isPrivate:
         playlist = getPlaylistAndAllTracks(
@@ -86,16 +87,18 @@ def crawlSinglePlaylist(accessToken, playlistID, playlistDir, isPrivate=False, s
         json.dump(playlist, f, ensure_ascii=False)
     # Write playlist tracks to csv file
     csvFileName = fileName + '.csv'
-    writeToCsvFile(playlist, csvFileName, simplePrint=simplePrint)
+    writeToCsvFile(playlist, csvFileName,
+                   printPlaylist=printPlaylist, simplePrint=simplePrint)
     return playlist
 
 
-def writeToCsvFile(playlist, csvFileName, simplePrint=False):
+def writeToCsvFile(playlist, csvFileName, printPlaylist=True, simplePrint=True):
     with open(csvFileName, 'w') as f:
         f.write('Track Id, Track, Artists, Album, Album Artist, Release Date\n')
     file = open(csvFileName, 'a')
-    print('----------------------------------------')
-    print(playlist['name'] + ':')
+    if printPlaylist:
+        print('----------------------------------------')
+        print(playlist['name'] + ':')
     count = 0
     for item in playlist['tracks']['items']:
         count = count + 1
@@ -117,15 +120,16 @@ def writeToCsvFile(playlist, csvFileName, simplePrint=False):
         trackArtistsList = list(
             map(lambda artist: artist['name'], track['artists']))
         trackArtists = '，'.join(trackArtistsList)
-        if simplePrint:
-            print((str(count) + ':\t' + trackId + ',\t' + trackName +
-                  ',  ' + releaseDate + ',  ' + albumName).expandtabs(5))
-        else:
-            print('----------')
-            print(count)
-            print('Track:   ' + trackName)
-            print('Album:   ' + albumName + ' (' + releaseDate + ")")
-            print('Artists: ' + trackArtists)
+        if printPlaylist:
+            if simplePrint:
+                print((str(count) + ':\t' + trackId + ',\t' + trackName +
+                       ',  ' + releaseDate + ',  ' + albumName).expandtabs(5))
+            else:
+                print('----------')
+                print(count)
+                print('Track:   ' + trackName)
+                print('Album:   ' + albumName + ' (' + releaseDate + ")")
+                print('Artists: ' + trackArtists)
         file.write(trackId + ', ' + re.sub(r'\,', '，', trackName) + ', ' + trackArtists + ', '
                    + re.sub(r'\,', '，', albumName) + ', ' + albumArtists + ', ' + releaseDate + '\n')
     file.close()
