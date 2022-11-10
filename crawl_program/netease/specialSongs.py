@@ -1,12 +1,13 @@
-# Spotify name : Netease name
-# traditional Chinese
+# Define not matching song names, {spotify_name : netease_name}
+# (Traditional Chinese)
 specialSongNames = {
     # 张学友  All
     'jacky_cheung': {
         '祇願一生愛一人': '只愿一生爱一人',
         '袛有情永在': '只有情永在',
         '我醒著做夢': '我醒着做梦',
-        '祇有你不知道': '只有你不知道'
+        '祇有你不知道': '只有你不知道',
+        '每天愛你多一些_2_張學友': '每天爱你多一些(国)'
     },
     # 周杰伦  All
     'jay_chou': {
@@ -15,7 +16,8 @@ specialSongNames = {
         '爸我回來了': '爸，我回来了',
         '蛇 舞': '蛇舞',
         '花 海': '花海',
-        '免費教學錄影帶': '免费教学录影带'
+        '免費教學錄影帶': '免费教学录影带',
+        '不能說的秘密_2_周杰倫': '不能说的秘密(Live)'
     },
     # 陈奕迅 All
     'eason_chan': {
@@ -49,7 +51,6 @@ specialSongNames = {
     },
     # 王菲  All
     'faye_wong': {
-        '執迷不悔': '执迷不悔 (粤语版)',
         '你快樂所以我快樂': '你快乐所以我快乐 (Live)'
     },
     # 莫文蔚  All
@@ -70,7 +71,8 @@ specialSongNames = {
     # 萧敬腾  All
     'jam_hsiao': {
         '矜持': '矜持 (Studio Live)',
-        '袖手旁觀': '袖手旁观 (Studio Live)'
+        '袖手旁觀': '袖手旁观 (Studio Live)',
+        'Hello': 'Hello (录音室版)'
     },
     # 孙燕姿  All
     'stefanie_sun': {
@@ -94,16 +96,31 @@ specialSongNames = {
         'We Are The World': 'We Are the World (Live)',
         'Give In to Me': 'Give in to Me',
         'Another Part of Me': 'Another Part Of Me'
+    },
+    # 蔡健雅  All
+    'tanya_chua': {
+        'BEAUTIFUL LOVE': 'Beautiful Love'
+    },
+    # 李克勤  All
+    'hacken_lee': {
+        '時間的錯': '时间的错 (粤)'
     }
 }
 
-# Not included in netease artist songs
-# simplified Chinese
+# Define netease missing songs
+# 1. Not included in netease artist songs
+# 2. Not included because of spotify repeated song names
+# (Simplified Chinese)
 specialSongIds = {
     # 周杰伦
     'jay_chou': {
         '屋顶': 298317,
         '画沙': 324859
+    },
+    # 陈奕迅  All
+    'eason_chan': {
+        'K歌之王': 67364,  # 国(反正是我)
+        'K歌之王_2_陈奕迅': 67467  # 粤(打的火热)
     },
     # 邓紫棋
     'g_e_m': {
@@ -120,7 +137,9 @@ specialSongIds = {
     },
     # 王菲
     'faye_wong':  {
-        '因为爱情': 64317
+        '因为爱情': 64317,
+        '执迷不悔': 300587,  # 执迷不悔 (粤语版)
+        '执迷不悔_2_王菲': 300603  # 执迷不悔 (国语版)
     },
     # 五月天
     'mayday': {
@@ -136,7 +155,13 @@ specialSongIds = {
     },
     # Michael Jackson
     'michael_jackson': {
-        'Don’t Matter To Me': 574926603
+        'Don’t Matter To Me': 574926603,
+        'Love Never Felt So Good': 1299086011,
+        'Love Never Felt So Good_2_Michael Jackson': 1299086142
+    },
+    # 李克勤
+    'hacken_lee': {
+        '共同家园': 1365724310
     }
 }
 
@@ -148,21 +173,6 @@ replaceSongIds = {
     }
 }
 
-# Not included because of spotify repeated song names
-repeatedSongs = {
-    # 陈奕迅
-    'eason_chan': [{
-        'K歌之王__国(反正是我)': 67364
-    }],
-    # 王菲
-    'faye_wong': [{
-        '执迷不悔 (国语版)': 300603
-    }],
-    # Michael Jackson
-    'michael_jackson': [{
-        'Love Never Felt So Good': 1299086142
-    }]
-}
 
 # Netease sensitive words
 sensitiveWords = {

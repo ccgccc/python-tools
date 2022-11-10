@@ -132,8 +132,9 @@ def main():
     # Add songs & update playlist description
     if isReversed:
         syncSongs = reversed(syncSongs)
-    playlistAddSongs(playlistId, syncSongs, missingSongs,
-                     spotifyPlaylist, isUpdateDesc=False)
+    syncSongIds = ','.join(
+        reversed([str(list(song.values())[0]) for song in syncSongs]))
+    addSongsToPlayList(playlistId, syncSongIds)
     playlistDescription = 'Synced from spotify. ' + \
         ('Missing songs: ' + ', '.join(missingSongsStr) +
          '.') if len(missingSongsStr) > 0 else ''

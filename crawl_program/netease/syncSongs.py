@@ -38,9 +38,6 @@ def getSyncSongs(artist, spotifyTrackNames, isRemoveAlias=True,
     seen = set()
     syncSongs = [{name: neteaseArtistSongIds.get(name)} for name in spotifyTrackNames
                  if neteaseArtistSongIds.get(name) != None and name not in seen and not seen.add(name)]
-    missingCount = len(spotifyTrackOriginalNames) - len(syncSongs)
-    if missingCount > 0 and repeatedSongs.get(artist) != None:
-        syncSongs.extend(repeatedSongs.get(artist))
     print('------------------------------')
     print('Netease sync songs:', len(syncSongs))
     print(syncSongs, '\n')
@@ -53,8 +50,10 @@ def getSyncSongs(artist, spotifyTrackNames, isRemoveAlias=True,
     missingSongSpotifyNames = [spotifyTrackOriginalNames[spotifyTrackNames.index(songName)]
                                for songName in missingSongs]
     print('------------------------------')
+    missingCount = len(spotifyTrackOriginalNames) - len(syncSongs)
     print('Netease missing songs:', missingCount)
     if missingCount > len(missingSongs):
+        # Already modified duplicated names before, so  probably no duplicates here
         seen = set()
         dupes = [x for x in spotifyTrackOriginalNames
                  if x in seen or seen.add(x)]
@@ -68,12 +67,12 @@ def getSyncSongs(artist, spotifyTrackNames, isRemoveAlias=True,
     missingSongs = [song if sensitiveWords.get(song) == None else sensitiveWords[song]
                     for song in missingSongs]
     # Confirmation prompt
-    if not isNeedPrompt or not isOkPrompt and len(missingSongs) == 0:
+    if not isNeedPrompt or not isOkPrompt and missingCount == 0:
         return syncSongs, missingSongs
     while True:
         if len(missingSongs) > 0:
             continueMsg = input(
-                'There is some missing songs. Do you want to continue? (y/n): ')
+                'There are some missing songs. Do you want to continue? (y/n): ')
         else:
             continueMsg = input(
                 'All songs can be synced. Press Y to continue. (y/n): ')
