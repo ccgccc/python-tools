@@ -11,58 +11,100 @@ from common import *
 isWriteToCsv = True
 # Define request or not
 isRequest = True
-# Get all artists info
-artistIdNames = {v['artistId']: k for k, v in artists.items()}
-
-# # Define is incremental
-# isIncremental = False
-# # Define all artists
-# artistIds = artistIdNames.keys()
-
 # Define is incremental
 isIncremental = True
-# Specify artists
-artistIds = [artists[artistToCrawl]['artistId']]
-# artistIds = [
-#     '6460',  # 张学友
-#     '6452',  # 周杰伦
-# ]
+
+# Define artists
+artistsToGet = {artistToCrawl: artists[artistToCrawl]}
+if len(sys.argv) >= 2:
+    if sys.argv[1] == 'generate':
+        artistsToGet = otherArtists
+    elif sys.argv[1] == 'other':
+        artistsToGet = otherArtists
+    elif sys.argv[1] == 'all':
+        artistsToGet = artists
+    else:
+        if artists.get(sys.argv[1]) != None:
+            artistsToGet = {sys.argv[1]: artists.get(sys.argv[1])}
+        else:
+            print('Can\'t find \'' +
+                  sys.argv[1] + '\' in \'../spotify/artists.py\'.')
+            sys.exit()
+artistIdNames = {v['artistId']: k for k, v in artistsToGet.items()}
+artistIds = artistIdNames.keys()
 
 
-if isRequest:
-    artistDetailUrl = baseUrl + '/artist/detail'
-    artistFanslUrl = baseUrl + '/artist/follow/count'
-    allArtistsDetails = {}
-    allArtistsFans = {}
-    for artistId in artistIds:
-        print('Requesting ' + artists[artistIdNames[artistId]]['name'] + '...')
-        params = {
-            'id': artistId,
-        }
-        resJson = requests.get(
-            artistDetailUrl, headers=headers, params=params).json()
-        # print(json.dumps(resJson, ensure_ascii=False))
-        allArtistsDetails = allArtistsDetails | {
-            artistIdNames[artistId]: resJson['data']}
+def main():
+    if isRequest:
+        artistDetailUrl = baseUrl + '/artist/detail'
+        artistFanslUrl = baseUrl + '/artist/follow/count'
+        allArtistsDetails = {}
+        allArtistsFans = {}
+        if isIncremental:
+            existingArtists = loadJsonFromFile('artists/artists')
+            existingArtistIds = {v['artist']['id']
+                                 for k, v in existingArtists.items()}
+        for artistId in artistIds:
+            if isIncremental and artistId in existingArtistIds:
+                continue
+            print('Requesting ' +
+                  artists[artistIdNames[artistId]]['name'] + '...')
+            params = {
+                'id': artistId,
+            }
+            resJson = requests.get(
+                artistDetailUrl, headers=headers, params=params).json()
+            # print(json.dumps(resJson, ensure_ascii=False))
+            allArtistsDetails = allArtistsDetails | {
+                artistIdNames[artistId]: resJson['data']}
 
-        params = {
-            'id': artistId,
-        }
-        resJson = requests.get(
-            artistFanslUrl, headers=headers, params=params).json()
-        # print(json.dumps(resJson, ensure_ascii=False))
-        allArtistsFans = allArtistsFans | {
-            artistIdNames[artistId]: resJson['data']}
-    if isIncremental:
-        allArtistsDetails = loadJsonFromFile(
-            'artists/artists') | allArtistsDetails
-        allArtistsFans = loadJsonFromFile(
-            'artists/artistsFans') | allArtistsFans
-    writeJsonToFile(allArtistsDetails, 'artists/artists')
-    writeJsonToFile(allArtistsFans, 'artists/artistsFans')
-else:
-    allArtistsDetails = loadJsonFromFile('artists/artists')
-    allArtistsFans = loadJsonFromFile('artists/artistsFans')
+            params = {
+                'id': artistId,
+            }
+            resJson = requests.get(
+                artistFanslUrl, headers=headers, params=params).json()
+            # print(json.dumps(resJson, ensure_ascii=False))
+            allArtistsFans = allArtistsFans | {
+                artistIdNames[artistId]: resJson['data']}
+        if isIncremental:
+            allArtistsDetails = loadJsonFromFile(
+                'artists/artists') | allArtistsDetails
+            allArtistsFans = loadJsonFromFile(
+                'artists/artistsFans') | allArtistsFans
+        writeJsonToFile(allArtistsDetails, 'artists/artists')
+        writeJsonToFile(allArtistsFans, 'artists/artistsFans')
+    else:
+        # Use existing json file to write to csv
+        allArtistsDetails = loadJsonFromFile('artists/artists')
+        allArtistsFans = loadJsonFromFile('artists/artistsFans')
+
+    if isWriteToCsv:
+        # 1. No sort
+        fileName = './files/artists/artists'
+        wirteToCsvFile(allArtistsDetails, allArtistsFans,
+                       fileName + '.csv', isPrint=True)
+        # 2. Sorted by fans count
+        sorteArtistsDetails = dict(sorted(
+            allArtistsDetails.items(), key=lambda item: allArtistsFans[item[0]]['fansCnt'], reverse=True))
+        wirteToCsvFile(sorteArtistsDetails, allArtistsFans,
+                       fileName + '_sorted_by_fans.csv', isPrint=False)
+        # 3. Sorted by ranktype and rank
+        sorteArtistsDetails2 = dict(sorted(
+            allArtistsDetails.items(),
+            key=lambda item: (
+                item[1]['artist']['rank']['type']
+                if item[1]['artist'].get('rank') != None else 99999,
+                item[1]['artist']['rank']['rank']
+                if item[1]['artist'].get('rank') != None else 99999
+            ))
+        )
+        wirteToCsvFile(sorteArtistsDetails2, allArtistsFans,
+                       fileName + '_sorted_by_rank.csv', isPrint=False)
+    # Stat
+    print('--------------------')
+    print('Generate:', len(generateArtists))
+    print('Other:', len(otherArtists))
+    print('Total:', len(artists))
 
 
 def wirteToCsvFile(allArtistsDetails, allArtistsFans, csvFileName, isPrint=True):
@@ -112,26 +154,5 @@ def wirteToCsvFile(allArtistsDetails, allArtistsFans, csvFileName, isPrint=True)
     file.close()
 
 
-if isWriteToCsv:
-    fileName = './files/artists/artists'
-    wirteToCsvFile(allArtistsDetails, allArtistsFans,
-                   fileName + '.csv', isPrint=True)
-
-    # Sorted by fans count
-    sorteArtistsDetails = dict(sorted(
-        allArtistsDetails.items(), key=lambda item: allArtistsFans[item[0]]['fansCnt'], reverse=True))
-    wirteToCsvFile(sorteArtistsDetails, allArtistsFans,
-                   fileName + '_sorted_by_fans.csv', isPrint=False)
-
-    # Sorted by ranktype and rank
-    sorteArtistsDetails2 = dict(sorted(
-        allArtistsDetails.items(),
-        key=lambda item: (
-            item[1]['artist']['rank']['type']
-            if item[1]['artist'].get('rank') != None else 99999,
-            item[1]['artist']['rank']['rank']
-            if item[1]['artist'].get('rank') != None else 99999
-        ))
-    )
-    wirteToCsvFile(sorteArtistsDetails2, allArtistsFans,
-                   fileName + '_sorted_by_rank.csv', isPrint=False)
+if __name__ == '__main__':
+    main()

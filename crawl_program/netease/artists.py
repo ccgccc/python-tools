@@ -1,94 +1,263 @@
 # Deine artist to crawl
-artistToCrawl = 'hacken_lee'
+artistToCrawl = 'andy_lau'
 
-# Deine artists
-artists = {
+# Deine artists to generate playlists
+generateArtists = {
+    'andy_lau': {
+        'name': '刘德华',
+        'artistId': 3691
+    },
     'hacken_lee': {
         'name': '李克勤',
-        'artistId': '3699'
+        'artistId': 3699
     },
     'tanya_chua': {
         'name': '蔡健雅',
-        'artistId': '7214'
+        'artistId': 7214
     },
     'michael_jackson': {
         'name': 'Michael Jackson',
-        'artistId': '38853'
+        'artistId': 38853
     },
     'ariana_grande': {
         'name': 'Ariana Grande',
-        'artistId': '48161'
+        'artistId': 48161
     },
     'huahua': {
         'name': '华晨宇',
-        'artistId': '861777'
+        'artistId': 861777
     },
     'billie_eilish': {
         'name': 'Billie Eilish',
-        'artistId': '11972054'
+        'artistId': 11972054
     },
     'stefanie_sun': {
         'name': '孙燕姿',
-        'artistId': '9272'
+        'artistId': 9272
     },
     'jam_hsiao': {
         'name': '萧敬腾',
-        'artistId': '5768'
+        'artistId': 5768
     },
     'adele': {
         'name': 'Adele',
-        'artistId': '46487'
+        'artistId': 46487
     },
     'mayday': {
         'name': '五月天',
-        'artistId': '13193'
+        'artistId': 13193
     },
     'karen_mok': {
         'name': '莫文蔚',
-        'artistId': '8926'
+        'artistId': 8926
     },
     'faye_wong': {
         'name': '王菲',
-        'artistId': '9621'
+        'artistId': 9621
     },
     'wangfeng': {
         'name': '汪峰',
-        'artistId': '5347'
+        'artistId': 5347
     },
     'beyond': {
         'name': 'Beyond',
-        'artistId': '11127'
+        'artistId': 11127
     },
     'leehom_wang': {
         'name': '王力宏',
-        'artistId': '5346'
+        'artistId': 5346
     },
     'xusong': {
         'name': '许嵩',
-        'artistId': '5771'
+        'artistId': 5771
     },
     'jj_lin': {
         'name': '林俊杰',
-        'artistId': '3684'
+        'artistId': 3684
     },
     'g_e_m': {
         'name': '邓紫棋',
-        'artistId': '7763'
+        'artistId': 7763
     },
     'bruno_mars': {
         'name': 'Bruno Mars',
-        'artistId': '178059'
+        'artistId': 178059
     },
     'eason_chan': {
         'name': '陈奕迅',
-        'artistId': '2116'
+        'artistId': 2116
     },
     'jay_chou': {
         'name': '周杰伦',
-        'artistId': '6452'
+        'artistId': 6452
     },
     'jacky_cheung': {
         'name': '张学友',
-        'artistId': '6460'
+        'artistId': 6460
     }
 }
+
+# Define other artists
+otherArtists = {
+    'haoyun': {
+        'name': '郝云',
+        'artistId': 3071
+    },
+    'hailun': {
+        'name': '海伦',
+        'artistId': 31615461
+    },
+    # More hits (>3)
+    'ahan': {
+        'name': '周思涵',
+        'artistId': 12292708
+    },
+    'chenli': {
+        'name': '陈粒',
+        'artistId': 1007170
+    },
+    'zhangbichen': {
+        'name': '张碧晨',
+        'artistId': 1024308
+    },
+    'gebilaofan': {
+        'name': '隔壁老樊',
+        'artistId': 12429072
+    },
+    'zhaolei': {
+        'name': '赵雷',
+        'artistId': 6731
+    },
+    'xiechunhua': {
+        'name': '谢春花',
+        'artistId': 1039895
+    },
+    'huazhou': {
+        'name': '花粥',
+        'artistId': 8103
+    },
+    'asi': {
+        'name': '阿肆',
+        'artistId': 7122
+    },
+    # One hit (<4)
+    'bojue': {
+        'name': '伯爵Johnny',
+        'artistId': 2066
+    },
+    'huatong': {
+        'name': '花僮',
+        'artistId': 1026069
+    },
+    'angang': {
+        'name': '暗杠',
+        'artistId': 1198010
+    },
+    'jinzhiwen': {
+        'name': '金志文',
+        'artistId': 166014
+    },
+    'suyunying': {
+        'name': '苏运莹',
+        'artistId': 1193259
+    },
+    'baoshi_gem': {
+        'name': '宝石Gem',
+        'artistId': 12084497
+    },
+    'zhaoyingjun': {
+        'name': '赵英俊',
+        'artistId': 6891
+    },
+    'maixiaodou': {
+        'name': '麦小兜',
+        'artistId': 12288688
+    },
+    'mailajiaoyeyongquan': {
+        'name': '买辣椒也用券',
+        'artistId': 12085562
+    },
+    'xujiahao': {
+        'name': '烟(许佳豪)',
+        'artistId': 49937403
+    },
+    'yuanyawei': {
+        'name': '袁娅维TIA RAY',
+        'artistId': 10473
+    },
+    'kelly_yu': {
+        'name': '于文文',
+        'artistId': 816248
+    },
+    'yinqueshiting': {
+        'name': '音阙诗听',
+        'artistId': 12174521
+    },
+    'liushuang': {
+        'name': '柳爽',
+        'artistId': 1060132
+    },
+    'zhanzhanyuluoluo': {
+        'name': '展展与罗罗',
+        'artistId': 12475735
+    },
+    'daiquan': {
+        'name': '戴荃',
+        'artistId': 791534
+    },
+    'rensuxi': {
+        'name': '任素汐',
+        'artistId': 1054159
+    },
+    'fangdongdemao': {
+        'name': '房东的猫',
+        'artistId': 1050282
+    },
+    'madi': {
+        'name': '马頔',
+        'artistId': 4592
+    },
+    'maliang': {
+        'name': '马良',
+        'artistId': 13609637
+    },
+    'luxianshenyuedui': {
+        'name': '鹿先森乐队',
+        'artistId': 1195028
+    },
+    'xufei': {
+        'name': '许飞',
+        'artistId': 9941
+    },
+    'chenhongyu': {
+        'name': '陈鸿宇',
+        'artistId': 1058228
+    },
+    'wangerlang': {
+        'name': '王贰浪',
+        'artistId': 14312549
+    },
+    'wangheye': {
+        'name': '王赫野',
+        'artistId': 47091532
+    },
+    'usa_for_africa': {
+        'name': 'U.S.A. for Africa',
+        'artistId': 29552832
+    },
+    'liujinrui': {
+        'name': 'Kirsty刘瑾睿',
+        'artistId': 12499721
+    },
+    'baisong': {
+        'name': '柏松',
+        'artistId': 31876221
+    },
+    # Nah
+    # 'gai_zhouyan': {
+    #     'name': 'GAI周延',
+    #     'artistId': 1211046
+    # }
+}
+
+artists = otherArtists | generateArtists

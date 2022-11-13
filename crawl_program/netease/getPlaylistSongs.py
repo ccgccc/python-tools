@@ -7,13 +7,14 @@ from common import *
 
 # Defin palylist id
 playlistIds = [
-    553778357,  # 我喜欢的音乐
+    # 553778357,  # 我喜欢的音乐
     7673625615,  # Favorite
     7673790351,  # Like
     7680312360,  # Nice
-    7690539370,  # Listening Artist
-    7674298063,  # To Listen
-    7722735074  # Hmm
+    # 7722735074,  # Hmm
+    # 7741781941,  # One Hit
+    # 7690539370,  # Listening Artist
+    # 7674298063,  # To Listen
 ]
 # # Liked songs playlist id
 # playlistIds = [553778357]

@@ -23,6 +23,7 @@ python3 spotifyCrawlAndProcess.py generate
 python3 spotifyCrawlAndProcess.py other  
 python3 spotifyCrawlAndProcess.py jacky_cheung  
 
+(Default: artistToCrawl)  
 python3 generatePlaylistAndTracks.py  
 python3 generatePlaylistAndTracks.py update  
 

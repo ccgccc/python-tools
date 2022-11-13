@@ -13,10 +13,10 @@ def main():
     fileName = 'songs/' + artistToCrawl + '_allsongs_raw'
     allSongs = loadJsonFromFile(fileName)
 
-    processSongs(allSongs, filterSongByName=filterSongByName)
+    processSongs(artistToCrawl, allSongs, filterSongByName=filterSongByName)
 
 
-def processSongs(allSongs, filterSongByName=True):
+def processSongs(artist, allSongs, filterSongByName=True):
     # Filter albums tracks
     filterdSongs = []
     songNames = set()
@@ -31,7 +31,7 @@ def processSongs(allSongs, filterSongByName=True):
                 songNames.add(songName)
         filterdSongs.append(song)
 
-    fileName = 'songs/' + artistToCrawl + '_allsongs'
+    fileName = 'songs/' + artist + '_allsongs'
     writeJsonToFile(filterdSongs, fileName)
     printSongs(filterdSongs, fileName)
     return filterdSongs

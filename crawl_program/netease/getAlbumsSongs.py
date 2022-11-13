@@ -12,10 +12,10 @@ def main():
     allAlbums = loadJsonFromFile('albums/' + artistToCrawl + '_albums')
 
     # Get all songs & write to file
-    getAlbumsSongs(allAlbums)
+    getAlbumsSongs(artistToCrawl, allAlbums)
 
 
-def getAlbumsSongs(allAlbums, mustMainArtist=False):
+def getAlbumsSongs(artist, allAlbums, mustMainArtist=False):
     # Get all albums tracks
     allSongs = []
     albumCount = 0
@@ -47,7 +47,7 @@ def getAlbumsSongs(allAlbums, mustMainArtist=False):
         allSongs.extend(albumSongs['songs'])
         printSongs(albumSongs['songs'])
     # Write json to file
-    fileName = 'songs/' + artistToCrawl + '_allsongs_raw'
+    fileName = 'songs/' + artist + '_allsongs_raw'
     writeJsonToFile(allSongs, fileName)
     printSongs(allSongs, fileName, isWriteToConsole=False)
     return allSongs

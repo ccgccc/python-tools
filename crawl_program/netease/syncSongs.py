@@ -68,7 +68,7 @@ def getSyncSongs(artist, spotifyTrackNames, isRemoveAlias=True,
                     for song in missingSongs]
     # Confirmation prompt
     if not isNeedPrompt or not isOkPrompt and missingCount == 0:
-        return syncSongs, missingSongs
+        return syncSongs, missingSongSpotifyNames
     while True:
         if len(missingSongs) > 0:
             continueMsg = input(

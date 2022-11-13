@@ -230,6 +230,25 @@ def likeSong(songId):
     return requests.get(url, headers=headers, params=params)
 
 
+def searchArtist(keywords):
+    return search(100, keywords, limit=3)
+
+
+def searchSong(keywords):
+    return search(1, keywords)
+
+
+def search(type, keywords, limit=None):
+    url = baseUrl + '/cloudsearch'
+    params = {
+        'type': type,
+        'keywords': keywords
+    }
+    if limit != None:
+        params['limit'] = limit
+    return requests.get(url, headers=headers, params=params).json()
+
+
 def printAlbums(albums, csvFileName=None):
     print('--------------------')
     print('Albums:')

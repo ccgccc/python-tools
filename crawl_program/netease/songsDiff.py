@@ -52,7 +52,7 @@ playlistOnlySongIds = []
 for song in playlistSongs:
     if song['id'] not in songIds:
         print(song['name'])
-        playlistOnlySongIds.append(song['id'])
+        playlistOnlySongIds.append(str(song['id']))
 if len(playlistOnlySongIds) > 0:
     print('\nSong ids:', len(playlistOnlySongIds))
     print(','.join(playlistOnlySongIds))

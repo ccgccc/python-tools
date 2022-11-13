@@ -11,20 +11,17 @@ from playlistAddSongs import playlistAddSongs
 # ************************************************************
 
 # Define artist here
-# artistToCrawlList = [artistToCrawl]
-artistToCrawlList = list(artists.keys())
-
+artistToSyncList = [artistToCrawl]
 # Define create playlist or update playlist
 isCreate = True
-# Define if update description
-isUpdateDesc = True
 # Read parameters from command line
 if len(sys.argv) >= 2 and sys.argv[1] == 'update':
     isCreate = False
+    if len(sys.argv) >= 3 and sys.argv[1] == 'all':
+        artistToSyncList = list(generateArtists.keys())
 
-# Define cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
-
+# Define if update description
+isUpdateDesc = True
 # Define if need prompt
 isNeedPrompt = True
 # Define prompt if no missing songs
@@ -32,9 +29,12 @@ isOkPrompt = False
 # Define if propmt updating missing description
 isPromptDescMissing = False
 
+# Define cookie in cookie.txt
+headers['cookie'] = readFileContent('cookie.txt')
+
 
 def main():
-    for artist in artistToCrawlList[16:]:
+    for artist in artistToSyncList:
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('Updating ' + artists[artist]['name'] + '...')
         syncSpotifyPlaylist(artist)

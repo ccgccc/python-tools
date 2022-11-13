@@ -10,7 +10,6 @@ from spotify.artists import artists as spotifyArtists
 from artists import artists as neteaseArtists
 from common import *
 from syncSongs import getSyncSongs
-from playlistAddSongs import playlistAddSongs
 from playlistRemoveSongs import playlistRomoveSongs
 
 # **************************************************
@@ -22,54 +21,24 @@ isCreate = False
 # Define cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
 
-
-# ****** Sync public playlists ******
-# # Define isPrivate & public playlist name
-# isPrivate = False
-
-# # ------ incremental is true
-# # Define is incremental
-# isIncremental = True
-# # --- Define is reversed
-# isReversed = True
-# playlistName = 'Favorite'
-# # playlistName = 'Like'
-# # playlistName = '张学友'
-# # playlistName = '周杰伦'
-
-
-# ****** Sync private playlists ******
-# Define isPrivate & private playlist name
-isPrivate = True
-
-# # ------ incremental is true
-# isIncremental = True
-# # --- Define is reversed
-# isReversed = True
-# playlistName = 'Nice'
-# # playlistName = 'To Listen'
-# # playlistName = 'Netease Non-playable'
-
-# ----- incremental is false
-isIncremental = False
-# --- Define is reversed
-isReversed = False
-playlistName = 'Listening Artist'
-
 # Read parameters from command line
-if len(sys.argv) >= 2:
-    playlistName = sys.argv[1]
-    if playlistName in {'Nice', 'To Listen', 'Netease Non-playable', 'Listening Artist'}:
-        isPrivate = True
-        isIncremental = True
-        isReversed = True
-        if playlistName in {'Listening Artist'}:
-            isIncremental = False
-            isReversed = False
-    else:
-        isPrivate = False
-        isIncremental = True
-        isReversed = True
+if len(sys.argv) < 2:
+    print('Missing playlist name parameter.')
+    sys.exit()
+# Read playlist name
+playlistName = sys.argv[1]
+# Define isPrivate & private playlist name
+isPrivate = False
+# Define is incremental
+isIncremental = True
+# --- Define is reversed
+isReversed = True
+if playlistName in {'Nice', 'One Hit', 'To Listen', 'Netease Non-playable'}:
+    isPrivate = True
+elif playlistName in {'Listening Artist'}:
+    isPrivate = True
+    isIncremental = False
+    isReversed = False
 print('--------------------')
 print('*** Sync Info ***')
 print('Playlist:', playlistName)
@@ -95,7 +64,7 @@ def main():
     spotifyArtistTrackNames = getSpotifyArtistTrackNames(
         spotifyPlaylist['tracks'])
     syncSongs, missingSongs, missingSongsStr = getSpotifyToNeteaseSongs(
-        spotifyArtistTrackNames, isNeedMissingPrompt=False)
+        spotifyArtistTrackNames, isReversed, isNeedMissingPrompt=False)
 
     # Create or clear playlist
     if isCreate:
@@ -121,6 +90,8 @@ def main():
             # Find not added songs
             syncSongs = [song for song in syncSongs
                          if list(song.values())[0] not in playlistSongIdsSet]
+            if isReversed:
+                syncSongs = list(reversed(syncSongs))
             print('Playlist ' + playlistName + ' songs:', len(playlistSongs))
             print('Incremental sync songs: ', len(
                 syncSongs), '\n', syncSongs, '\n', sep='')
@@ -130,10 +101,7 @@ def main():
             sureCheck()
 
     # Add songs & update playlist description
-    if isReversed:
-        syncSongs = reversed(syncSongs)
-    syncSongIds = ','.join(
-        reversed([str(list(song.values())[0]) for song in syncSongs]))
+    syncSongIds = ','.join([str(list(song.values())[0]) for song in syncSongs])
     addSongsToPlayList(playlistId, syncSongIds)
     playlistDescription = 'Synced from spotify. ' + \
         ('Missing songs: ' + ', '.join(missingSongsStr) +
@@ -145,7 +113,7 @@ def main():
     writeJsonToFile(playlist, neteasePlaylistFileName)
 
 
-def getSpotifyToNeteaseSongs(spotifyArtistTrackNames, isNeedMissingPrompt=True):
+def getSpotifyToNeteaseSongs(spotifyArtistTrackNames, isReversed, isNeedMissingPrompt=True):
     syncSongs = []
     missingSongs = []
     missingSongsStr = []
@@ -153,13 +121,15 @@ def getSpotifyToNeteaseSongs(spotifyArtistTrackNames, isNeedMissingPrompt=True):
     for artist, trackNames in spotifyArtistTrackNames.items():
         if len(trackNames) == 0:
             continue
+        artist = artist.split('-')[0]
         artistName = neteaseArtists[artist]['name']
         print('\n************************************************************')
         print('************************************************************')
         print('Processing', artistName, '......')
         curSyncSongs, curMissingSongs = getSyncSongs(
             artist, {artist: trackNames}, isRemoveAlias=True, isNeedPrompt=False, isOkPrompt=False)
-        syncSongs.extend(curSyncSongs)
+        syncSongs.extend(reversed(curSyncSongs)
+                         if isReversed else curSyncSongs)
         missingSongs.extend(curMissingSongs)
         if len(curMissingSongs) > 0:
             missingSongsStr.append(
@@ -190,7 +160,7 @@ def getSpotifyArtistTrackNames(spotifyPlaylistTracks):
     spotifyArtistIds = {v['artistId']: k for k, v in spotifyArtists.items()}
     spotifyArtistIdsSet = spotifyArtistIds.keys()
     # Initialize spotify artist track names, like this: {'artist': ['trackname', 'trackname2']}
-    spotifyArtistTrackNames = {k: [] for k, v in neteaseArtists.items()}
+    spotifyArtistTrackNames = {k: [] for k, v in spotifyArtists.items()}
     artistsNotFound = set()
     for track in spotifyPlaylistTracks['items']:
         isArtistFound = False
