@@ -4,7 +4,7 @@ import json
 import time
 from utils.secrets import clientID, clientSecret
 from utils.auth import getAccessToken, getAuthorizationToken
-from artists import artists, artistToCrawl
+from artists import *
 from spotifyFunc import *
 from playlistAddItemsByNumber import playlistAddTracksByNumber
 from playlistAddItemsByPlaycount import playlistAddTracksByPlaycount
@@ -16,14 +16,15 @@ from crawlPlaylists import crawlSinglePlaylist
 # **********************************************************************
 
 # Define artist here
-artistToCrawlList = [artistToCrawl]
-# artistToCrawlList = list(artists.keys())
+artistToGenerateList = [artistToCrawl]
 
 # Define create playlist or update playlist
 isCreate = True
 # Read parameters from command line
 if len(sys.argv) >= 2 and sys.argv[1] == 'update':
     isCreate = False
+    if len(sys.argv) >= 3 and sys.argv[2] == 'all':
+        artistToGenerateList = list(generateArtists.keys())
 
 # Define if print playlists
 printPlaylist = False
@@ -40,7 +41,7 @@ def main():
     spotify, authorizeToken = getAuthorizationToken(
         clientID, clientSecret, scope)
 
-    for artist in artistToCrawlList:
+    for artist in artistToGenerateList:
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('Updating ' + artists[artist]['name'] + '...')
         generatePlaylistAndTracks(artist, accessToken, spotify, authorizeToken)
@@ -96,13 +97,14 @@ def generatePlaylistAndTracks(artist, accessToken, spotify, authorizeToken):
         playlist = createPlayList(spotify, authorizeToken, userId=myUserId, name=playlistName,
                                   description=playlistDescription, ispublic=True)
         playlistId = playlist['id']
-        playlist = None
 
         # Write json to file
         with open(generateDir + artist + '_playlist.json', 'w') as f:
             print('Response:')
             print(json.dumps(playlist, ensure_ascii=False))
             json.dump(playlist, f, ensure_ascii=False)
+        # To identify creating playlist after
+        playlist = None
     else:
         with open(generateDir + artist + '_playlist.json') as f:
             playlist = json.load(f)

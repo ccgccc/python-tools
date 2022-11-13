@@ -26,6 +26,7 @@ python3 spotifyCrawlAndProcess.py jacky_cheung
 (Default: artistToCrawl)  
 python3 generatePlaylistAndTracks.py  
 python3 generatePlaylistAndTracks.py update  
+python3 generatePlaylistAndTracks.py update all  
 
 ### Add tracks to Listening Artist playlist
 (Default: artistToCrawl, Listening Artist)  

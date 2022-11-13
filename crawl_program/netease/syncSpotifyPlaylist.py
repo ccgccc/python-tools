@@ -14,12 +14,6 @@ from playlistAddSongs import playlistAddSongs
 artistToSyncList = [artistToCrawl]
 # Define create playlist or update playlist
 isCreate = True
-# Read parameters from command line
-if len(sys.argv) >= 2 and sys.argv[1] == 'update':
-    isCreate = False
-    if len(sys.argv) >= 3 and sys.argv[1] == 'all':
-        artistToSyncList = list(generateArtists.keys())
-
 # Define if update description
 isUpdateDesc = True
 # Define if need prompt
@@ -28,6 +22,13 @@ isNeedPrompt = True
 isOkPrompt = False
 # Define if propmt updating missing description
 isPromptDescMissing = False
+# Read parameters from command line
+if len(sys.argv) >= 2 and sys.argv[1] == 'update':
+    isCreate = False
+    if len(sys.argv) >= 3 and sys.argv[2] == 'all':
+        artistToSyncList = list(generateArtists.keys())
+        isNeedPrompt = False
+
 
 # Define cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')

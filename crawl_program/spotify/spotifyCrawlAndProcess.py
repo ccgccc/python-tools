@@ -16,7 +16,7 @@ artistToCrawlList = [artistToCrawl]
 if len(sys.argv) >= 2:
     if sys.argv[1] == 'generate':
         artistToCrawlList = list(generateArtists.keys())
-    if sys.argv[1] == 'other':
+    elif sys.argv[1] == 'other':
         artistToCrawlList = list(otherArtists.keys())
     elif sys.argv[1] == 'all':
         artistToCrawlList = list(artists.keys())

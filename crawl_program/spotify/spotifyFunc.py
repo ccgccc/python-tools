@@ -275,6 +275,25 @@ def readFileContent(fileName):
         return f.read()
 
 
+# Get playcount string
+def getPlaycountStr(playcount):
+    if playcount >= 10000000000:
+        playcountStr = str(
+            playcount // 1000000000) + ' billion'
+    elif playcount >= 1000000000:
+        playcountStr = str(
+            playcount // 100000000 / 10) + ' billion'
+    elif playcount >= 10000000:
+        playcountStr = str(
+            playcount // 1000000) + ' million'
+    elif playcount >= 1000000:
+        playcountStr = str(
+            playcount // 100000 / 10) + ' million'
+    else:
+        playcountStr = str(playcount)
+    return playcountStr
+
+
 # Print albums info
 def printAlbums(artistAlbums, count):
     for t in artistAlbums['items']:

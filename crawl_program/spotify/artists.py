@@ -1,5 +1,5 @@
 # Deine artist to crawl
-artistToCrawl = 'andy_lau'
+artistToCrawl = 'hacken_lee'
 
 # Deine artists to generate playlists
 # (Search artist on spotfy (e.g. 张学友 on spotify) to get artistId)

@@ -220,7 +220,7 @@ def main():
     print('track names:', [list(dict.values())[0] for dict in spotifyTracksFromNetease
                            if list(dict.keys())[0] in trackUriList])
     if descMissingTracks:
-        playlistDescription = 'Sync between spotify and netease. Spotify missing:' + \
+        playlistDescription = 'Sync between spotify and netease. Spotify missing: ' + \
             missingSongsStr + '.'
         res = updatePlayList(spotify, authorizeToken, spotifyPlaylistId,
                              playlistName, playlistDescription, True)

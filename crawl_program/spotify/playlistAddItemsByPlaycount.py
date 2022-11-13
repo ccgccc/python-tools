@@ -3,7 +3,7 @@ import json
 import time
 from utils.secrets import clientID, clientSecret
 from utils.auth import getAccessToken, getAuthorizationToken
-from artists import artists, artistToCrawl
+from artists import *
 from spotifyFunc import *
 from playlistRemoveItems import playlistRemoveAllItems
 from crawlPlaylists import crawlSinglePlaylist
@@ -14,7 +14,7 @@ from crawlPlaylists import crawlSinglePlaylist
 
 # Define artist here
 artistToCrawlList = [artistToCrawl]
-# artistToCrawlList = list(artists.keys())
+# artistToCrawlList = list(generateArtists.keys())
 
 # # Generate playlist
 # # Define if playlist is private
@@ -114,10 +114,12 @@ def playlistAddTracksByPlaycount(spotify, token, playlistId, playlist, artist, a
     if isUpdateDesc:
         # Playlist name & description
         playlistName = artists[artist]['name'] + ' Most Played Songs'
+        maximumPlaycountStr = getPlaycountStr(allTracks[0]['playcount'])
         oldDescription = playlist['description']
         playlistDescription = artists[artist]['name'] + ' most played songs (playcount > ' + \
-            (str(playcount // 1000000) + ' million' if playcount >= 1000000 else str(playcount)) + ').' + \
-            ' Generated on ' + re.match(r'.*Generated on (.*)by ccg.*', oldDescription).group(1) + ' by ccg. '\
+            (str(playcount // 1000000) + ' million' if playcount >= 1000000 else str(playcount)) + \
+            ', maxPlay: ' + maximumPlaycountStr + '). ' + \
+            'Generated on ' + re.match(r'.*Generated on (.*)by ccg.*', oldDescription).group(1) + ' by ccg. '\
             'Updated on ' + time.strftime("%Y-%m-%d") + '.'
         res = updatePlayList(spotify, token, playlistId,
                              playlistName, playlistDescription, True)

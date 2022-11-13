@@ -3,7 +3,7 @@ import json
 import time
 from utils.secrets import clientID, clientSecret
 from utils.auth import getAccessToken, getAuthorizationToken
-from artists import artists, artistToCrawl
+from artists import *
 from spotifyFunc import *
 from playlistRemoveItems import playlistRemoveAllItems
 from crawlPlaylists import crawlSinglePlaylist
@@ -14,7 +14,7 @@ from crawlPlaylists import crawlSinglePlaylist
 
 # Define artist here
 artistToCrawlList = [artistToCrawl]
-# artistToCrawlList = list(artists.keys())
+# artistToCrawlList = list(generateArtists.keys())
 
 # # Generate playlist
 # # Define if playlist is private
@@ -113,17 +113,12 @@ def playlistAddTracksByNumber(spotify, token, playlistId, playlist, artist, allT
     print('Response:', json.dumps(resJson, ensure_ascii=False))
 
     if isUpdateDesc:
-        minimumPlaycount = allTracks[trackNumber - 1]['playcount']
-        if minimumPlaycount >= 10000000:
-            minimumPlaycountStr = str(
-                minimumPlaycount // 1000000) + ' million'
-        elif minimumPlaycount >= 1000000:
-            minimumPlaycountStr = str(
-                minimumPlaycount // 100000 / 10) + ' million'
-        else:
-            minimumPlaycountStr = str(minimumPlaycount)
         # Playlist name & description
         playlistName = artists[artist]['name'] + ' Most Played Songs'
+        maximumPlaycountStr = getPlaycountStr(
+            allTracks[0]['playcount'])
+        minimumPlaycountStr = getPlaycountStr(
+            allTracks[trackNumber - 1]['playcount'])
         if playlist == None:  # Create playlist
             playlistDescription = artists[artist]['name'] \
                 + ' most played songs (top ' + str(trackNumber) \
@@ -133,7 +128,7 @@ def playlistAddTracksByNumber(spotify, token, playlistId, playlist, artist, allT
             oldDescription = playlist['description']
             playlistDescription = artists[artist]['name'] \
                 + ' most played songs (top ' + str(trackNumber) \
-                + ', minimum playcount: ' + minimumPlaycountStr + '). ' + \
+                + ', maxPlay: ' + maximumPlaycountStr + ', minPlay: ' + minimumPlaycountStr + '). ' + \
                 'Generated on ' + re.match(r'.*Generated on (.*)by ccg.*', oldDescription).group(1) + ' by ccg. ' + \
                 'Updated on ' + time.strftime("%Y-%m-%d") + '.'
         res = updatePlayList(spotify, token, playlistId,
