@@ -16,6 +16,7 @@ playlistIDs = {
     "2QBH6yCLDJhTiXKqDfCtOA": False,  # Like
     '4SqLcwtjZJXdkH8twICyOa': False,  # Nice
     # '64s4sAZyFPc9v2siw2XdX7': True,  # Hmm
+    # '5H1dMlatPh81JQEoHF0bvf': False,  # One Hit
     # "6Ev0ju4qLsqSLznN7fjErt": False,  # 张学友
     # "7w3Y21vKZuLLq1huUuEWZZ": False,  # 周杰伦
     # "4DLB8que4WlMKhdg96wrvh": False,  # 五月天 Most Played Songs

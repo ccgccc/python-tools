@@ -1,6 +1,6 @@
 from utils.secrets import clientID, clientSecret
 from utils.auth import getAccessToken
-from artists import artists, artistToCrawl
+from artists import *
 from spotifyFunc import *
 from crawlAlbums import crawlAlbums
 from crawlRawTracks import getAllAlbumsTracks
@@ -13,8 +13,18 @@ from processTracks import processTracks
 
 # Define artist here
 artistToCrawlList = [artistToCrawl]
-# artistToCrawlList = artists.keys()
+if len(sys.argv) >= 2:
+    if sys.argv[1] == 'generate':
+        artistToCrawlList = list(generateArtists.keys())
+    if sys.argv[1] == 'other':
+        artistToCrawlList = list(otherArtists.keys())
+    elif sys.argv[1] == 'all':
+        artistToCrawlList = list(artists.keys())
+    else:
+        artistToCrawlList = [sys.argv[1]]
 
+# Define if filter albums
+filterAlbums = True
 # Define must first artist
 mustMainArtist = False
 # Filter track by track name or not
@@ -29,22 +39,31 @@ spotifyToken = readFileContent('utils/spotifyToken.txt')
 
 def main():
     for artist in artistToCrawlList:
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        print('Crawling ' + artists[artist]['name'] + '...')
+        if artist in {'eason_chan', 'suyunying'}:
+            filterAlbums = False
+        else:
+            filterAlbums = True
         if artist in {'beyond', 'kare_mok'}:
             mustMainArtist = True
         else:
             mustMainArtist = False
-        crawlAndProcess(artist, mustMainArtist, filterTrackByName)
+        crawlAndProcess(artist, mustMainArtist,
+                        filterAlbums, filterTrackByName)
+    if len(artistToCrawlList) > 1:
+        print('All Done!')
 
 
-def crawlAndProcess(artist, mustMainArtist, filterTrackByName):
+def crawlAndProcess(artist, mustMainArtist, filterAlbums=False, filterTrackByName=False):
     # Get all albums
     token = getAccessToken(clientID, clientSecret)
-    allAlbums = crawlAlbums(token, artists, artist)
+    allAlbums = crawlAlbums(token, artists, artist, filterAlbums=filterAlbums)
     # Get all albums tracks
     allAlbumsTracks = getAllAlbumsTracks(spotifyToken, artist, allAlbums)
     # Process tracks
     processTracks(artists, artist, allAlbumsTracks,
-                  mustMainArtist=mustMainArtist, filterTrackByName=False, printInfo=True)
+                  mustMainArtist=mustMainArtist, filterTrackByName=filterTrackByName, printInfo=True)
     print('--------------------')
     print('Done!')
 

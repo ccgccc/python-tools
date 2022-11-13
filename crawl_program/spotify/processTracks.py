@@ -2,7 +2,7 @@ import os
 import json
 import time
 import xlwt
-from artists import artists, artistToCrawl
+from artists import *
 from spotifyFunc import *
 
 # ****************************************
@@ -125,6 +125,8 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False, filter
     with open('./files/tracks/' + artist + '_alltracks.json', 'w') as f:
         json.dump(sortedTracks, f, ensure_ascii=False)
     trackSheetDir = './files/trackSheets/'
+    if artist in otherArtists:
+        trackSheetDir = trackSheetDir + 'other/'
     fileNames = [f for f in os.listdir(trackSheetDir)
                  if os.path.isfile(os.path.join(trackSheetDir, f))]
     existFile = True if len({True for fileName in fileNames if fileName.find(

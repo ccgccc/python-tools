@@ -1,6 +1,6 @@
 from utils.secrets import clientID, clientSecret
 from utils.auth import getAccessToken
-from artists import artists
+from artists import *
 from spotifyFunc import *
 
 # ****************************************
@@ -8,36 +8,34 @@ from spotifyFunc import *
 # ****************************************
 
 # Define all artist ids
-artistList = list(reversed([v['artistId'] for k, v in artists.items()]))
-# # Define artists id here
+artistList = list(reversed([v['artistId']
+                  for k, v in generateArtists.items()]))
+filePath = './files/artists'
+if len(sys.argv) >= 2:
+    if sys.argv[1] == 'other':
+        artistList = list(reversed([v['artistId']
+                          for k, v in otherArtists.items()]))
+        filePath = filePath + '/other'
+    elif sys.argv[1] == 'all':
+        artistList = list(reversed([v['artistId']
+                          for k, v in artists.items()]))
+        filePath = filePath + '/all'
+# # Define artist ids here
 # artistList = [
 #     # '1Hu58yHg2CXNfDhlPd7Tdd',  # 张学友
 #     # '2elBjNSdBE2Y3f0j1mjrql',  # 周杰伦
 #     # '2QcZxAgcs2I1q7CtCkl6MI',  # 陈奕迅
-#     # '0du5cEVh5yTK9QJze8zA0C',  # Bruno Mars
-#     # '7aRC4L63dBn3CiLDuWaLSI',  # 邓紫棋
-#     # '7Dx7RhX0mFuXhCOUgB01uM',  # 林俊杰
-#     # '2hgxWUG24w1cFLBlPSEVcV',  # 许嵩
-#     # '2F5W6Rsxwzg0plQ0w8dSyt',  # 王力宏
-#     # '4F5TrtYYxsVM1PhbtISE5m',  # Beyond
-#     # '10LslMPb7P5j9L2QXGZBmM',  # 汪峰
-#     # '3df3XLKuqTQ6iOSmi0K3Wp',  # 王菲
-#     # '6jlz5QSUqbKE4vnzo2qfP1',  # 莫文蔚
-#     # '16s0YTFcyjP4kgFwt7ktrY',  # 五月天
-#     # '4dpARuHxo51G3z768sgnrY',  # Adele
-#     # '0SIXZXJCAhNU8sxK0qm7hn',  # 孙燕姿
-#     '4AJcTAMOLkRl3vf4syay8Q',  # 萧敬腾
 # ]
 
 
 # Request artists info
 token = getAccessToken(clientID, clientSecret)
-artists = getArtistInfo(token, artistList)['artists']
+artistsEn = getArtistInfo(token, artistList)['artists']
 # print(json.dumps(artists, ensure_ascii=False))
 artistsZh = getArtistInfo(token, artistList, language='zh-CN')['artists']
 # print(json.dumps(artistsZh, ensure_ascii=False))
 
-fileName = './files/artists/artists'
+fileName = filePath + '/artists'
 # Write json to file
 with open(fileName + '.json', 'w') as f:
     json.dump(artistsZh, f, ensure_ascii=False)
@@ -67,11 +65,25 @@ def wirteToCsvFile(artists, artistsZh, csvFileName, isPrint=True):
     file.close()
 
 
-wirteToCsvFile(artists, artistsZh, fileName + '.csv', isPrint=True)
+# 1. No sort
+wirteToCsvFile(artistsEn, artistsZh, fileName + '.csv', isPrint=True)
 
+# 2. Sort by followers
 sortedArtists = sorted(
-    artists, key=lambda artist: artist['followers']['total'], reverse=True)
+    artistsEn, key=lambda artist: artist['followers']['total'], reverse=True)
 sortedArtistsZh = sorted(
     artistsZh, key=lambda artistZh: artistZh['followers']['total'], reverse=True)
 wirteToCsvFile(sortedArtists, sortedArtistsZh,
                fileName + '_sorted_by_followers.csv', isPrint=False)
+
+# Stat
+print('--------------------')
+print('Generate:', len(generateArtists))
+seen = set()
+uniqeOtherArtists = [artist for artist in otherArtists.keys()
+                     if artist.split('-')[0] not in seen and not seen.add(artist.split('-')[0])]
+print('Other:', len(uniqeOtherArtists),
+      '(' + str(len(otherArtists)) + ')')
+print('Total:', str(len(generateArtists) + len(uniqeOtherArtists)),
+      '(' + str(len(artists)) + ')')
+sys.exit()
