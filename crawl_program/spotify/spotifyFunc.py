@@ -68,10 +68,10 @@ def getArtistInfo(token, artistList, language=None):
 # Get playlist and all its tracks
 def getPlaylistAndAllTracks(token, playlistID, isPrivate=False, spotify=None):
     playlistEndPoint = f"https://api.spotify.com/v1/playlists/{playlistID}?offset=100&limit=100"
+    getHeaders = getHeader(token)
     if isPrivate:
-        res = spotify.get(playlistEndPoint)
+        res = spotify.get(playlistEndPoint, headers=getHeaders)
     else:
-        getHeaders = getHeader(token)
         res = requests.get(playlistEndPoint, headers=getHeaders)
     playlistObject = res.json()
     if res.status_code != 200:
@@ -84,7 +84,7 @@ def getPlaylistAndAllTracks(token, playlistID, isPrivate=False, spotify=None):
     moreTracksUri = playlistObject['tracks']['next']
     while moreTracksUri != None:
         if isPrivate:
-            tracksRes = spotify.get(moreTracksUri).json()
+            tracksRes = spotify.get(moreTracksUri, headers=getHeader(token)).json()
         else:
             tracksRes = requests.get(moreTracksUri, headers=getHeaders).json()
         playlistObject['tracks']['items'].extend(tracksRes['items'])
@@ -126,12 +126,12 @@ def getAlbumTracksByThirdPartyAPI(token, albumId):
 # Get my all liked songs
 def getUserAllLikedSongs(spotify, token):
     userTracksEndPoint = f"https://api.spotify.com/v1/me/tracks?limit=50&offset=0"
-    res = spotify.get(userTracksEndPoint)
+    res = spotify.get(userTracksEndPoint, headers=getHeader(token))
     userTracksObject = res.json()
     # Request more if there is more tracks
     moreTracksUri = userTracksObject['next']
     while moreTracksUri != None:
-        tracksRes = spotify.get(moreTracksUri).json()
+        tracksRes = spotify.get(moreTracksUri, headers=getHeader(token)).json()
         userTracksObject['items'].extend(tracksRes['items'])
         moreTracksUri = tracksRes['next']
     return userTracksObject
@@ -140,7 +140,7 @@ def getUserAllLikedSongs(spotify, token):
 # Get my liked songs by request once
 def getUserSavedTracks(spotify, token, limit=50, offset=0):
     userTracksEndPoint = f"https://api.spotify.com/v1/me/tracks?limit={limit}&offset={offset}"
-    res = spotify.get(userTracksEndPoint)
+    res = spotify.get(userTracksEndPoint, headers=getHeader(token))
     userTracksObject = res.json()
     return userTracksObject
 

@@ -31,7 +31,7 @@ playlistName = sys.argv[1]
 isPrivate = False
 # Define is incremental
 isIncremental = True
-# --- Define is reversed
+# Define is reversed (usually same as isIncremental)
 isReversed = True
 if playlistName in {'Nice', 'One Hit', 'To Listen', 'Netease Non-playable'}:
     isPrivate = True
@@ -78,31 +78,32 @@ def main():
             sys.exit()
         playlist = loadJsonFromFile(neteasePlaylistFileName)
         playlistId = playlist['playlist']['id']
-        if not isIncremental:
-            print('Incremental: False')
-            sureCheck()
-            # Remove playlist songs
-            playlistRomoveSongs(playlistId)
-        else:
+        if isIncremental:
             playlistSongs = getPlaylistSongs(playlistId)['songs']
             playlistSongIdsSet = {song['id']
                                   for song in playlistSongs}
             # Find not added songs
             syncSongs = [song for song in syncSongs
                          if list(song.values())[0] not in playlistSongIdsSet]
-            if isReversed:
-                syncSongs = list(reversed(syncSongs))
             print('Playlist ' + playlistName + ' songs:', len(playlistSongs))
             print('Incremental sync songs: ', len(
                 syncSongs), '\n', syncSongs, '\n', sep='')
             if (len(syncSongs) == 0):
                 print('Nothing to sync. Exiting...')
                 sys.exit()
-            sureCheck()
+        print('IsIncremental:', isIncremental)
+        print('IsReversed:', isReversed)
+        sureCheck()
+        if not isIncremental:
+            # Remove playlist songs
+            playlistRomoveSongs(playlistId)
 
     # Add songs & update playlist description
+    if not isReversed:
+        syncSongs = list(reversed(syncSongs))
     syncSongIds = ','.join([str(list(song.values())[0]) for song in syncSongs])
     addSongsToPlayList(playlistId, syncSongIds)
+
     playlistDescription = 'Synced from spotify. ' + \
         ('Missing songs: ' + ', '.join(missingSongsStr) +
          '.') if len(missingSongsStr) > 0 else ''
@@ -160,19 +161,27 @@ def getSpotifyArtistTrackNames(spotifyPlaylistTracks):
     spotifyArtistIds = {v['artistId']: k for k, v in spotifyArtists.items()}
     spotifyArtistIdsSet = spotifyArtistIds.keys()
     # Initialize spotify artist track names, like this: {'artist': ['trackname', 'trackname2']}
-    spotifyArtistTrackNames = {k: [] for k, v in spotifyArtists.items()}
+    spotifyArtistTrackNames = {}
     artistsNotFound = set()
-    for track in spotifyPlaylistTracks['items']:
+    seenTrackNames = set()
+    for track in spotifyPlaylistTracks['items']:  # Iterate playlist tracks
         isArtistFound = False
-        for trackArtist in track['track']['artists']:
+        for trackArtist in track['track']['artists']:  # Iterate track artists
             trackArtistId = trackArtist['id']
             if trackArtist['id'] in spotifyArtistIdsSet:
+                # Classify tracks to artists & rename duplicate track names
                 artist = spotifyArtistIds.get(trackArtistId)
-                if spotifyArtistTrackNames.get(artist) != None:
+                if spotifyArtistTrackNames.get(artist) == None:
+                    spotifyArtistTrackNames[artist] = []
+                trackName = track['track']['name']
+                if trackName not in seenTrackNames:
+                    spotifyArtistTrackNames[artist].append(trackName)
+                    seenTrackNames.add(trackName)
+                else:
                     spotifyArtistTrackNames[artist].append(
-                        track['track']['name'])
-                    isArtistFound = True
-                    break
+                        trackName + '_2_' + track['track']['artists'][0]['name'])
+                isArtistFound = True
+                break
         if not isArtistFound:
             artistsNotFound.add(
                 '_'.join([artists['name'] for artists in track['track']['artists']]))

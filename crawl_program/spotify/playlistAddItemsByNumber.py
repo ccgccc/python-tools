@@ -122,7 +122,7 @@ def playlistAddTracksByNumber(spotify, token, playlistId, playlist, artist, allT
         if playlist == None:  # Create playlist
             playlistDescription = artists[artist]['name'] \
                 + ' most played songs (top ' + str(trackNumber) \
-                + ', minimum playcount: ' + minimumPlaycountStr + '). ' + \
+                + ', maxPlay: ' + maximumPlaycountStr + ', minPlay: ' + minimumPlaycountStr + '). ' + \
                 'Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
         else:  # Update playlist
             oldDescription = playlist['description']

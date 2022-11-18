@@ -1,8 +1,12 @@
 # Deine artist to crawl
-artistToCrawl = 'andy_lau'
+artistToCrawl = 'tylor_swift'
 
 # Deine artists to generate playlists
 generateArtists = {
+    'tylor_swift': {
+        'name': 'Tylor Swift',
+        'artistId': '44266'
+    },
     'andy_lau': {
         'name': '刘德华',
         'artistId': 3691

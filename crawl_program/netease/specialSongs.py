@@ -122,6 +122,10 @@ specialSongNames = {
     # 伯爵Johnny
     'bojue': {
         '伯虎說': '伯虎说 (feat.唐伯虎Annie)'
+    },
+    # Tylor Swift
+    'tylor_swift': {
+        'I Don’t Wanna Live Forever': 'I Don’t Wanna Live Forever (Fifty Shades Darker)'
     }
 }
 
@@ -183,8 +187,8 @@ specialSongIds = {
     },
     # 刘德华
     'andy_lau': {
-        '谢谢你的爱': 112584,  # 谢谢你的爱 - 谢谢你的爱
-        '谢谢你的爱_2_刘德华': 110910  # 谢谢你的爱(Live) - 回家真好 新曲+精选
+        '谢谢你的爱': 112584,  # 谢谢你的爱
+        '谢谢你的爱_2_刘德华': 35955092  # 谢谢你的爱(粤语版)
     },
 }
 

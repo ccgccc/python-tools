@@ -17,7 +17,7 @@ python3 generatePlaylistAndTracks.py
 
 Or execute these commands: (***)   
 (Default: artistToCrawl)  
-python3 spotifyCrawlAndProcess.py 
+python3 spotifyCrawlAndProcess.py  
 python3 spotifyCrawlAndProcess.py all  
 python3 spotifyCrawlAndProcess.py generate  
 python3 spotifyCrawlAndProcess.py other  

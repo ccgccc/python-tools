@@ -28,7 +28,7 @@ from playlistRemoveItems import playlistRemoveAllItems
 if len(sys.argv) < 2:
     print('Missing playlist name parameter.')
     sys.exit()
-# Define sync mode. 0: sync all, 1: sync non-palyable songs.
+# Define sync mode. 0: sync all, 1: sync non-playable songs.
 syncMode = 0
 # Read playlist name & get playlist id
 playlistName = sys.argv[1]

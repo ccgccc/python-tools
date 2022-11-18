@@ -1,5 +1,5 @@
 # Deine artist to crawl
-artistToCrawl = 'hacken_lee'
+artistToCrawl = 'tylor_swift'
 
 # Deine artists to generate playlists
 # (Search artist on spotfy (e.g. 张学友 on spotify) to get artistId)
@@ -7,6 +7,14 @@ artistToCrawl = 'hacken_lee'
 # For method 1: Define track number to add tracks
 # For method 2: Define minimum playcount to add tracks
 generateArtists = {
+    'tylor_swift': {
+        'name': 'Tylor Swift',
+        'artistId': '06HL4z0CvFAxyc27GXpf02',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 30
+        }
+    },
     'andy_lau': {
         'name': '刘德华',
         'artistId': '2n3uDrupL8UtFSeZhY38MS',
