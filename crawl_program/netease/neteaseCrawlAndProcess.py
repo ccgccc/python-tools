@@ -10,9 +10,15 @@ from processSongs import processSongs
 
 # Define artists here
 artistToCrawlList = [artistToCrawl]
-# artistToCrawlList = list(artists.keys())
-# artistToCrawlList = list(generateArtists.keys())
-# artistToCrawlList = list(otherArtists.keys())
+if len(sys.argv) >= 2:
+    if sys.argv[1] == 'generate':
+        artistToCrawlList = list(generateArtists.keys())
+    elif sys.argv[1] == 'other':
+        artistToCrawlList = list(otherArtists.keys())
+    elif sys.argv[1] == 'all':
+        artistToCrawlList = list(artists.keys())
+    else:
+        artistToCrawlList = [sys.argv[1]]
 
 
 for artist in artistToCrawlList:

@@ -105,7 +105,7 @@ specialSongNames = {
     'hacken_lee': {
         '時間的錯': '时间的错 (粤)'
     },
-    # 刘德华
+    # 刘德华  All
     'andy_lau': {
         '十七歲': '17岁',
         '無間道': '无间道 (独唱版)',
@@ -126,7 +126,11 @@ specialSongNames = {
     # Tylor Swift
     'tylor_swift': {
         'I Don’t Wanna Live Forever': 'I Don’t Wanna Live Forever (Fifty Shades Darker)'
-    }
+    },
+    # 隔壁老樊
+    'gebilaofan': {
+        '关于孤独我想说的话': '关于孤独我想说的话 '
+    },
 }
 
 # Define netease missing songs
@@ -190,6 +194,11 @@ specialSongIds = {
         '谢谢你的爱': 112584,  # 谢谢你的爱
         '谢谢你的爱_2_刘德华': 35955092  # 谢谢你的爱(粤语版)
     },
+    # 张碧晨
+    'zhangbichen': {
+        '凉凉': 452601484,
+        '下一秒': 425298905
+    }
 }
 
 # Netease not good song source，e.g. 你的名字 我的姓氏(友个人演唱会1999)

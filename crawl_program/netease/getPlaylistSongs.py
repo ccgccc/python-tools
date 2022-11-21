@@ -13,6 +13,8 @@ playlistIds = [
     7680312360,  # Nice
     # 7722735074,  # Hmm
     # 7741781941,  # One Hit
+    # 7759490556,  # More Hits - 民谣
+    # 7759804520,  # More Hits - 流行
     # 7690539370,  # Listening Artist
     # 7674298063,  # To Listen
 ]

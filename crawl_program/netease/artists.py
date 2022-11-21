@@ -1,11 +1,11 @@
 # Deine artist to crawl
-artistToCrawl = 'tylor_swift'
+artistToCrawl = 'amei_chang'
 
 # Deine artists to generate playlists
 generateArtists = {
-    'tylor_swift': {
-        'name': 'Tylor Swift',
-        'artistId': '44266'
+    'amei_chang': {
+        'name': '张惠妹',
+        'artistId': 10559
     },
     'andy_lau': {
         'name': '刘德华',
@@ -111,40 +111,46 @@ otherArtists = {
         'name': '海伦',
         'artistId': 31615461
     },
-    # More hits (>3)
-    'ahan': {
-        'name': '周思涵',
-        'artistId': 12292708
-    },
-    'chenli': {
-        'name': '陈粒',
-        'artistId': 1007170
+    # ---------- More hits (>3)
+    # ----- 流行
+    'gebilaofan': {
+        'name': '隔壁老樊',
+        'artistId': 12429072
     },
     'zhangbichen': {
         'name': '张碧晨',
         'artistId': 1024308
     },
-    'gebilaofan': {
-        'name': '隔壁老樊',
-        'artistId': 12429072
+    'zhousihan': {
+        'name': '周思涵',
+        'artistId': 12292708
     },
-    'zhaolei': {
-        'name': '赵雷',
-        'artistId': 6731
-    },
-    'xiechunhua': {
-        'name': '谢春花',
-        'artistId': 1039895
-    },
-    'huazhou': {
-        'name': '花粥',
-        'artistId': 8103
+    'renran': {
+        'name': '任然',
+        'artistId': 9255
     },
     'asi': {
         'name': '阿肆',
         'artistId': 7122
     },
-    # One hit (<4)
+    # ----- 民谣
+    'huazhou': {
+        'name': '花粥',
+        'artistId': 8103
+    },
+    'zhaolei': {
+        'name': '赵雷',
+        'artistId': 6731
+    },
+    'chenli': {
+        'name': '陈粒',
+        'artistId': 1007170
+    },
+    'xiechunhua': {
+        'name': '谢春花',
+        'artistId': 1039895
+    },
+    # ---------- One hit (<4)
     'bojue': {
         'name': '伯爵Johnny',
         'artistId': 2066

@@ -9,8 +9,8 @@ currentdir = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
-from netease.artists import artists as neteaseArtists
 from netease.specialSongs import *
+from netease.syncSongs import getSpotifyArtistTrackIdNames
 from artists import artists as spotifyArtists
 from utils.auth import getAccessToken, getAuthorizationToken
 from utils.secrets import clientID, clientSecret
@@ -50,15 +50,12 @@ if playlistName in {'Favorite', 'Like'}:
     spotifySourcePlaylistNames = [playlistName, 'Listening Artist']
 elif playlistName in {'Nice', 'Hmm', 'To Listen'}:
     spotifySourcePlaylistNames = [playlistName, 'Listening Artist']
-elif playlistName in {'One Hit'}:
+elif playlistName in {'One Hit', 'More Hits - 民谣', 'More Hits - 流行'}:
     descMissingTracks = True
     spotifySourcePlaylistNames = [playlistName]
 elif playlistName in {'Netease Non-playable'}:
     syncMode = 1
     spotifySourcePlaylistNames = ['Favorite', 'Like']
-else:
-    print('Playlist name not defined.')
-    sys.exit()
 print('--------------------')
 print('*** Sync Info ***')
 print('Sync Mode:', syncMode,
@@ -73,6 +70,7 @@ print('--------------------')
 
 
 def main():
+    # ********** Get netease sync songs **********
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     # Get netease playlist
@@ -83,13 +81,12 @@ def main():
         sys.exit()
     with open(neteasePlaylistFileName) as f:
         neteasePlaylist = json.load(f)
-    if syncMode == 0:
+    if syncMode == 0:  # Sync All: Get netease all songs
         neteaseAllSyncSongNames = [song['name']
                                    for song in neteasePlaylist['songs']]
         print('Netease all songs:', len(neteaseAllSyncSongNames))
         print(neteaseAllSyncSongNames, '\n')
-    elif syncMode == 1:
-        # Get netease all non-playable songs
+    elif syncMode == 1:  # Sync non-playable: Get netease all non-playable songs
         neteasePlaylistSongs = neteasePlaylist['songs']
         neteasePlaylistPrivileges = neteasePlaylist['privileges']
         neteaseAllSyncSongs = []
@@ -121,44 +118,45 @@ def main():
         print('Sync mode not supported. Exiting...')
         sys.exit()
 
+    # ********** Get and process spotify artist track names for each playlist **********
     print('\n')
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-    # Get spotify playlists & artist track names
-    spotifyArtistTrackNames = {}
+    spotifyArtistTrackIdNames = {}
     # Iterate playlists
     for spotifyPlaylistName in spotifySourcePlaylistNames:
         with open('../spotify/files/playlists/playlist_' + spotifyPlaylistName + '_by ccg ccc.json') as f:
             spotifyPlaylist = json.load(f)
         # Classify playlist tracks by artist
-        curSpotifyArtistTrackNames = getSpotifyArtistTrackNames(
-            spotifyPlaylistName, spotifyPlaylist['tracks'])
+        curSpotifyArtistTrackIdNames = getSpotifyArtistTrackIdNames(
+            spotifyPlaylistName, spotifyPlaylist['tracks'], spotifyArtists)
         # Iterate artists
-        for artist, spotifyTracks in curSpotifyArtistTrackNames.items():
+        for artist, spotifyTrackIdNames in curSpotifyArtistTrackIdNames.items():
             # Process spotify track names for each playlist & artist
             spotifyProcessedTracks = [{list(dict.keys())[0]: re.sub(r' \(.*', '', re.sub(r' - .*', '', list(dict.values())[0]))}
-                                      for dict in spotifyTracks]
+                                      for dict in spotifyTrackIdNames]
             spotifyProcessedTracks = [{list(dict.keys())[0]: zhconv.convert(list(dict.values())[0], 'zh-cn', update=specialSongNames.get(artist))}
                                       for dict in spotifyProcessedTracks]
-            if spotifyArtistTrackNames.get(artist) != None:
-                spotifyArtistTrackNames[artist].extend(spotifyProcessedTracks)
+            if spotifyArtistTrackIdNames.get(artist) != None:
+                spotifyArtistTrackIdNames[artist].extend(
+                    spotifyProcessedTracks)
             else:
-                spotifyArtistTrackNames[artist] = spotifyProcessedTracks
-    spotifyTrackNames = []
-    for artist, trackNames in spotifyArtistTrackNames.items():
-        if spotifyArtistTrackNames.get(artist) != None:
-            spotifyTrackNames.extend(
-                spotifyArtistTrackNames.get(artist))
+                spotifyArtistTrackIdNames[artist] = spotifyProcessedTracks
+    spotifyAllTrackIdNames = []
+    for artist, trackIdNames in spotifyArtistTrackIdNames.items():
+        if spotifyArtistTrackIdNames.get(artist) != None:
+            spotifyAllTrackIdNames.extend(
+                spotifyArtistTrackIdNames.get(artist))
     print('------------------------------')
-    print('Spotify processed track names:', len(spotifyTrackNames))
-    print([list(track.values())[0] for track in spotifyTrackNames], '\n')
+    print('Spotify processed track names:', len(spotifyAllTrackIdNames))
+    print([list(track.values())[0] for track in spotifyAllTrackIdNames], '\n')
 
+    # ********** Get spotify's matching & missing songs from netease **********
     print('\n')
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('------------------------------')
-    # Get matching songs from netease
-    spotifyTracksFromNetease = [dict for dict in spotifyTrackNames if list(
+    spotifyTracksFromNetease = [dict for dict in spotifyAllTrackIdNames if list(
         dict.values())[0] in neteaseAllSyncSongNames]
     print('Spotify sync tracks from netease:',
           len(spotifyTracksFromNetease))
@@ -180,6 +178,7 @@ def main():
         missingSongsStr = '、'.join(missingSongs)
         print(missingSongsStr)
 
+    # ********** Modify spotify playlist by netease sync songs **********
     print('\n')
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
@@ -240,58 +239,6 @@ def main():
             clientID, clientSecret, scope)
     addTracksToPlayList(spotify, authorizeToken,
                         spotifyPlaylistId, trackUriList)
-
-
-def getSpotifyArtistTrackNames(spotifyPlaylistName, spotifyPlaylistTracks):
-    # Print spoitfy playlist track names
-    print('------------------------------')
-    allPlaylistTrackNames = [track['track']['name']
-                             for track in spotifyPlaylistTracks['items']]
-    totalPlaylistTracks = len(allPlaylistTrackNames)
-    print('Spotify playlist track names (' + spotifyPlaylistName + '): ',
-          '(Total ', totalPlaylistTracks, ')', sep='')
-    print(allPlaylistTrackNames, '\n')
-
-    # Get spotify artists IDs
-    spotifyArtistIds = {v['artistId']: k for k, v in spotifyArtists.items()}
-    spotifyArtistIdsSet = spotifyArtistIds.keys()
-    # Get spotify artist track names, like this: {'artist': ['trackname', 'trackname2']}
-    spotifyArtistTrackNames = {k: [] for k, v in spotifyArtists.items()}
-    artistsNotFound = set()
-    for track in spotifyPlaylistTracks['items']:
-        isArtistFound = False
-        for trackArtist in track['track']['artists']:
-            trackArtistId = trackArtist['id']
-            if trackArtist['id'] in spotifyArtistIdsSet:
-                artist = spotifyArtistIds.get(trackArtistId)
-                if spotifyArtistTrackNames.get(artist) != None:
-                    spotifyArtistTrackNames[artist].append(
-                        {track['track']['uri']: track['track']['name']})
-                    isArtistFound = True
-                    break
-        if not isArtistFound:
-            artistsNotFound.add(
-                '_'.join([artists['name'] for artists in track['track']['artists']]))
-    # Remove empty artists
-    for k in list(spotifyArtistTrackNames.keys()):
-        if len(spotifyArtistTrackNames[k]) == 0:
-            del spotifyArtistTrackNames[k]
-    totalTrackNames = sum([len(v) for k, v in spotifyArtistTrackNames.items()])
-    # print('------------------------------')
-    # print('Spotify playlist track names(classified): ',
-    #       '(Total ', totalTrackNames, ')', sep='')
-    # print(spotifyArtistTrackNames, '\n')
-
-    if (len(artistsNotFound) > 0):
-        print('------------------------------')
-        print('These artists are not crawled yet, please crawl them first:',
-              artistsNotFound, '\n')
-        sys.exit()
-    if (totalTrackNames != totalPlaylistTracks):
-        print('------------------------------')
-        print('Track numbers don\'t match, please check', artistsNotFound)
-        sys.exit()
-    return spotifyArtistTrackNames
 
 
 if __name__ == '__main__':

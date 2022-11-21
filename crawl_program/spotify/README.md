@@ -1,9 +1,11 @@
 # Spotify
 ## Get artists info
-(Default: generateArtists)  
+(Default: artistToCrawl)  
 python3 artistsGetInfo.py  
+python3 artistsGetInfo.py generate  
 python3 artistsGetInfo.py other  
 python3 artistsGetInfo.py all  
+python3 artistsGetInfo.py jacky_cheung  
 
 
 
@@ -44,6 +46,8 @@ python3 ../netease/getPlaylistSongs.py
 python3 ../netease/getPlaylistSongs.py 'Favorite' 'Like' 'Nice'  
 python3 ../netease/getPlaylistSongs.py 'Hmm'  
 python3 ../netease/getPlaylistSongs.py 'One Hit'  
+python3 ../netease/getPlaylistSongs.py 'More Hits - 民谣'  
+python3 ../netease/getPlaylistSongs.py 'More Hits - 流行'  
 python3 ../netease/getPlaylistSongs.py 'To Listen'  
 python3 ../netease/getPlaylistSongs.py 'Netease Non-playable'  
 
@@ -53,6 +57,8 @@ python3 syncNeteaseSongs.py 'Like'
 python3 syncNeteaseSongs.py 'Nice'  
 python3 syncNeteaseSongs.py 'Hmm'  
 python3 syncNeteaseSongs.py 'One Hit'  
+python3 syncNeteaseSongs.py 'More Hits - 民谣'  
+python3 syncNeteaseSongs.py 'More Hits - 流行'  
 python3 syncNeteaseSongs.py 'To Listen'  
 python3 syncNeteaseSongs.py 'Netease Non-playable'  
 

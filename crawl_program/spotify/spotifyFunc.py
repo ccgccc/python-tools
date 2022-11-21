@@ -68,11 +68,11 @@ def getArtistInfo(token, artistList, language=None):
 # Get playlist and all its tracks
 def getPlaylistAndAllTracks(token, playlistID, isPrivate=False, spotify=None):
     playlistEndPoint = f"https://api.spotify.com/v1/playlists/{playlistID}?offset=100&limit=100"
-    getHeaders = getHeader(token)
     if isPrivate:
-        res = spotify.get(playlistEndPoint, headers=getHeaders)
+        res = spotify.get(playlistEndPoint, headers={
+                          "accept-language": "zh-CN"})
     else:
-        res = requests.get(playlistEndPoint, headers=getHeaders)
+        res = requests.get(playlistEndPoint, headers=getHeader(token))
     playlistObject = res.json()
     if res.status_code != 200:
         print('Get playlist error:', res, playlistObject)
@@ -84,9 +84,11 @@ def getPlaylistAndAllTracks(token, playlistID, isPrivate=False, spotify=None):
     moreTracksUri = playlistObject['tracks']['next']
     while moreTracksUri != None:
         if isPrivate:
-            tracksRes = spotify.get(moreTracksUri, headers=getHeader(token)).json()
+            tracksRes = spotify.get(
+                moreTracksUri, headers={"accept-language": "zh-CN"}).json()
         else:
-            tracksRes = requests.get(moreTracksUri, headers=getHeaders).json()
+            tracksRes = requests.get(
+                moreTracksUri, headers=getHeader(token)).json()
         playlistObject['tracks']['items'].extend(tracksRes['items'])
         moreTracksUri = tracksRes['next']
     return playlistObject
@@ -123,15 +125,38 @@ def getAlbumTracksByThirdPartyAPI(token, albumId):
 # ******************************
 #    Authorization Code Flow
 # ******************************
+# Get my following artists
+def getFollowingArtists(spotify, token, limit, language=None):
+    followingArtistsEndPoint = f"https://api.spotify.com/v1/me/following?type=artist&limit={limit}"
+    if language == None:
+        res = spotify.get(followingArtistsEndPoint)
+    else:
+        res = spotify.get(followingArtistsEndPoint, headers={
+            "accept-language": language})
+    artists = res.json()
+    # Request more if there is more tracks
+    moreArtistsUri = artists['artists']['next']
+    while moreArtistsUri != None:
+        if language == None:
+            artistsRes = spotify.get(moreArtistsUri).json()
+        else:
+            artistsRes = spotify.get(moreArtistsUri, headers={
+                "accept-language": language}).json()
+        artists['artists']['items'].extend(artistsRes['artists']['items'])
+        moreArtistsUri = artistsRes['artists']['next']
+    return artists
+
+
 # Get my all liked songs
 def getUserAllLikedSongs(spotify, token):
     userTracksEndPoint = f"https://api.spotify.com/v1/me/tracks?limit=50&offset=0"
-    res = spotify.get(userTracksEndPoint, headers=getHeader(token))
+    res = spotify.get(userTracksEndPoint, headers={"accept-language": "zh-CN"})
     userTracksObject = res.json()
     # Request more if there is more tracks
     moreTracksUri = userTracksObject['next']
     while moreTracksUri != None:
-        tracksRes = spotify.get(moreTracksUri, headers=getHeader(token)).json()
+        tracksRes = spotify.get(moreTracksUri, headers={
+                                "accept-language": "zh-CN"}).json()
         userTracksObject['items'].extend(tracksRes['items'])
         moreTracksUri = tracksRes['next']
     return userTracksObject
@@ -140,7 +165,7 @@ def getUserAllLikedSongs(spotify, token):
 # Get my liked songs by request once
 def getUserSavedTracks(spotify, token, limit=50, offset=0):
     userTracksEndPoint = f"https://api.spotify.com/v1/me/tracks?limit={limit}&offset={offset}"
-    res = spotify.get(userTracksEndPoint, headers=getHeader(token))
+    res = spotify.get(userTracksEndPoint, headers={"accept-language": "zh-CN"})
     userTracksObject = res.json()
     return userTracksObject
 

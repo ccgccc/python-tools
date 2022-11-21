@@ -1,5 +1,5 @@
 # Deine artist to crawl
-artistToCrawl = 'tylor_swift'
+artistToCrawl = 'amei_chang'
 
 # Deine artists to generate playlists
 # (Search artist on spotfy (e.g. 张学友 on spotify) to get artistId)
@@ -7,6 +7,159 @@ artistToCrawl = 'tylor_swift'
 # For method 1: Define track number to add tracks
 # For method 2: Define minimum playcount to add tracks
 generateArtists = {
+    'amei_chang': {
+        'name': '张惠妹',
+        'artistId': '6noxsCszBEEK04kCehugOp',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    # Split
+    'a_lin': {
+        'name': '黄丽玲',
+        'artistId': '28gf2piFx6cAKOMIwcky5a',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'lala_hsu': {
+        'name': '徐佳莹',
+        'artistId': '3dI4Io8XE33J2o04ZwjR0Y',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'wakin_chau': {
+        'name': '周华健',
+        'artistId': '6wcIBaOvA9XNGgPujYZZ7L',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'kary_ng': {
+        'name': '吴雨霏',
+        'artistId': '3B9ZmIcte26paTCaI1PFKE',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 15
+        }
+    },
+    'grasshopper': {
+        'name': '草蜢',
+        'artistId': '5IxPdROZmnCyD6TBuSJMYE',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'edmond_leung': {
+        'name': '梁汉文',
+        'artistId': '1THfyLd3iyJYJ6X2U36K0y',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'charlene_choi': {
+        'name': '蔡卓妍',
+        'artistId': '6wBoKKHhGDrxVtp6XMFpIP',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    # 'hu_xia': {
+    #     'name': '胡夏',
+    #     'artistId': '3iRqbMhzyOyoCkmmMRxLWR',
+    #     'generateInfo': {
+    #         'generateMethod': 1,
+    #         'number': 20
+    #     }
+    # },
+    'george_lam': {
+        'name': '林子祥',
+        'artistId': '7rxRHujzUzobMEbtoE297s',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'alan_tam': {
+        'name': '谭咏麟',
+        'artistId': '5vWJrDpmd5vrDpdmgxqC5u',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'sam_hui': {
+        'name': '许冠杰',
+        'artistId': '1SglpJrPltamdJLLwInIL7',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'kelly_chen': {
+        'name': '陈慧琳',
+        'artistId': '7KyaSSJ8uTv7Unev4z2Qc7',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'vivian_chow': {
+        'name': '周慧敏',
+        'artistId': '4bzVQLX2gMBQVMINdAGElJ',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'priscilla_chan': {
+        'name': '陈慧娴',
+        'artistId': '5SLOTZhruJRRGgIRtTSPc5',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 30
+        }
+    },
+    'anita_mui': {
+        'name': '梅艳芳',
+        'artistId': '06RD8CxzApXzuhHx54BhQL',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'kay_tse': {
+        'name': '谢安琪',
+        'artistId': '6XtWdWAC7rNqXwbs8hGqP9',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'leo_ku': {
+        'name': '古巨基',
+        'artistId': '4F0XzHNcfvvA2I0rGqIwAQ',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'miriam_yeung': {
+        'name': '杨千嬅',
+        'artistId': '1rxk3vAYWeiBD2Q6FCezcl',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
     'tylor_swift': {
         'name': 'Tylor Swift',
         'artistId': '06HL4z0CvFAxyc27GXpf02',
@@ -15,6 +168,7 @@ generateArtists = {
             'number': 30
         }
     },
+    # Split
     'andy_lau': {
         'name': '刘德华',
         'artistId': '2n3uDrupL8UtFSeZhY38MS',
@@ -211,7 +365,7 @@ otherArtists = {
         'name': '海伦',
         'artistId': '2f9O9Vy7xlAghr07uxXYMh'
     },
-    # Don't belong here
+    # ---------- Don't belong here
     # 'tylor_swift': {
     #     'name': 'Taylor Swift',
     #     'artistId': '06HL4z0CvFAxyc27GXpf02'
@@ -220,7 +374,7 @@ otherArtists = {
     #     'name': 'Tones And I',
     #     'artistId': '2NjfBq1NflQcKSeiDooVjY'
     # },
-    # Spotify only
+    # ---------- Spotify only
     # 'chenyifa': {
     #     'name': '陈一发',
     #     'artistId': '10xtjTRMlKZ7aFx6VBQlSj'
@@ -229,26 +383,36 @@ otherArtists = {
     #     'name': '黄明志',
     #     'artistId': '24jrxG0tKcwgAzsLuPzyMi'
     # },
-    # More hits (>3)
+    # ---------- More hits (>3)
+    # ----- 流行
+    'gebilaofan': {
+        'name': '隔壁老樊',
+        'artistId': '1lGtvqG3JDiT3bbnJaCxfe'
+    },
+    'zhangbichen': {  # *
+        'name': '张碧晨',  # 2014年中国好声音第三季年度冠军
+        'artistId': '7n6JzP9GxGVVzXG0t0gLu3'
+    },
     'zhousihan-2': {
         'name': '周思涵',
         'artistId': '0ba03M9f4Zxx9oSqpKmo2T'
     },
-    'zhousihan': {
+    'zhousihan': {  # *
         'name': '阿涵',
         'artistId': '0Nu7uGMynoaIdKnfLRgxJ8'
     },
-    'chenli': {
-        'name': '陈粒',
-        'artistId': '3SyC3U06X0DjdWd2Jf6V8Q'
+    'renran': {  # ***
+        'name': '任然',
+        'artistId': '6f4srX54JFrLNK4aTJe2Sc'
     },
-    'zhangbichen': {
-        'name': '张碧晨',  # 2014年中国好声音第三季年度冠军
-        'artistId': '7n6JzP9GxGVVzXG0t0gLu3'
+    'asi': {  # **
+        'name': '阿肆',
+        'artistId': '4yamiVzQPYBb02ceSu0jaI'
     },
-    'gebilaofan': {
-        'name': '隔壁老樊',
-        'artistId': '1lGtvqG3JDiT3bbnJaCxfe'
+    # ----- 民谣
+    'huazhou': {
+        'name': '花粥',
+        'artistId': '148sD27V3Nr0XFl3TZNwmw'
     },
     'zhaolei-2': {
         'name': '赵雷2',
@@ -258,19 +422,15 @@ otherArtists = {
         'name': '赵雷',
         'artistId': '2KwZ9xnULczo0Z7Y7Bp57R'
     },
+    'chenli': {  # **
+        'name': '陈粒',
+        'artistId': '3SyC3U06X0DjdWd2Jf6V8Q'
+    },
     'xiechunhua': {
         'name': '谢春花',
         'artistId': '0gYt4XG9A0hyZW7rt745ZY'
     },
-    'huazhou': {
-        'name': '花粥',
-        'artistId': '148sD27V3Nr0XFl3TZNwmw'
-    },
-    'asi': {
-        'name': '阿肆',
-        'artistId': '4yamiVzQPYBb02ceSu0jaI'
-    },
-    # One hit (<4)
+    # ---------- One hit (<4)
     'bojue-2': {
         'name': '伯爵Johnny2',
         'artistId': '7xzC31BgSOWsAvun3j2bSS'
@@ -391,7 +551,7 @@ otherArtists = {
         'name': '柏松',
         'artistId': '5dGgQ6EQsfOPRiv2V0b846'
     },
-    # Nah
+    # ---------- Nah
     # 'gai_zhouyan': {
     #     'name': 'GAI周延',  # 2017年中国有嘻哈第一季并列冠军
     #     'artistId': '37EUUUGKMLP6KSKrN9q39m'

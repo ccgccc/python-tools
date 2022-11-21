@@ -29,6 +29,10 @@ python3 syncSpotifyPlaylist.py
 Or execute these commands: (***)  
 (Default: artistToCrawl)  
 python3 neteaseCrawlAndProcess.py  
+python3 neteaseCrawlAndProcess.py all  
+python3 neteaseCrawlAndProcess.py generate  
+python3 neteaseCrawlAndProcess.py other  
+python3 neteaseCrawlAndProcess.py jacky_cheung  
 
 (Default: artistToCrawl)  
 python3 syncSpotifyPlaylist.py  
@@ -48,6 +52,8 @@ python3 ../spotify/crawlPlaylists.py 'Listening Artist'
 python3 ../spotify/crawlPlaylists.py 'Favorite' 'Like' 'Nice'  
 python3 ../spotify/crawlPlaylists.py 'Hmm'  
 python3 ../spotify/crawlPlaylists.py 'One Hit'  
+python3 ../spotify/crawlPlaylists.py 'More Hits - 民谣'  
+python3 ../spotify/crawlPlaylists.py 'More Hits - 流行'  
 python3 ../spotify/crawlPlaylists.py 'To Listen'  
 python3 ../spotify/crawlPlaylists.py 'Netease Non-playable'  
 
@@ -58,6 +64,8 @@ python3 syncCustomPlaylist.py 'Like'
 python3 syncCustomPlaylist.py 'Nice'  
 python3 syncCustomPlaylist.py 'Hmm'  
 python3 syncCustomPlaylist.py 'One Hit'  
+python3 syncCustomPlaylist.py 'More Hits - 民谣'  
+python3 syncCustomPlaylist.py 'More Hits - 流行'  
 python3 syncCustomPlaylist.py 'To Listen'  
 python3 syncCustomPlaylist.py 'Netease Non-playable'  
 

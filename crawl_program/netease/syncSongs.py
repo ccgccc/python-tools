@@ -1,18 +1,114 @@
-
+import re
+import sys
+import json
 import zhconv
-from artists import *
-from common import *
-from specialSongs import *
+from .specialSongs import *
+from .artists import *
 
 # **************************************************
 #  Get spotify synced songs by artist & track names
 # **************************************************
 
 
-def getSyncSongs(artist, spotifyTrackNames, isRemoveAlias=True,
+# Classify playlist tracks by artist
+def getSpotifyArtistTrackIdNames(spotifyPlaylistName, spotifyPlaylistTracks, spotifyArtists):
+    print('------------------------------')
+    allPlaylistTrackNames = [track['track']['name']
+                             for track in spotifyPlaylistTracks['items']]
+    totalPlaylistTracks = len(allPlaylistTrackNames)
+    print('Spotify playlist track names (' + spotifyPlaylistName + '): ',
+          '(Total ', totalPlaylistTracks, ')', sep='')
+    print(allPlaylistTrackNames, '\n')
+
+    # Get spotify artists IDs
+    spotifyArtistIds = {v['artistId']: k for k, v in spotifyArtists.items()}
+    spotifyArtistIdsSet = spotifyArtistIds.keys()
+    # Initialize spotify artist track names, like this: {'artist': ['trackname', 'trackname2']}
+    spotifyArtistTrackNames = {}
+    artistsNotFound = set()
+    seenTrackNames = set()
+    for track in spotifyPlaylistTracks['items']:  # Iterate playlist tracks
+        isArtistFound = False
+        for trackArtist in track['track']['artists']:  # Iterate track artists
+            trackArtistId = trackArtist['id']
+            if trackArtist['id'] in spotifyArtistIdsSet:
+                # Classify tracks to artists & rename duplicate track names
+                artist = spotifyArtistIds.get(trackArtistId)
+                if spotifyArtistTrackNames.get(artist) == None:
+                    spotifyArtistTrackNames[artist] = []
+                trackName = track['track']['name']
+                if trackName not in seenTrackNames:
+                    spotifyArtistTrackNames[artist].append(
+                        {track['track']['uri']: trackName})
+                    seenTrackNames.add(trackName)
+                else:
+                    spotifyArtistTrackNames[artist].append(
+                        {track['track']['uri']: trackName + '_2_' + track['track']['artists'][0]['name']})
+                isArtistFound = True
+                break
+        if not isArtistFound:
+            artistsNotFound.add(
+                '_'.join([artists['name'] for artists in track['track']['artists']]))
+    totalTrackNames = sum([len(v) for k, v in spotifyArtistTrackNames.items()])
+    # print('------------------------------')
+    # print('Spotify playlist track names(classified): ',
+    #       '(Total ', totalTrackNames, ')', sep='')
+    # print(spotifyArtistTrackNames, '\n')
+
+    if (len(artistsNotFound) > 0):
+        print('------------------------------')
+        print('These artists are not crawled yet, please crawl them first:',
+              artistsNotFound, '\n')
+        sys.exit()
+    if (totalTrackNames != totalPlaylistTracks):
+        print('------------------------------')
+        print('Track numbers don\'t match, please check', artistsNotFound)
+        sys.exit()
+    return spotifyArtistTrackNames
+
+
+# Get netease sync songs from spotify for every artist & merge all sync songs
+def getSpotifyToNeteaseSongs(spotifyArtistTrackIdNames, spotifyArtists, isNeedMissingPrompt=True):
+    syncSongs = []
+    missingSongs = []
+    missingSongsStr = []
+    # Get sync songs
+    for artist, trackIdNames in spotifyArtistTrackIdNames.items():
+        if len(trackIdNames) == 0:
+            continue
+        artist = artist.split('-')[0]
+        artistName = spotifyArtists[artist]['name']
+        print('\n************************************************************')
+        print('************************************************************')
+        print('Processing', artistName, '......')
+        curSyncSongs, curMissingSongs = getSyncSongs(
+            artist, trackIdNames, isRemoveAlias=True, isNeedPrompt=False, isOkPrompt=False)
+        syncSongs.extend(curSyncSongs)
+        missingSongs.extend(curMissingSongs)
+        if len(curMissingSongs) > 0:
+            missingSongsStr.append(
+                '、'.join(curMissingSongs) + '(' + artistName + ')')
+        print('Acc count:', len(syncSongs))
+    print('\n')
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    print('All sync songs: ', len(syncSongs), '\n', json.dumps(
+        syncSongs, ensure_ascii=False), '\n', sep='')
+    print('All missing songs: ', len(missingSongs),
+          '\n', json.dumps(missingSongs, ensure_ascii=False), '\n', sep='')
+    if isNeedMissingPrompt and len(missingSongs) > 0:
+        msg = input('Are you sure? Press Y to continue: ')
+        if msg != 'y' and msg != 'Y':
+            sys.exit()
+    return syncSongs, missingSongs, missingSongsStr
+
+
+# Process spotify track names & match netease songs for one artist
+def getSyncSongs(artist, spotifyTrackIdNames, isRemoveAlias=True,
                  isNeedPrompt=True, isOkPrompt=True, confirmOnceMode=True):
     # Get spotify playlist song names
-    spotifyTrackOriginalNames = spotifyTrackNames[artist]
+    spotifyTrackOriginalNames = [
+        list(dict.values())[0] for dict in spotifyTrackIdNames]
     if isRemoveAlias == True:
         spotifyTrackOriginalNames = [re.sub(r' \(.*', '', re.sub(r' - .*', '', track))
                                      for track in spotifyTrackOriginalNames]
@@ -24,7 +120,9 @@ def getSyncSongs(artist, spotifyTrackNames, isRemoveAlias=True,
 
     # Get netease artist all songs
     fileName = 'songs/' + artist + '_allsongs'
-    neteaseArtistSongs = loadJsonFromFile(fileName)
+    # Load json from file
+    with open('./files/' + fileName + '.json') as f:
+        neteaseArtistSongs = json.load(f)
     neteaseArtistSongIds = {song['name']: song['id']
                             for song in neteaseArtistSongs}
     if specialSongIds.get(artist) != None:

@@ -41,7 +41,7 @@ def main():
     for artist in artistToCrawlList:
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('Crawling ' + artists[artist]['name'] + '...')
-        if artist in {'eason_chan', 'suyunying'}:
+        if artist in {'eason_chan', 'suyunying', 'grasshopper', 'asi'}:
             filterAlbums = False
         else:
             filterAlbums = True
