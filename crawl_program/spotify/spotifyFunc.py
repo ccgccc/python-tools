@@ -53,16 +53,19 @@ def getSingleTrack(token, trackId):
 
 # Get artists info
 def getArtistInfo(token, artistList, language=None):
-    artistsEndPoint = "https://api.spotify.com/v1/artists?ids=" + \
-        ','.join(artistList)
     getHeaders = {
         "Authorization": "Bearer " + token
     }
     if language != None:
         getHeaders["accept-language"] = language
-    res = requests.get(artistsEndPoint, headers=getHeaders)
-    artistsObject = res.json()
-    return artistsObject
+    allArtists = {'artists': []}
+    for i in range(0, len(artistList), 50):
+        artistsEndPoint = "https://api.spotify.com/v1/artists?ids=" + \
+            ','.join(artistList[i:i+50])
+        artistsObject = requests.get(
+            artistsEndPoint, headers=getHeaders).json()
+        allArtists['artists'].extend(artistsObject['artists'])
+    return allArtists
 
 
 # Get playlist and all its tracks
@@ -207,10 +210,12 @@ def updatePlayList(spotify, token, playlistId, name, description, ispublic):
     updatePlaylistEndPoint = f"https://api.spotify.com/v1/playlists/{playlistId}"
     postHeaders = postHeader(token)
     postData = {
-        "name": name,
-        "description": description,
         "public": ispublic
     }
+    if name != None:
+        postData['name'] = name
+    if description != None:
+        postData['description'] = description
     res = spotify.put(updatePlaylistEndPoint,
                       headers=postHeaders, data=json.dumps(postData))
     if res.status_code == 200:
@@ -273,21 +278,22 @@ def addTracksToPlaylistByPlaycount(spotify, token, playlistId, allTracks, playco
 def removePlayListTracks(spotify, token, playlistId, trackUriList):
     playlistAddTracksEndPoint = f"https://api.spotify.com/v1/playlists/{playlistId}/tracks"
     postHeaders = postHeader(token)
-    postData = {
-        "uris": trackUriList
-    }
-    res = spotify.delete(playlistAddTracksEndPoint,
-                         headers=postHeaders, data=json.dumps(postData))
-    resJson = res.json()
-    if res.status_code == 200:
-        print('\n**********')
-        print('Successfully remove playlist tracks.')
-        print('**********\n')
-    else:
-        print('\n**********')
-        print('Removing playlist tracks failed.')
-        print(resJson)
-        print('**********\n')
+    for i in range(0, len(trackUriList), 100):
+        postData = {
+            "uris": trackUriList[i:i+100]
+        }
+        res = spotify.delete(playlistAddTracksEndPoint,
+                             headers=postHeaders, data=json.dumps(postData))
+        resJson = res.json()
+        if res.status_code == 200:
+            print('\n**********')
+            print('Successfully remove playlist tracks.')
+            print('**********\n')
+        else:
+            print('\n**********')
+            print('Removing playlist tracks failed.')
+            print(resJson)
+            print('**********\n')
     return resJson
 
 

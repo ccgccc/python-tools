@@ -111,6 +111,25 @@ specialSongNames = {
         '無間道': '无间道 (独唱版)',
         '無間道': '无间道 (独唱版)'
     },
+    # 张惠妹  All
+    'amei_chang': {
+    },
+    # Shawn Mendes  All
+    'shawn_mendes': {
+        'Summer of Love': 'Summer Of Love',
+        'Lover': 'Lover (Remix)'
+    },
+    # 朴树
+    'pushu': {
+        'NEW BOY': 'New Boy'
+    },
+    # 许巍
+    'xuwei': {
+        '故鄕': '故乡'
+    },
+    # 李健
+    'lijian': {
+    },
     # 宝石Gem
     'baoshi_gem': {
         '野狼Disco': '野狼disco'
@@ -198,7 +217,31 @@ specialSongIds = {
     'zhangbichen': {
         '凉凉': 452601484,
         '下一秒': 425298905
-    }
+    },
+    # 张惠妹 All
+    'amei_chang': {
+        '不该': 417250561
+    },
+}
+
+# Define spotify missing songs
+# Spotify no entry songs
+spotifyMissingSongs = {
+    # 王菲
+    'faye_wong': [
+        {'传奇': 298838}
+    ],
+    # 李健
+    'lijian': [  # Order based on qq music
+        {'风吹麦浪': 110215},
+        {'假如爱有天意': 33248189},
+        {'传奇': 110411},
+        {'异乡人': 29729145},  # Album:《传奇》, No entry in 《想念你》
+    ],
+    # 郑钧
+    'zhengjun': [
+        {'流星': 4878093}
+    ],
 }
 
 # Netease not good song source，e.g. 你的名字 我的姓氏(友个人演唱会1999)

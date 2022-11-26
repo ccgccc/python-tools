@@ -16,31 +16,41 @@ from crawlPlaylists import crawlSinglePlaylist
 artistToCrawlList = [artistToCrawl]
 # artistToCrawlList = list(generateArtists.keys())
 
-# # Generate playlist
-# # Define if playlist is private
-# isPrivate = False
-# # Define if update description
-# isUpdateDesc = True
-# # Define playlist id
-# playlistID = None
-
-# Specify playlist
 # Define playlist id
-playlistID = '2R48aLSO7QmOaHAGaV0zIM'  # Listening Artist
+playlistID = None  # Generated playlist (maybe multi playlists)
 # Define if playlist is private
-isPrivate = True
+isPrivate = False
+# Define track number to add
+trackNumber = -1
+# Define if playlist is private
+isIncremental = False
 # Define if update description
-isUpdateDesc = False
+isUpdateDesc = True
+# Define is collection playlist
+isCollection = False
+if len(sys.argv) > 1:
+    if len(artistToCrawlList) > 1:
+        print('Can\'t specify playlist for multi artists.')
+        sys.exit()
+    # Specify playlist
+    playlistName = sys.argv[1]
+    if playlistName in {'Listening Artist'}:
+        playlistID = '2R48aLSO7QmOaHAGaV0zIM'  # Listening Artist
+        isPrivate = True
+        isIncremental = False
+        isUpdateDesc = False
+    elif playlistName.startswith('Collection'):  # Collection
+        isPrivate = False
+        isIncremental = True
+        isUpdateDesc = False
+        isCollection = True
+        if len(sys.argv) > 2:
+            artistToCrawlList = sys.argv[2:]
+        if playlistName.startswith('Collection 1'):
+            playlistID = '5uo2JUVt9WQltVwijJzZmb'
 
 
 def main():
-    # Read parameters from command line
-    if len(sys.argv) >= 2:
-        if len(artistToCrawlList) > 1:
-            print('Can\'t specify tracknumber for multi artists.')
-            sys.exit()
-        trackNumber = int(sys.argv[1])
-
     # Get accessToken
     accessToken = getAccessToken(clientID, clientSecret)
     # Get spotify authorization authorizeToken by scope
@@ -56,19 +66,26 @@ def main():
     spotify, authorizeToken = getAuthorizationToken(
         clientID, clientSecret, scope)
 
-    for artist in artistToCrawlList:
+    global trackNumber
+    global isIncremental
+    for i in range(len(artistToCrawlList)):
+        artist = artistToCrawlList[i]
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('Updating ' + artists[artist]['name'] + '...')
         generateInfo = artists[artist].get('generateInfo')
         if generateInfo != None:
             generateMethod = generateInfo['generateMethod']
-            trackNumber = generateInfo['number']
+            if len(artistToCrawlList) > 1 or trackNumber < 0:
+                trackNumber = generateInfo['number']
             if generateMethod != 1:
                 print('GenerateMethod != 1, continue\n')
                 continue
         elif len(artistToCrawlList) > 1:
             print('Can\'t find generate info in artists.py.')
             sys.exit()
+        # Set isIncremental = True from collection's second artist
+        if isCollection and i > 0 and not isIncremental:
+            isIncremental = True
         playlistAddItemsByNumber(
             artist, trackNumber, accessToken, spotify, authorizeToken)
 
@@ -94,8 +111,9 @@ def playlistAddItemsByNumber(artist, trackNumber, accessToken, spotify, authoriz
         allTracks = json.load(f)
     # print(allTracks)
 
-    playlistRemoveAllItems(accessToken, spotify,
-                           authorizeToken, playlistId, isPrivate=isPrivate)
+    if not isIncremental:
+        playlistRemoveAllItems(accessToken, spotify,
+                               authorizeToken, playlistId, isPrivate=isPrivate)
     playlistAddTracksByNumber(spotify, authorizeToken, playlistId, playlist,
                               artist, allTracks, trackNumber, isUpdateDesc=isUpdateDesc)
     # Get new playlist info

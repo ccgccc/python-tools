@@ -1,6 +1,6 @@
 import zhconv
 from utils.secrets import clientID, clientSecret
-from utils.auth import getAccessToken
+from utils.auth import getAccessToken, getAuthorizationToken
 from artists import *
 from spotifyFunc import *
 
@@ -21,12 +21,13 @@ artistsList = [artists[artistToCrawl]['artistId']]
 
 def main():
     filePath = None
-    if len(sys.argv) >= 2:
+    isMerged = False
+    if len(sys.argv) > 1:
         filePath = './files/artists'
-        if sys.argv[1] == 'other':
+        if sys.argv[1] == 'generate':
             artistList = list(reversed([v['artistId']
                                         for k, v in otherArtists.items()]))
-            filePath = filePath + '/other'
+            filePath = filePath + '/generate'
         elif sys.argv[1] == 'other':
             artistList = list(reversed([v['artistId']
                                         for k, v in otherArtists.items()]))
@@ -35,6 +36,10 @@ def main():
             artistList = list(reversed([v['artistId']
                                         for k, v in artists.items()]))
             filePath = filePath + '/all'
+        elif sys.argv[1] == 'merge':
+            artistList = list(reversed([v['artistId']
+                                        for k, v in artists.items()]))
+            isMerged = True
         else:
             artistList = [artists[sys.argv[1]]['artistId']]
             filePath = None
@@ -51,6 +56,25 @@ def main():
     fileName = None
     if filePath != None:
         fileName = filePath + '/artists'
+    if isMerged:
+        fileName = filePath + '/artists_merged'
+        scope = "user-follow-read"
+        spotify, authorizeToken = getAuthorizationToken(
+            clientID, clientSecret, scope)
+        followingArtistsEn = getFollowingArtists(spotify, authorizeToken, 50)
+        followingArtistsZh = getFollowingArtists(
+            spotify, authorizeToken, 50, language='zh-CN')
+        # with open('files/artists/following_artists.json') as f:
+        #     followingArtistsEn = json.load(f)
+        # with open('files/artists/following_artists_en.json') as f:
+        #     followingArtistsZh = json.load(f)
+        # Concatenate following artists
+        existArtistIds = {artist['id'] for artist in artistsEn}
+        artistsEn.extend(
+            [artist for artist in followingArtistsEn['artists']['items'] if artist['id'] not in existArtistIds])
+        artistsZh.extend(
+            [artist for artist in followingArtistsZh['artists']['items'] if artist['id'] not in existArtistIds])
+    if fileName != None:
         # Write json to file
         with open(fileName + '.json', 'w') as f:
             json.dump(artistsZh, f, ensure_ascii=False)
@@ -81,14 +105,23 @@ def main():
                          if artist.split('-')[0] not in seen and not seen.add(artist.split('-')[0])]
     print('Other:', len(uniqeOtherArtists),
           '(' + str(len(otherArtists)) + ')')
-    print('Total:', str(len(generateArtists) + len(uniqeOtherArtists)),
+    print('Total:', len(generateArtists) + len(uniqeOtherArtists),
           '(' + str(len(artists)) + ')')
+    if isMerged:
+        print('----------')
+        print('Follows:', len(followingArtistsEn['artists']['items']))
+        print('Merge:', len(generateArtists) + len(uniqeOtherArtists) +
+              len([artist for artist in followingArtistsEn['artists']
+                  ['items'] if artist['id'] not in existArtistIds]),
+              '(' + str(len(artistsEn)) + ')')
+        print('Unfollow:', [v['name'] for k, v in otherArtists.items() if v['artistId'] in {
+              a['id'] for a in followingArtistsEn['artists']['items']}])
 
 
 def printOrWriteArtists(artists, artistsZh, csvFileName, isPrint=True):
     if csvFileName != None:
         file = open(csvFileName, 'w')
-        print('Artist Id, Name, Name(Zh), Name(En), Popularity, Followers, Genres',
+        print('Artist Id, Name, Name(Zh), Name(En), Followers, Popularity, Genres',
               file=file)
     for i in range(len(artistsZh)):
         artistZh = artistsZh[i]

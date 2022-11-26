@@ -53,6 +53,9 @@ elif playlistName in {'Nice', 'Hmm', 'To Listen'}:
 elif playlistName in {'One Hit', 'More Hits - 民谣', 'More Hits - 流行'}:
     descMissingTracks = True
     spotifySourcePlaylistNames = [playlistName]
+elif playlistName.startswith('Collection'):
+    descMissingTracks = True
+    spotifySourcePlaylistNames = [playlistName]
 elif playlistName in {'Netease Non-playable'}:
     syncMode = 1
     spotifySourcePlaylistNames = ['Favorite', 'Like']
@@ -60,7 +63,7 @@ print('--------------------')
 print('*** Sync Info ***')
 print('Sync Mode:', syncMode,
       '(' + ('All' if syncMode == 0 else 'Non-playable') + ')')
-print('Playlist:', playlistName if 'playlistName' in globals() else spotifyPlaylistId)
+print('Playlist:', playlistName)
 print('IsPrivate:', isPrivate)
 print('IsIncremental:', isIncremental)
 print('DescMissingTracks:', descMissingTracks)
@@ -77,7 +80,7 @@ def main():
     neteasePlaylistFileName = '../netease/files/playlists/' + \
         neteaseMatchPlaylistName + '.json'
     if not os.path.isfile(neteasePlaylistFileName):
-        print('Playlist not created yet.')
+        print('Netease playlist not created yet.')
         sys.exit()
     with open(neteasePlaylistFileName) as f:
         neteasePlaylist = json.load(f)
@@ -222,7 +225,7 @@ def main():
         playlistDescription = 'Sync between spotify and netease. Spotify missing: ' + \
             missingSongsStr + '.'
         res = updatePlayList(spotify, authorizeToken, spotifyPlaylistId,
-                             playlistName, playlistDescription, True)
+                             None, playlistDescription, True)
         print('Response:', res)
     if len(trackUriList) == 0:
         print('\nNothing to sync. Exit...')

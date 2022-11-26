@@ -1,5 +1,15 @@
+import os
+import sys
+import inspect
+# Enable import parent directory modules
+currentdir = os.path.dirname(os.path.abspath(
+    inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir)
+from spotify.artists import artists as spotifyArtists
 from common import *
-from syncCustomPlaylist import getSpotifyToNeteaseSongs, getSpotifyArtistTrackNames
+from netease.syncSongs import getSpotifyArtistTrackIdNames
+from syncCustomPlaylist import getSpotifyToNeteaseSongs
 from playlistRemoveSongs import playlistRomoveSongs
 
 # **********************************************************************
@@ -18,13 +28,13 @@ headers['cookie'] = readFileContent('cookie.txt')
 # Get spotify Favorite playlist
 with open('../spotify/files/playlists/playlist_' + 'Favorite' + '_by ccg ccc.json') as f:
     spotifyPlaylist = json.load(f)
-spotifyArtistTrackNames = getSpotifyArtistTrackNames(
-    spotifyPlaylist['tracks'])
+spotifyArtistTrackNames = getSpotifyArtistTrackIdNames(
+    'Favorite', spotifyPlaylist['tracks'], spotifyArtists)
 # Get spotify Like playlist
 with open('../spotify/files/playlists/playlist_' + 'Like' + '_by ccg ccc.json') as f:
     spotifyPlaylist = json.load(f)
-spotifyArtistTrackNames2 = getSpotifyArtistTrackNames(
-    spotifyPlaylist['tracks'])
+spotifyArtistTrackNames2 = getSpotifyArtistTrackIdNames(
+    'Like', spotifyPlaylist['tracks'], spotifyArtists)
 
 # Get spotify liked songs
 # with open('../spotify/files/playlists/my_liked_songs.json') as f:
@@ -46,7 +56,7 @@ print('Favorite & Like sync songs: ',
 print(spotifyArtistTrackNames, '\n')
 
 syncSongs, missingSongs, missingSongsStr = getSpotifyToNeteaseSongs(
-    spotifyArtistTrackNames, isNeedMissingPrompt=False)
+    spotifyArtistTrackNames, spotifyArtists, isNeedMissingPrompt=False)
 syncSongDict = {str(list(song.values())[0]): list(song.keys())[0]
                 for song in syncSongs}
 

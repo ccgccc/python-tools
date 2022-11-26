@@ -83,8 +83,11 @@ def crawlSinglePlaylist(accessToken, playlistID, playlistDir, isPrivate=False,
             accessToken, playlistID, isPrivate, spotify)
     else:
         playlist = getPlaylistAndAllTracks(accessToken, playlistID, isPrivate)
+    playlistName = playlist['name']
+    if playlistName.startswith('Collection'):
+        playlistName = playlistName.split(' - ')[0]
     fileName = playlistDir + 'playlist_' + \
-        playlist['name'] + '_by ' + playlist['owner']['display_name']
+        playlistName + '_by ' + playlist['owner']['display_name']
     # Write json to file
     with open(fileName + '.json', 'w') as f:
         json.dump(playlist, f, ensure_ascii=False)

@@ -38,17 +38,18 @@ spotifyToken = readFileContent('utils/spotifyToken.txt')
 
 
 def main():
+    global filterAlbums
+    global mustMainArtist
+    global filterTrackByName
     for artist in artistToCrawlList:
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('Crawling ' + artists[artist]['name'] + '...')
-        if artist in {'eason_chan', 'suyunying', 'grasshopper', 'asi'}:
-            filterAlbums = False
-        else:
-            filterAlbums = True
-        if artist in {'beyond', 'kare_mok'}:
-            mustMainArtist = True
-        else:
-            mustMainArtist = False
+        if artists[artist].get('filterAlbums') != None:
+            filterAlbums = artists[artist]['filterAlbums']
+        if artists[artist].get('mustMainArtist') != None:
+            mustMainArtist = artists[artist]['mustMainArtist']
+        if artists[artist].get('filterTrackByName') != None:
+            filterTrackByName = artists[artist]['filterTrackByName']
         crawlAndProcess(artist, mustMainArtist,
                         filterAlbums, filterTrackByName)
     if len(artistToCrawlList) > 1:

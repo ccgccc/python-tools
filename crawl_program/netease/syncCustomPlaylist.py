@@ -7,9 +7,9 @@ currentdir = os.path.dirname(os.path.abspath(
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 from spotify.artists import artists as spotifyArtists
-from netease.common import *
+from common import *
 from netease.syncSongs import *
-from netease.playlistRemoveSongs import playlistRomoveSongs
+from playlistRemoveSongs import playlistRomoveSongs
 
 # **************************************************
 #    Sync spotify custom playlists to netease
@@ -40,6 +40,10 @@ def main():
         isPrivate = True
         isIncremental = False
         isReversed = False
+    elif playlistName.startswith('Collection'):
+        isPrivate = False
+        isIncremental = True
+        isReversed = True
     print('--------------------')
     print('*** Sync Info ***')
     print('Playlist:', playlistName)
@@ -49,6 +53,8 @@ def main():
     print('--------------------')
 
     # Prepare check
+    if playlistName.startswith('Collection'):
+        playlistName = playlistName.split(' - ')[0]
     neteasePlaylistFileName = 'playlists/custom_playlists/playlist_' + playlistName
     if isCreate:
         if os.path.isfile('./files/' + neteasePlaylistFileName + '.json'):
@@ -66,6 +72,8 @@ def main():
     # Get netease sync songs from spotify for every artist & merge all sync songs
     syncSongs, missingSongs, missingSongsStr = getSpotifyToNeteaseSongs(
         spotifyArtistTrackIdNames, spotifyArtists, isNeedMissingPrompt=False)
+    if len(missingSongs) > 0:
+        sureCheck()
 
     # Create or clear playlist
     if isCreate:

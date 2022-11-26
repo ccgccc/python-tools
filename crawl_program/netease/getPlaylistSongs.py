@@ -27,9 +27,22 @@ if len(sys.argv) >= 2:
     playlistNames = sys.argv[1:]
     playlistIds = []
     for playlistName in playlistNames:
-        with open('./files/playlists/playlist_songs_' + playlistName + '_by ccgccc.json') as f:
-            playlist = json.load(f)
-            playlistIds.append(playlist['playlist']['playlist']['id'])
+        playlistPath = './files/playlists/playlist_songs_' + \
+            playlistName + '_by ccgccc.json'
+        customPlaylistPath = './files/playlists/custom_playlists/playlist_' + \
+            playlistName + '.json'
+        if os.path.isfile(playlistPath):
+            with open(playlistPath) as f:
+                playlist = json.load(f)
+                playlistIds.append(playlist['playlist']['playlist']['id'])
+        elif os.path.isfile(customPlaylistPath):
+            with open(customPlaylistPath) as f:
+                playlist = json.load(f)
+                playlistIds.append(playlist['playlist']['id'])
+        else:
+            print(playlistName, 'not found. Exit...')
+            sys.exit()
+
 
 # Define cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')
@@ -40,9 +53,11 @@ for playlistId in playlistIds:
     playlistSongs = getPlaylistSongs(playlistId)
     playlistSongs['playlist'] = playlist
 
-    fileName = 'playlists/playlist_songs_' + \
-        playlist['playlist']['name'] + '_by ' + \
-        playlist['playlist']['creator']['nickname']
+    playlistName = playlist['playlist']['name']
+    if playlistName.startswith('Collection'):
+        playlistName = playlistName.split(' - ')[0]
+    fileName = 'playlists/playlist_songs_' + playlistName + \
+        '_by ' + playlist['playlist']['creator']['nickname']
     # + '_bak_' + time.strftime("%Y-%m-%d")
     writeJsonToFile(playlistSongs, fileName)
 

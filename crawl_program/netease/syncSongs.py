@@ -36,14 +36,15 @@ def getSpotifyArtistTrackIdNames(spotifyPlaylistName, spotifyPlaylistTracks, spo
                 artist = spotifyArtistIds.get(trackArtistId)
                 if spotifyArtistTrackNames.get(artist) == None:
                     spotifyArtistTrackNames[artist] = []
+                trackUri = track['track']['uri']
                 trackName = track['track']['name']
                 if trackName not in seenTrackNames:
                     spotifyArtistTrackNames[artist].append(
-                        {track['track']['uri']: trackName})
+                        {trackUri: trackName})
                     seenTrackNames.add(trackName)
                 else:
                     spotifyArtistTrackNames[artist].append(
-                        {track['track']['uri']: trackName + '_2_' + track['track']['artists'][0]['name']})
+                        {trackUri: trackName + '_2_' + track['track']['artists'][0]['name']})
                 isArtistFound = True
                 break
         if not isArtistFound:
@@ -136,6 +137,9 @@ def getSyncSongs(artist, spotifyTrackIdNames, isRemoveAlias=True,
     seen = set()
     syncSongs = [{name: neteaseArtistSongIds.get(name)} for name in spotifyTrackNames
                  if neteaseArtistSongIds.get(name) != None and name not in seen and not seen.add(name)]
+    # Add spotify missing songs
+    if spotifyMissingSongs.get(artist) != None:
+        syncSongs.extend(spotifyMissingSongs[artist])
     print('------------------------------')
     print('Netease sync songs:', len(syncSongs))
     print(syncSongs, '\n')

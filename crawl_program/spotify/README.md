@@ -28,14 +28,17 @@ python3 spotifyCrawlAndProcess.py jacky_cheung
 (Default: artistToCrawl)  
 python3 generatePlaylistAndTracks.py  
 python3 generatePlaylistAndTracks.py update  
+python3 generatePlaylistAndTracks.py update faye_wong
 python3 generatePlaylistAndTracks.py update all  
 
 ### Add tracks to Listening Artist playlist
 (Default: artistToCrawl, Listening Artist)  
-python3 playlistAddItemsByNumber.py  
-or  
-(Default: artistToCrawl, Listening Artist)  
 python3 playlistAddItemsByPlaycount.py  
+or  
+(Default: artistToCrawl, Generated Playlist)  
+python3 playlistAddItemsByNumber.py  
+python3 playlistAddItemsByNumber.py 'Listening Artist'  
+python3 playlistAddItemsByNumber.py 'Collection 1' pushu xuwei lijian zhengjun  
 
 
 
@@ -45,22 +48,24 @@ python3 playlistAddItemsByPlaycount.py
 python3 ../netease/getPlaylistSongs.py  
 python3 ../netease/getPlaylistSongs.py 'Favorite' 'Like' 'Nice'  
 python3 ../netease/getPlaylistSongs.py 'Hmm'  
-python3 ../netease/getPlaylistSongs.py 'One Hit'  
-python3 ../netease/getPlaylistSongs.py 'More Hits - 民谣'  
-python3 ../netease/getPlaylistSongs.py 'More Hits - 流行'  
 python3 ../netease/getPlaylistSongs.py 'To Listen'  
 python3 ../netease/getPlaylistSongs.py 'Netease Non-playable'  
+python3 ../netease/getPlaylistSongs.py 'One Hit'  
+python3 ../netease/getPlaylistSongs.py 'More Hits - 民谣'  
+python3 ../netease/getPlaylistSongs.py 'Collection 1'  
 
 python3 syncNeteaseSongs.py 'parameter'  
 python3 syncNeteaseSongs.py 'Favorite'  
 python3 syncNeteaseSongs.py 'Like'  
 python3 syncNeteaseSongs.py 'Nice'  
 python3 syncNeteaseSongs.py 'Hmm'  
+python3 syncNeteaseSongs.py 'To Listen'  
+python3 syncNeteaseSongs.py 'Netease Non-playable'  
+(To update description)  
 python3 syncNeteaseSongs.py 'One Hit'  
 python3 syncNeteaseSongs.py 'More Hits - 民谣'  
 python3 syncNeteaseSongs.py 'More Hits - 流行'  
-python3 syncNeteaseSongs.py 'To Listen'  
-python3 syncNeteaseSongs.py 'Netease Non-playable'  
+python3 syncNeteaseSongs.py 'Collection 1'  
 
 ## Like songs
 python3 tracksDiff.py  

@@ -1,4 +1,3 @@
-
 from utils.secrets import clientID, clientSecret
 from utils.auth import getAuthorizationToken
 from artists import *

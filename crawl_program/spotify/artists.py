@@ -1,5 +1,5 @@
 # Deine artist to crawl
-artistToCrawl = 'amei_chang'
+artistToCrawl = 'shawn_mendes'
 
 # Deine artists to generate playlists
 # (Search artist on spotfy (e.g. 张学友 on spotify) to get artistId)
@@ -7,15 +7,159 @@ artistToCrawl = 'amei_chang'
 # For method 1: Define track number to add tracks
 # For method 2: Define minimum playcount to add tracks
 generateArtists = {
-    'amei_chang': {
-        'name': '张惠妹',
-        'artistId': '6noxsCszBEEK04kCehugOp',
+    'shawn_mendes': {
+        'name': 'Shawn Mendes',
+        'artistId': '7n2wHs1TKAczGzO7Dd2rGr',
         'generateInfo': {
             'generateMethod': 1,
             'number': 20
         }
     },
-    # Split
+    # ---------- Split
+    'zhangjie': {
+        'name': '张杰',
+        'artistId': '75udD9hen8NeHTe92rUNLa',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'zhoushen': {
+        'name': '周深',
+        'artistId': '0BezPR1Hn38i8qShQKunSD',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'wuqingfeng': {
+        'name': '吴青峰',
+        'artistId': '5a5vu4RzsAHdKN0aYyblZ8',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'sodagreen': {
+        'name': '苏打绿',
+        'artistId': '3WYT2b8pOLsLsqSaoWYr7U',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'sodagreen': {
+        'name': '苏打绿',
+        'artistId': '3WYT2b8pOLsLsqSaoWYr7U',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'eminem': {
+        'name': 'Eminem',
+        'artistId': '7dGJo4pcD2V6oG8kP0tJRR',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'ed_sheeran': {
+        'name': 'Ed Sheeran',
+        'artistId': '6eUKZXaKkcviH0Ku9w2n3V',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    # 'jackson_wang': {
+    #     'name': '王嘉尔',
+    #     'artistId': '1kfWoWgCugPkyxQP8lkRlY',
+    #     'generateInfo': {
+    #         'generateMethod': 1,
+    #         'number': 20
+    #     }
+    # },
+    'arong': {
+        'name': '阿冗',
+        'artistId': '3dTgjg7lzUGiD3NwcGCK1n',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'phil_chang': {
+        'name': '张宇',
+        'artistId': '7g65zUBhUAbiu4pAcoyWRd',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'xinyuetuan': {
+        'name': '信乐团',
+        'artistId': '1YfpT6Dl8tJDmYQKWRoxjn',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'linzhixuan': {
+        'name': '林志炫',
+        'artistId': '6O9BAkGBRRzHUDrWqdT68r',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'jason_chan': {
+        'name': '陈柏宇',
+        'artistId': '1IDuSpntFl2Mutofvrrutc',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'cheer_chen': {
+        'name': '陈绮贞',
+        'artistId': '4m0xrEWYU0yCUFMaga015T',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'sa_dingding': {
+        'name': '萨顶顶',
+        'artistId': '5HCoNna7Jrw9YGVvo4lg1a',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'li_yugang': {
+        'name': '李玉刚',
+        'artistId': '3PI2UCRk6X5prLnFr05QQK',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'aska_yang': {
+        'name': '杨宗纬',
+        'artistId': '2SOrfXWlb17EoCqupfGX4u',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'hins_cheung': {
+        'name': '张敬轩',
+        'artistId': '2MVfNjocvNrE03cQuxpsWK',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
     'a_lin': {
         'name': '黄丽玲',
         'artistId': '28gf2piFx6cAKOMIwcky5a',
@@ -51,6 +195,7 @@ generateArtists = {
     'grasshopper': {
         'name': '草蜢',
         'artistId': '5IxPdROZmnCyD6TBuSJMYE',
+        'filterAlbums': False,
         'generateInfo': {
             'generateMethod': 1,
             'number': 20
@@ -104,14 +249,14 @@ generateArtists = {
             'number': 20
         }
     },
-    'kelly_chen': {
-        'name': '陈慧琳',
-        'artistId': '7KyaSSJ8uTv7Unev4z2Qc7',
-        'generateInfo': {
-            'generateMethod': 1,
-            'number': 20
-        }
-    },
+    # 'kelly_chen': {
+    #     'name': '陈慧琳',
+    #     'artistId': '7KyaSSJ8uTv7Unev4z2Qc7',
+    #     'generateInfo': {
+    #         'generateMethod': 1,
+    #         'number': 20
+    #     }
+    # },
     'vivian_chow': {
         'name': '周慧敏',
         'artistId': '4bzVQLX2gMBQVMINdAGElJ',
@@ -168,7 +313,52 @@ generateArtists = {
             'number': 30
         }
     },
-    # Split
+    # ---------- Collections
+    # ----- Collection 1: 音乐诗人
+    'zhengjun': {
+        'name': '郑钧',
+        'artistId': '5nbhd53CLcjfp7U8NDDzHw',
+        'filterTrackByName': True,
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 4
+        }
+    },
+    'lijian': {
+        'name': '李健',
+        'artistId': '47FbECPoJxk1TjHVZPzVzG',
+        'filterAlbums': False,
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 1
+        }
+    },
+    'xuwei': {
+        'name': '许巍',
+        'artistId': '3qObkSIVSfNNDL1vbwL2N2',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 5
+        }
+    },
+    'pushu': {
+        'name': '朴树',
+        'artistId': '6lJ36ifxOD2oUsdMdLRPN4',
+        'filterTrackByName': True,
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 5
+        }
+    },
+    # ---------- Split
+    'amei_chang': {
+        'name': '张惠妹',
+        'artistId': '6noxsCszBEEK04kCehugOp',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
     'andy_lau': {
         'name': '刘德华',
         'artistId': '2n3uDrupL8UtFSeZhY38MS',
@@ -260,6 +450,7 @@ generateArtists = {
     'karen_mok': {
         'name': '莫文蔚',
         'artistId': '6jlz5QSUqbKE4vnzo2qfP1',
+        'mustMainArtist': True,
         'generateInfo': {
             'generateMethod': 1,
             'number': 20
@@ -284,6 +475,7 @@ generateArtists = {
     'beyond': {
         'name': 'Beyond',
         'artistId': '4F5TrtYYxsVM1PhbtISE5m',
+        'mustMainArtist': True,
         'generateInfo': {
             'generateMethod': 1,
             'number': 20
@@ -332,6 +524,7 @@ generateArtists = {
     'eason_chan': {
         'name': '陈奕迅',
         'artistId': '2QcZxAgcs2I1q7CtCkl6MI',
+        'filterAlbums': False,
         'generateInfo': {
             'generateMethod': 2,
             'number': 5000000
@@ -407,7 +600,8 @@ otherArtists = {
     },
     'asi': {  # **
         'name': '阿肆',
-        'artistId': '4yamiVzQPYBb02ceSu0jaI'
+        'artistId': '4yamiVzQPYBb02ceSu0jaI',
+        'filterAlbums': False
     },
     # ----- 民谣
     'huazhou': {
@@ -453,7 +647,8 @@ otherArtists = {
     },
     'suyunying': {
         'name': '苏运莹',  # 2015年中国好歌曲第二季全国总决赛亚军
-        'artistId': '63tzlZxY9iaOeUnmGfwlyA'
+        'artistId': '63tzlZxY9iaOeUnmGfwlyA',
+        'filterAlbums': False
     },
     'baoshi_gem': {
         'name': '宝石Gem',  # 2019年参加中国新说唱2019

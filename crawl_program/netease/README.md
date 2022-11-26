@@ -2,7 +2,7 @@
 ## Search artists
 ### Search artists in ../spotify/artist.py
 (Default: generateArtists)  
-python3 artistsSearch.py
+python3 artistsSearch.py  
 python3 artistsSearch.py other  
 python3 artistsSearch.py all  
 python3 artistsSearch.py jacky_cheung  
@@ -51,11 +51,11 @@ python3 ../spotify/crawlPlaylists.py
 python3 ../spotify/crawlPlaylists.py 'Listening Artist'  
 python3 ../spotify/crawlPlaylists.py 'Favorite' 'Like' 'Nice'  
 python3 ../spotify/crawlPlaylists.py 'Hmm'  
+python3 ../spotify/crawlPlaylists.py 'To Listen'  
+python3 ../spotify/crawlPlaylists.py 'Netease Non-playable'  
 python3 ../spotify/crawlPlaylists.py 'One Hit'  
 python3 ../spotify/crawlPlaylists.py 'More Hits - 民谣'  
 python3 ../spotify/crawlPlaylists.py 'More Hits - 流行'  
-python3 ../spotify/crawlPlaylists.py 'To Listen'  
-python3 ../spotify/crawlPlaylists.py 'Netease Non-playable'  
 
 python3 syncCustomPlaylist.py 'parameter'  
 python3 syncCustomPlaylist.py 'Listening Artist'  
@@ -63,11 +63,12 @@ python3 syncCustomPlaylist.py 'Favorite'
 python3 syncCustomPlaylist.py 'Like'  
 python3 syncCustomPlaylist.py 'Nice'  
 python3 syncCustomPlaylist.py 'Hmm'  
+python3 syncCustomPlaylist.py 'To Listen'  
+python3 syncCustomPlaylist.py 'Netease Non-playable'  
 python3 syncCustomPlaylist.py 'One Hit'  
 python3 syncCustomPlaylist.py 'More Hits - 民谣'  
 python3 syncCustomPlaylist.py 'More Hits - 流行'  
-python3 syncCustomPlaylist.py 'To Listen'  
-python3 syncCustomPlaylist.py 'Netease Non-playable'  
+python3 syncCustomPlaylist.py 'Collection 1'  
 
 ## Sync spotify liked songs
 python3 syncLikedSongs.py  

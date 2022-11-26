@@ -18,7 +18,7 @@ if len(sys.argv) >= 2:
         searchArtists = artists
     else:
         if artists.get(sys.argv[1]) != None:
-            searchArtists = {sys.argv[1]: artists.get(sys.argv[1])}
+            searchArtists = {artist: artists.get(artist) for artist in sys.argv[1:]}
         else:
             print('Can\'t find \'' +
                   sys.argv[1] + '\' in \'../spotify/artists.py\'.')

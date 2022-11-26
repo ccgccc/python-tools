@@ -39,12 +39,14 @@ def crawlRawTracks(spotifyToken, artist):
     return allTracks
 
 
-def getAllAlbumsTracks(spotifyToken, artist, allAlbums):
+def getAllAlbumsTracks(spotifyToken, artist, allAlbums, simplePrint=True):
     # Get all albums tracks
     albumCount = 0
     allAlbumTracks = []
+    if simplePrint:
+        print('------------------------------')
+        print('Albums:')
     for album in allAlbums:
-        print('--------------------')
         albumCount = albumCount + 1
         albumId = album['id']
         albumName = album['name']
@@ -55,11 +57,16 @@ def getAllAlbumsTracks(spotifyToken, artist, allAlbums):
                 (', ' if i < len(albumArtistsList) - 1 else '')
         releaseDate = album['release_date']
         totalTracks = album['total_tracks']
-        print(str(albumCount) + ': ' + albumName)
-        print('Album Id: ' + albumId)
-        print('Album Artist: ' + albumArtists)
-        print('Release Date: ' + releaseDate)
-        print('Total Tracks: ' + str(totalTracks))
+        if simplePrint:
+            print(albumCount, albumId, albumName, albumArtists,
+                  releaseDate, totalTracks, sep=', ')
+        else:
+            print('--------------------')
+            print(str(albumCount) + ': ' + albumName)
+            print('Album Id: ' + albumId)
+            print('Album Artist: ' + albumArtists)
+            print('Release Date: ' + releaseDate)
+            print('Total Tracks: ' + str(totalTracks))
         albumTracks = getAlbumTracksByThirdPartyAPI(
             spotifyToken, albumId)
         albumTracks = albumTracks['data']['album']
