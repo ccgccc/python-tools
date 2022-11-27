@@ -297,6 +297,27 @@ def removePlayListTracks(spotify, token, playlistId, trackUriList):
     return resJson
 
 
+# Unfollow playlist
+def unfollowPlayList(spotify, token, playlistId):
+    playlistAddTracksEndPoint = f"https://api.spotify.com/v1/playlists/{playlistId}/followers"
+    postHeaders = postHeader(token)
+    res = spotify.delete(playlistAddTracksEndPoint, headers=postHeaders)
+    if res.status_code == 200:
+        print('\n**********')
+        print('Successfully unfollowed playlist.')
+        print(res)
+        # print(res.content)
+        print('**********\n')
+        return True
+    else:
+        print('\n**********')
+        print('Unfollowing playlist tracks failed.')
+        print(res)
+        print(res.content)
+        print('**********\n')
+        return False
+
+
 # ******************************
 #         Util Function
 # ******************************

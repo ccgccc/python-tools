@@ -37,6 +37,7 @@ python3 neteaseCrawlAndProcess.py jacky_cheung
 (Default: artistToCrawl)  
 python3 syncSpotifyPlaylist.py  
 python3 syncSpotifyPlaylist.py update  
+python3 syncSpotifyPlaylist.py update faye_wong  
 python3 syncSpotifyPlaylist.py update all  
 
 ### Check liked songs
@@ -56,6 +57,7 @@ python3 ../spotify/crawlPlaylists.py 'Netease Non-playable'
 python3 ../spotify/crawlPlaylists.py 'One Hit'  
 python3 ../spotify/crawlPlaylists.py 'More Hits - 民谣'  
 python3 ../spotify/crawlPlaylists.py 'More Hits - 流行'  
+python3 ../spotify/crawlPlaylists.py 'Collection 1'  
 
 python3 syncCustomPlaylist.py 'parameter'  
 python3 syncCustomPlaylist.py 'Listening Artist'  

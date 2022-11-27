@@ -1,6 +1,4 @@
 import os
-from os import listdir
-from os.path import isfile, join
 from artists import *
 from common import *
 
@@ -15,17 +13,17 @@ headers['cookie'] = readFileContent('cookie.txt')
 # Sure check
 sureCheck()
 # Check playlsit exist
-if not isfile('./files/playlists/generated_playlists/' + artistToCrawl + '_playlist.json'):
+directory = 'playlists/generated_playlists/'
+if not os.path.isfile('./files/' + directory + artistToCrawl + '_playlist.json'):
     print('Playlist doesn\'t exitst. Exit...')
     sys.exit()
 
 # Get playlistId
-playlist = loadJsonFromFile(
-    'playlists/generated_playlists/' + artistToCrawl + '_playlist')
+playlist = loadJsonFromFile(directory + artistToCrawl + '_playlist')
 playlistId = playlist['playlist']['id']
 
 # Delete playlist
 deletePlaylist(playlistId)
 
 # Remove playlist file
-os.remove(dir + artistToCrawl + '_playlist.json')
+os.remove('./files/' + directory + artistToCrawl + '_playlist.json')

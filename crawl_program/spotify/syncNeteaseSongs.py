@@ -178,8 +178,9 @@ def main():
                                            for artist in song['ar'])
                     missingSongs.append(
                         missingSongName + '(' + songArtists + ')')
-        missingSongsStr = '、'.join(missingSongs)
-        print(missingSongsStr)
+        missingSongsStr = '、'.join(missingSongs) if len(
+            missingSongs) > 0 else ''
+        print('Missing:', missingSongsStr)
 
     # ********** Modify spotify playlist by netease sync songs **********
     print('\n')
@@ -204,10 +205,11 @@ def main():
         # Get incremental sync trackuri
         playlist = getPlaylistAndAllTracks(
             accessToken, spotifyPlaylistId, isPrivate=isPrivate, spotify=spotify)
+        oldPlaylistDescription = playlist['description']
         playlistTrackUris = [track['track']['uri']
                              for track in playlist['tracks']['items']]
-        trackUriList = [
-            trackUri for trackUri in trackUriList if trackUri not in playlistTrackUris]
+        trackUriList = [trackUri for trackUri in trackUriList
+                        if trackUri not in playlistTrackUris]
     else:
         # Remove playlist songs
         playlistRemoveAllItems(
@@ -221,9 +223,11 @@ def main():
     print('track uris:', trackUriList)
     print('track names:', [list(dict.values())[0] for dict in spotifyTracksFromNetease
                            if list(dict.keys())[0] in trackUriList])
-    if descMissingTracks:
-        playlistDescription = 'Sync between spotify and netease. Spotify missing: ' + \
-            missingSongsStr + '.'
+    if descMissingTracks and missingSongsStr != '':
+        # playlistDescription = 'Sync between spotify and netease. Spotify missing: ' + \
+        #     missingSongsStr + '.'
+        playlistDescription = re.sub(r'(Sync.*\. ).*(Updated on.*)',
+                                     r'\1' + 'Spotify missing: ' + missingSongsStr + '. ' + r'\2', oldPlaylistDescription)
         res = updatePlayList(spotify, authorizeToken, spotifyPlaylistId,
                              None, playlistDescription, True)
         print('Response:', res)

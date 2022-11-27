@@ -42,8 +42,8 @@ def main():
         isReversed = False
     elif playlistName.startswith('Collection'):
         isPrivate = False
-        isIncremental = True
-        isReversed = True
+        isIncremental = False
+        isReversed = False
     print('--------------------')
     print('*** Sync Info ***')
     print('Playlist:', playlistName)

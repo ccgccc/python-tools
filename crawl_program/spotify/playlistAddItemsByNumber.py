@@ -20,14 +20,14 @@ artistToCrawlList = [artistToCrawl]
 playlistID = None  # Generated playlist (maybe multi playlists)
 # Define if playlist is private
 isPrivate = False
+# Define is collection playlist
+isCollection = False
 # Define track number to add
 trackNumber = -1
 # Define if playlist is private
 isIncremental = False
 # Define if update description
 isUpdateDesc = True
-# Define is collection playlist
-isCollection = False
 if len(sys.argv) > 1:
     if len(artistToCrawlList) > 1:
         print('Can\'t specify playlist for multi artists.')
@@ -40,10 +40,10 @@ if len(sys.argv) > 1:
         isIncremental = False
         isUpdateDesc = False
     elif playlistName.startswith('Collection'):  # Collection
+        isCollection = True
         isPrivate = False
         isIncremental = True
-        isUpdateDesc = False
-        isCollection = True
+        isUpdateDesc = True
         if len(sys.argv) > 2:
             artistToCrawlList = sys.argv[2:]
         if playlistName.startswith('Collection 1'):
@@ -83,11 +83,27 @@ def main():
         elif len(artistToCrawlList) > 1:
             print('Can\'t find generate info in artists.py.')
             sys.exit()
-        # Set isIncremental = True from collection's second artist
-        if isCollection and i > 0 and not isIncremental:
-            isIncremental = True
+
         playlistAddItemsByNumber(
             artist, trackNumber, accessToken, spotify, authorizeToken)
+        if isCollection:
+            # Set isIncremental = True from collection's second artist
+            isIncremental = True
+            # Update playlist description on last artsit
+            if isUpdateDesc and i == len(artistToCrawlList) - 1:
+                with open('./files/playlists/playlist_' + playlistName + '_by ccg ccc.json') as f:
+                    playlist = json.load(f)
+                playlistId = playlist['id']
+                oldplaylistDescription = playlist['description']
+                if oldplaylistDescription:
+                    playlistDescription = oldplaylistDescription.split('Updated on')[0] \
+                        + 'Updated on ' + time.strftime("%Y-%m-%d") + '.'
+                else:
+                    playlistDescription = 'Sync between spotify and netease. Updated on ' + \
+                        time.strftime("%Y-%m-%d") + '.'
+                res = updatePlayList(spotify, authorizeToken, playlistId,
+                                     None, playlistDescription, True)
+                print('Response:', res)
 
 
 def playlistAddItemsByNumber(artist, trackNumber, accessToken, spotify, authorizeToken):
@@ -114,23 +130,24 @@ def playlistAddItemsByNumber(artist, trackNumber, accessToken, spotify, authoriz
     if not isIncremental:
         playlistRemoveAllItems(accessToken, spotify,
                                authorizeToken, playlistId, isPrivate=isPrivate)
-    playlistAddTracksByNumber(spotify, authorizeToken, playlistId, playlist,
-                              artist, allTracks, trackNumber, isUpdateDesc=isUpdateDesc)
+    playlistAddTracksByNumber(spotify, authorizeToken, playlistId, playlist, artist,
+                              allTracks, trackNumber, isCollection=isCollection, isUpdateDesc=isUpdateDesc)
     # Get new playlist info
     if playlistID == None:
         crawlSinglePlaylist(accessToken, playlistId,
                             './files/playlists/generated_playlists_info/', isPrivate=isPrivate)
     else:
-        crawlSinglePlaylist(accessToken, playlistId,
-                            './files/playlists/', isPrivate=isPrivate, spotify=spotify)
+        playlist = crawlSinglePlaylist(accessToken, playlistId,
+                                       './files/playlists/', isPrivate=isPrivate, spotify=spotify)
 
 
-def playlistAddTracksByNumber(spotify, token, playlistId, playlist, artist, allTracks, trackNumber, isUpdateDesc=True):
+def playlistAddTracksByNumber(spotify, token, playlistId, playlist, artist, allTracks, trackNumber,
+                              isCollection=False, isUpdateDesc=True):
     resJson = addTracksToPlaylistByNumber(
         spotify, token, playlistId, allTracks, trackNumber)
     print('Response:', json.dumps(resJson, ensure_ascii=False))
 
-    if isUpdateDesc:
+    if not isCollection and isUpdateDesc:
         # Playlist name & description
         playlistName = artists[artist]['name'] + ' Most Played Songs'
         maximumPlaycountStr = getPlaycountStr(
