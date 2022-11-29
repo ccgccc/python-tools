@@ -2,6 +2,7 @@ import os
 import re
 import sys
 import json
+import time
 import zhconv
 import inspect
 # Enable import parent directory modules
@@ -15,6 +16,7 @@ from artists import artists as spotifyArtists
 from utils.auth import getAccessToken, getAuthorizationToken
 from utils.secrets import clientID, clientSecret
 from spotifyFunc import *
+from crawlPlaylists import crawlSinglePlaylist
 from playlistRemoveItems import playlistRemoveAllItems
 
 # ****************************************
@@ -48,8 +50,16 @@ neteaseMatchPlaylistName = 'playlist_songs_' + playlistName + '_by ccgccc'
 if playlistName in {'Favorite', 'Like'}:
     isPrivate = False
     spotifySourcePlaylistNames = [playlistName, 'Listening Artist']
+    # spotifySourcePlaylistNames = [playlistName, 'Collection 1']
+    # # Update description
+    # descMissingTracks = True
+    # spotifySourcePlaylistNames = [playlistName]
 elif playlistName in {'Nice', 'Hmm', 'To Listen'}:
     spotifySourcePlaylistNames = [playlistName, 'Listening Artist']
+    # spotifySourcePlaylistNames = [playlistName, 'Collection 1']
+    # # Update description
+    # descMissingTracks = True
+    # spotifySourcePlaylistNames = [playlistName]
 elif playlistName in {'One Hit', 'More Hits - 民谣', 'More Hits - 流行'}:
     descMissingTracks = True
     spotifySourcePlaylistNames = [playlistName]
@@ -188,7 +198,7 @@ def main():
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     trackUriList = [list(dict.keys())[0] for dict in spotifyTracksFromNetease]
     # Get spotify authorization token by scope and accessToken
-    if isPrivate:
+    if isPrivate or descMissingTracks:
         scope = [
             "playlist-read-private",
             "playlist-modify-private",
@@ -196,11 +206,10 @@ def main():
         ]
         spotify, authorizeToken = getAuthorizationToken(
             clientID, clientSecret, scope)
-        accessToken = None
     else:
-        accessToken = getAccessToken(clientID, clientSecret)
         spotify = None
         authorizeToken = None
+    accessToken = getAccessToken(clientID, clientSecret)
     if isIncremental:
         # Get incremental sync trackuri
         playlist = getPlaylistAndAllTracks(
@@ -224,13 +233,15 @@ def main():
     print('track names:', [list(dict.values())[0] for dict in spotifyTracksFromNetease
                            if list(dict.keys())[0] in trackUriList])
     if descMissingTracks and missingSongsStr != '':
-        # playlistDescription = 'Sync between spotify and netease. Spotify missing: ' + \
-        #     missingSongsStr + '.'
-        playlistDescription = re.sub(r'(Sync.*\. ).*(Updated on.*)',
-                                     r'\1' + 'Spotify missing: ' + missingSongsStr + '. ' + r'\2', oldPlaylistDescription)
+        if not oldPlaylistDescription:
+            playlistDescription = 'Sync between spotify and netease. Spotify missing: ' + \
+                missingSongsStr + '. Updated on ' + time.strftime("%Y-%m-%d") + '.'
+        else:
+            playlistDescription = re.sub(r'(Sync.*\. ).*(Updated on.*)',
+                                        r'\1' + 'Spotify missing: ' + missingSongsStr + '. ' + r'\2', oldPlaylistDescription)
         res = updatePlayList(spotify, authorizeToken, spotifyPlaylistId,
                              None, playlistDescription, True)
-        print('Response:', res)
+        print('Response:', res.text if not res.text else 'ok.')
     if len(trackUriList) == 0:
         print('\nNothing to sync. Exit...')
         sys.exit()
@@ -246,6 +257,8 @@ def main():
             clientID, clientSecret, scope)
     addTracksToPlayList(spotify, authorizeToken,
                         spotifyPlaylistId, trackUriList)
+    crawlSinglePlaylist(accessToken, spotifyPlaylistId,
+                        './files/playlists/', isPrivate=isPrivate, spotify=spotify)
 
 
 if __name__ == '__main__':

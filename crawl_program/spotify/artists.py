@@ -1,5 +1,5 @@
 # Deine artist to crawl
-artistToCrawl = 'shawn_mendes'
+artistToCrawl = 'phil_chang'
 
 # Deine artists to generate playlists
 # (Search artist on spotfy (e.g. 张学友 on spotify) to get artistId)
@@ -7,16 +7,33 @@ artistToCrawl = 'shawn_mendes'
 # For method 1: Define track number to add tracks
 # For method 2: Define minimum playcount to add tracks
 generateArtists = {
-    'shawn_mendes': {
-        'name': 'Shawn Mendes',
-        'artistId': '7n2wHs1TKAczGzO7Dd2rGr',
+    'phil_chang': {
+        'name': '张宇',
+        'artistId': '7g65zUBhUAbiu4pAcoyWRd',
+        'filterTrackByName': True,
         'generateInfo': {
             'generateMethod': 1,
             'number': 20
         }
     },
     # ---------- Split
-    'zhangjie': {
+    'fenghuangchuanqi': {
+        'name': '凤凰传奇',
+        'artistId': '64NFGuC9PjqtNyJqnnTXh5',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'coldplay': {
+        'name': 'Coldplay',
+        'artistId': '4gzpq5DPGxSnKTe4SA8HAU',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
+    'zhangjie': {  # 待定
         'name': '张杰',
         'artistId': '75udD9hen8NeHTe92rUNLa',
         'generateInfo': {
@@ -48,14 +65,6 @@ generateArtists = {
             'number': 20
         }
     },
-    'sodagreen': {
-        'name': '苏打绿',
-        'artistId': '3WYT2b8pOLsLsqSaoWYr7U',
-        'generateInfo': {
-            'generateMethod': 1,
-            'number': 20
-        }
-    },
     'eminem': {
         'name': 'Eminem',
         'artistId': '7dGJo4pcD2V6oG8kP0tJRR',
@@ -72,25 +81,17 @@ generateArtists = {
             'number': 20
         }
     },
-    # 'jackson_wang': {
-    #     'name': '王嘉尔',
-    #     'artistId': '1kfWoWgCugPkyxQP8lkRlY',
-    #     'generateInfo': {
-    #         'generateMethod': 1,
-    #         'number': 20
-    #     }
-    # },
-    'arong': {
-        'name': '阿冗',
-        'artistId': '3dTgjg7lzUGiD3NwcGCK1n',
+    'jackson_wang': {
+        'name': '王嘉尔',
+        'artistId': '1kfWoWgCugPkyxQP8lkRlY',
         'generateInfo': {
             'generateMethod': 1,
             'number': 20
         }
     },
-    'phil_chang': {
-        'name': '张宇',
-        'artistId': '7g65zUBhUAbiu4pAcoyWRd',
+    'arong': {
+        'name': '阿冗',
+        'artistId': '3dTgjg7lzUGiD3NwcGCK1n',
         'generateInfo': {
             'generateMethod': 1,
             'number': 20
@@ -217,14 +218,14 @@ generateArtists = {
             'number': 20
         }
     },
-    # 'hu_xia': {
-    #     'name': '胡夏',
-    #     'artistId': '3iRqbMhzyOyoCkmmMRxLWR',
-    #     'generateInfo': {
-    #         'generateMethod': 1,
-    #         'number': 20
-    #     }
-    # },
+    'hu_xia': {
+        'name': '胡夏',
+        'artistId': '3iRqbMhzyOyoCkmmMRxLWR',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
     'george_lam': {
         'name': '林子祥',
         'artistId': '7rxRHujzUzobMEbtoE297s',
@@ -249,14 +250,14 @@ generateArtists = {
             'number': 20
         }
     },
-    # 'kelly_chen': {
-    #     'name': '陈慧琳',
-    #     'artistId': '7KyaSSJ8uTv7Unev4z2Qc7',
-    #     'generateInfo': {
-    #         'generateMethod': 1,
-    #         'number': 20
-    #     }
-    # },
+    'kelly_chen': {
+        'name': '陈慧琳',
+        'artistId': '7KyaSSJ8uTv7Unev4z2Qc7',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
     'vivian_chow': {
         'name': '周慧敏',
         'artistId': '4bzVQLX2gMBQVMINdAGElJ',
@@ -281,36 +282,36 @@ generateArtists = {
             'number': 20
         }
     },
-    'kay_tse': {
-        'name': '谢安琪',
-        'artistId': '6XtWdWAC7rNqXwbs8hGqP9',
-        'generateInfo': {
-            'generateMethod': 1,
-            'number': 20
-        }
-    },
-    'leo_ku': {
-        'name': '古巨基',
-        'artistId': '4F0XzHNcfvvA2I0rGqIwAQ',
-        'generateInfo': {
-            'generateMethod': 1,
-            'number': 20
-        }
-    },
-    'miriam_yeung': {
-        'name': '杨千嬅',
-        'artistId': '1rxk3vAYWeiBD2Q6FCezcl',
-        'generateInfo': {
-            'generateMethod': 1,
-            'number': 20
-        }
-    },
     'tylor_swift': {
         'name': 'Tylor Swift',
         'artistId': '06HL4z0CvFAxyc27GXpf02',
         'generateInfo': {
             'generateMethod': 1,
             'number': 30
+        }
+    },
+    'kay_tse': {
+        'name': '谢安琪',  # 2005
+        'artistId': '6XtWdWAC7rNqXwbs8hGqP9',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 8
+        }
+    },
+    'miriam_yeung': {
+        'name': '杨千嬅',  # 1998
+        'artistId': '1rxk3vAYWeiBD2Q6FCezcl',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 8
+        }
+    },
+    'leo_ku': {
+        'name': '古巨基',  # 1995
+        'artistId': '4F0XzHNcfvvA2I0rGqIwAQ',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 5
         }
     },
     # ---------- Collections
@@ -351,6 +352,14 @@ generateArtists = {
         }
     },
     # ---------- Split
+    'shawn_mendes': {
+        'name': 'Shawn Mendes',
+        'artistId': '7n2wHs1TKAczGzO7Dd2rGr',
+        'generateInfo': {
+            'generateMethod': 1,
+            'number': 20
+        }
+    },
     'amei_chang': {
         'name': '张惠妹',
         'artistId': '6noxsCszBEEK04kCehugOp',
@@ -461,7 +470,7 @@ generateArtists = {
         'artistId': '3df3XLKuqTQ6iOSmi0K3Wp',
         'generateInfo': {
             'generateMethod': 1,
-            'number': 30
+            'number': 35
         }
     },
     'wangfeng': {
@@ -559,23 +568,19 @@ otherArtists = {
         'artistId': '2f9O9Vy7xlAghr07uxXYMh'
     },
     # ---------- Don't belong here
-    # 'tylor_swift': {
-    #     'name': 'Taylor Swift',
-    #     'artistId': '06HL4z0CvFAxyc27GXpf02'
-    # },
-    # 'tones_and_i': {
-    #     'name': 'Tones And I',
-    #     'artistId': '2NjfBq1NflQcKSeiDooVjY'
-    # },
+    'tones_and_i': {
+        'name': 'Tones And I',
+        'artistId': '2NjfBq1NflQcKSeiDooVjY'
+    },
     # ---------- Spotify only
-    # 'chenyifa': {
-    #     'name': '陈一发',
-    #     'artistId': '10xtjTRMlKZ7aFx6VBQlSj'
-    # },
-    # 'namewee': {
-    #     'name': '黄明志',
-    #     'artistId': '24jrxG0tKcwgAzsLuPzyMi'
-    # },
+    'chenyifa': {
+        'name': '陈一发',
+        'artistId': '10xtjTRMlKZ7aFx6VBQlSj'
+    },
+    'namewee': {
+        'name': '黄明志',
+        'artistId': '24jrxG0tKcwgAzsLuPzyMi'
+    },
     # ---------- More hits (>3)
     # ----- 流行
     'gebilaofan': {
@@ -747,10 +752,10 @@ otherArtists = {
         'artistId': '5dGgQ6EQsfOPRiv2V0b846'
     },
     # ---------- Nah
-    # 'gai_zhouyan': {
-    #     'name': 'GAI周延',  # 2017年中国有嘻哈第一季并列冠军
-    #     'artistId': '37EUUUGKMLP6KSKrN9q39m'
-    # }
+    'gai_zhouyan': {
+        'name': 'GAI周延',  # 2017年中国有嘻哈第一季并列冠军
+        'artistId': '37EUUUGKMLP6KSKrN9q39m'
+    }
 }
 
 artists = otherArtists | generateArtists

@@ -32,7 +32,7 @@ def main():
     print(spotifyPlaylist['description'])
     spotifyTrackNames = {artistToCrawl: [track['track']['name']
                                          for track in spotifyPlaylist['tracks']['items']]}
-    syncSongs, neteaseMissingSongs = getSyncSongs(
+    syncSongs, neteaseMissingSongs, missingSongSpotifyNames = getSyncSongs(
         artistToCrawl, spotifyTrackNames, isRemoveAlias=True)
 
     playlistAddSongs(artistToCrawl, playlistId, syncSongs,
@@ -49,10 +49,13 @@ def playlistAddSongs(artistToCrawl, playlistId, syncSongs, neteaseMissingSongs, 
         return
     # Update playlist description
     isDescMissingSongs = True
-    spotifyMissingTracks = [list(dict.keys())[0] for dict in spotifyMissingSongs.get(artistToCrawl)]
+    spotifyMissingTracks = []
+    if spotifyMissingSongs.get(artistToCrawl) != None:
+        spotifyMissingTracks = [list(dict.keys())[0]
+                                for dict in spotifyMissingSongs[artistToCrawl]]
     if len(neteaseMissingSongs) == 0 and len(spotifyMissingTracks) == 0:
         isDescMissingSongs = False
-    if isPromptDescMissing:
+    if isDescMissingSongs and isPromptDescMissing:
         print('\n------------------------------')
         while True:
             continueMsg = input(
@@ -67,15 +70,17 @@ def playlistAddSongs(artistToCrawl, playlistId, syncSongs, neteaseMissingSongs, 
     missingSongsPart = ''
     if isDescMissingSongs:
         if len(neteaseMissingSongs) > 0:
-            missingSongsPart = missingSongsPart + '，Netease missing: ' + '、'.join(neteaseMissingSongs)
+            missingSongsPart = missingSongsPart + \
+                '，Netease missing: ' + '、'.join(neteaseMissingSongs)
         missingSongsPart = missingSongsPart + '。'
-        if len(spotifyMissingSongs) > 0:
-            missingSongsPart = missingSongsPart + 'Added spotify missing songs: ' + '、'.join(spotifyMissingTracks) + '. '
+        if len(spotifyMissingTracks) > 0:
+            missingSongsPart = missingSongsPart + 'Added spotify missing songs: ' + \
+                '、'.join(spotifyMissingTracks) + '. '
     isUsingSpotifyTime = True
     captionPart = re.sub(r'.*(Generated.*)', r'\1', spotifyPlaylist['description']) if isUsingSpotifyTime else (
         'Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.')
     playlistDescription = artists[artistToCrawl]['name'] + '播放最多歌曲，根据Spotify播放量数据自动生成' + re.sub(
-        r'.*(\(.*?\)).*', r'\1', spotifyPlaylist['description']) + missingSongsPart + captionPart
+        r'.*(\(.*?\)).*', r'\1', spotifyPlaylist['description']) + (missingSongsPart if missingSongsPart else '。') + captionPart
     # print(playlistDescription)
     updatePlaylistDesc(playlistId, playlistDescription)
 

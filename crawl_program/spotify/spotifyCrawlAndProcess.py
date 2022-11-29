@@ -10,7 +10,6 @@ from processTracks import processTracks
 #   Crawl spotify artist albums & tracks
 # ****************************************
 
-
 # Define artist here
 artistToCrawlList = [artistToCrawl]
 if len(sys.argv) >= 2:
@@ -21,7 +20,9 @@ if len(sys.argv) >= 2:
     elif sys.argv[1] == 'all':
         artistToCrawlList = list(artists.keys())
     else:
-        artistToCrawlList = [sys.argv[1]]
+        artistToCrawlList = sys.argv[1:]
+# Define if overwrite tracksheets
+overwriteTrackSheets = False
 
 # Define if filter albums
 filterAlbums = True
@@ -41,6 +42,7 @@ def main():
     global filterAlbums
     global mustMainArtist
     global filterTrackByName
+    global overwriteTrackSheets
     for artist in artistToCrawlList:
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('Crawling ' + artists[artist]['name'] + '...')
@@ -50,21 +52,23 @@ def main():
             mustMainArtist = artists[artist]['mustMainArtist']
         if artists[artist].get('filterTrackByName') != None:
             filterTrackByName = artists[artist]['filterTrackByName']
-        crawlAndProcess(artist, mustMainArtist,
-                        filterAlbums, filterTrackByName)
+        if artist in otherArtists:
+            overwriteTrackSheets = True
+        crawlAndProcess(artist, mustMainArtist, filterAlbums=filterAlbums,
+                        filterTrackByName=filterTrackByName, overwriteTrackSheets=overwriteTrackSheets)
     if len(artistToCrawlList) > 1:
         print('All Done!')
 
 
-def crawlAndProcess(artist, mustMainArtist, filterAlbums=False, filterTrackByName=False):
+def crawlAndProcess(artist, mustMainArtist, filterAlbums=False, filterTrackByName=False, overwriteTrackSheets=False):
     # Get all albums
     token = getAccessToken(clientID, clientSecret)
     allAlbums = crawlAlbums(token, artists, artist, filterAlbums=filterAlbums)
     # Get all albums tracks
     allAlbumsTracks = getAllAlbumsTracks(spotifyToken, artist, allAlbums)
     # Process tracks
-    processTracks(artists, artist, allAlbumsTracks,
-                  mustMainArtist=mustMainArtist, filterTrackByName=filterTrackByName, printInfo=True)
+    processTracks(artists, artist, allAlbumsTracks, mustMainArtist=mustMainArtist,
+                  filterTrackByName=filterTrackByName, overwriteTrackSheets=overwriteTrackSheets, printInfo=True)
     print('--------------------')
     print('Done!')
 

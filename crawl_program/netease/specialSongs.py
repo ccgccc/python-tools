@@ -130,6 +130,13 @@ specialSongNames = {
     # 李健
     'lijian': {
     },
+    # 郑钧
+    'zhengjun': {
+    },
+    # 张宇 All
+    'phil_chang': {
+        '趁早': '趁早(2005版)'
+    },
     # 宝石Gem
     'baoshi_gem': {
         '野狼Disco': '野狼disco'
@@ -218,9 +225,13 @@ specialSongIds = {
         '凉凉': 452601484,
         '下一秒': 425298905
     },
-    # 张惠妹 All
+    # 张惠妹
     'amei_chang': {
         '不该': 417250561
+    },
+    # 张宇
+    'phil_chang': {
+        '别来无恙': 328460
     },
 }
 

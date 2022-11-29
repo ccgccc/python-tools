@@ -2,10 +2,11 @@
 ## Get artists info
 (Default: artistToCrawl)  
 python3 artistsGetInfo.py  
+python3 artistsGetInfo.py jacky_cheung  
 python3 artistsGetInfo.py generate  
 python3 artistsGetInfo.py other  
 python3 artistsGetInfo.py all  
-python3 artistsGetInfo.py jacky_cheung  
+python3 artistsGetInfo.py merge  
 
 
 

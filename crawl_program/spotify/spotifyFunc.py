@@ -218,14 +218,16 @@ def updatePlayList(spotify, token, playlistId, name, description, ispublic):
         postData['description'] = description
     res = spotify.put(updatePlaylistEndPoint,
                       headers=postHeaders, data=json.dumps(postData))
+    print('\n**********')
     if res.status_code == 200:
-        print('\n**********')
         print('Successfully updated playlist.')
-        print('**********\n')
     else:
-        print('\n**********')
         print('Updating playlist failed.')
-        print('**********\n')
+    if name != None:
+        print('Playlist name:', name)
+    if description != None:
+        print('Playlist description:', description)
+    print('**********\n')
     return res
 
 

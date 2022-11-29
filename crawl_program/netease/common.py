@@ -116,12 +116,14 @@ def updatePlaylistDesc(playlistId,  description):
     if res.status_code == 200:
         print('\n**********')
         print('Successfully updated playlist description.')
+        print('Playlist description:', description)
         print('**********\n')
         print(resJson)
         return resJson
     else:
         print('\n**********')
         print('Updating playlist description failed.')
+        print('Playlist description:', description)
         print('**********\n')
         print(resJson)
         sys.exit()

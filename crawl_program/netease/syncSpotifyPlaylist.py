@@ -78,10 +78,10 @@ def syncSpotifyPlaylist(artist):
             seen.add(trackName)
         else:
             spotifyTrackIdNames.append({trackUri: trackName + '_2_' +
-                                   track['track']['artists'][0]['name']})
+                                        track['track']['artists'][0]['name']})
 
-    syncSongs, missingSongs = getSyncSongs(
-        artist, spotifyTrackIdNames, isRemoveAlias=True, isNeedPrompt=isSyncNeedPrompt, isOkPrompt=isOkPrompt)
+    syncSongs, missingSongs, missingSongSpotifyNames = getSyncSongs(artist, spotifyTrackIdNames, addSpotifyMissing=True,
+                                           isRemoveAlias=True, isNeedPrompt=isSyncNeedPrompt, isOkPrompt=isOkPrompt)
 
     # Create or clear playlist
     if isCreate:

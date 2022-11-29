@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import time
 import xlwt
@@ -26,17 +27,21 @@ def main():
             allAlbumsTracks = json.load(f)
         # print(allTracks)
 
-        if artist in {'beyond', 'kare_mok'}:
-            mustMainArtist = True
+        if artists[artist].get('mustMainArtist') != None:
+            mustMainArtist = artists[artist]['mustMainArtist']
         else:
             mustMainArtist = False
-
+        if artists[artist].get('filterTrackByName') != None:
+            filterTrackByName = artists[artist]['filterTrackByName']
+        else:
+            filterTrackByName = False
         processTracks(artists, artist, allAlbumsTracks,
-                      mustMainArtist=mustMainArtist, filterTrackByName=False, printInfo=True)
+                      mustMainArtist=mustMainArtist, filterTrackByName=filterTrackByName, printInfo=True)
         print('Done!')
 
 
-def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False, filterTrackByName=False, printInfo=True):
+def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False,
+                  filterTrackByName=False, overwriteTrackSheets=False, printInfo=True):
     artistId = artists[artist]['artistId']
     # Get all albums tracks
     albumCount = 0
@@ -86,10 +91,12 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False, filter
             if filterTrackByName:
                 # Ignore repeated tracks by track name
                 # Not recomendded, sometimes repeated track names are alright, e.g. K歌之王 (国+粤)
-                if trackName in trackNames:
+                processedTrackName = re.sub(
+                    r' \(.*', '', re.sub(r' - .*', '', trackName))
+                if processedTrackName in trackNames:
                     continue
                 else:
-                    trackNames.add(trackName)
+                    trackNames.add(processedTrackName)
 
             # Concatenate artists & filter other artists
             containsArtist = False
@@ -127,14 +134,18 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False, filter
     trackSheetDir = './files/trackSheets/'
     if artist in otherArtists:
         trackSheetDir = trackSheetDir + 'other/'
-    fileNames = [f for f in os.listdir(trackSheetDir)
-                 if os.path.isfile(os.path.join(trackSheetDir, f))]
-    existFile = True if len({True for fileName in fileNames if fileName.find(
-        artists[artist]['name']) >= 0}) > 0 else False
-    if existFile:
-        trackSheetDir = trackSheetDir + 'update/'
-    writeToXlsx(sortedTracks, trackSheetDir + artists[artist]['name'] +
-                '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
+    if overwriteTrackSheets:
+        writeToXlsx(sortedTracks, trackSheetDir +
+                    artists[artist]['name'] + '_All Tracks.xlsx')
+    else:
+        fileNames = [f for f in os.listdir(trackSheetDir)
+                     if os.path.isfile(os.path.join(trackSheetDir, f))]
+        existFile = True if len({True for fileName in fileNames if fileName.find(
+            artists[artist]['name']) >= 0}) > 0 else False
+        if existFile:
+            trackSheetDir = trackSheetDir + 'update/'
+        writeToXlsx(sortedTracks, trackSheetDir + artists[artist]['name'] +
+                    '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
     return sortedTracks
 
 

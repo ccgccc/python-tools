@@ -5,7 +5,7 @@ from common import *
 #    Get netease playlist songs by id
 # ****************************************
 
-# Defin palylist id
+# Define palylist id
 playlistIds = [
     # 553778357,  # 我喜欢的音乐
     7673625615,  # Favorite
@@ -63,4 +63,4 @@ for playlistId in playlistIds:
 
     printPlaylists([playlist['playlist']])
     # printSongs(playlistSongs['songs'], fileName)
-    printSongs(reversed(playlistSongs['songs']), fileName)
+    printSongs(playlistSongs['songs'], fileName)

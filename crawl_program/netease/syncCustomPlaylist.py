@@ -34,7 +34,11 @@ def main():
     isIncremental = True
     # Define is reversed (usually same as isIncremental)
     isReversed = True
-    if playlistName in {'Nice', 'One Hit', 'To Listen', 'Netease Non-playable'}:
+    # Define if add spotify missing songs
+    addSpotifyMissing = False
+    if playlistName in {'Favorite', 'Like'}:
+        isPrivate = False
+    elif playlistName in {'Nice', 'One Hit', 'To Listen', 'Netease Non-playable'}:
         isPrivate = True
     elif playlistName in {'Listening Artist'}:
         isPrivate = True
@@ -44,6 +48,7 @@ def main():
         isPrivate = False
         isIncremental = False
         isReversed = False
+        addSpotifyMissing = True
     print('--------------------')
     print('*** Sync Info ***')
     print('Playlist:', playlistName)
@@ -70,10 +75,10 @@ def main():
     spotifyArtistTrackIdNames = getSpotifyArtistTrackIdNames(
         playlistName, spotifyPlaylist['tracks'], spotifyArtists)
     # Get netease sync songs from spotify for every artist & merge all sync songs
-    syncSongs, missingSongs, missingSongsStr = getSpotifyToNeteaseSongs(
-        spotifyArtistTrackIdNames, spotifyArtists, isNeedMissingPrompt=False)
-    if len(missingSongs) > 0:
-        sureCheck()
+    syncSongs, neteaseMissingSongs, neteaseMissingSongsStr, spotifyMissingSongsStr = getSpotifyToNeteaseSongs(
+        spotifyArtistTrackIdNames, spotifyArtists, addSpotifyMissing=addSpotifyMissing, isNeedMissingPrompt=False)
+    # if len(neteaseMissingSongs) > 0:
+    #     sureCheck()
 
     # Create or clear playlist
     if isCreate:
@@ -99,7 +104,7 @@ def main():
             # Find not added songs
             syncSongs = [song for song in syncSongs
                          if list(song.values())[0] not in playlistSongIdsSet]
-            print('Playlist ' + playlistName + ' songs:', len(playlistSongs))
+            print('Playlist \'' + playlistName + '\' songs:', len(playlistSongs))
             print('Incremental sync songs: ', len(
                 syncSongs), '\n', syncSongs, '\n', sep='')
             if (len(syncSongs) == 0):
@@ -120,9 +125,14 @@ def main():
     syncSongIds = ','.join([str(list(song.values())[0]) for song in syncSongs])
     addSongsToPlayList(playlistId, syncSongIds)
 
+    spotifyDesciption = spotifyPlaylist['description']
+    updateMatch = re.search(r' Updated on.*', spotifyDesciption)
     playlistDescription = 'Sync between spotify and netease.' + \
-        ((' Missing songs: ' + ', '.join(missingSongsStr) +
-         '.') if len(missingSongsStr) > 0 else '')
+        ((' Netease missing: ' + ', '.join(neteaseMissingSongsStr) +
+         '.') if len(neteaseMissingSongsStr) > 0 else '') + \
+        ((' Spotify Missing: ' + ', '.join(spotifyMissingSongsStr) +
+          '.') if len(spotifyMissingSongsStr) > 0 else '') + \
+        (updateMatch.group(0) if updateMatch != None else '')
     updatePlaylistDesc(playlistId, playlistDescription)
 
     # Get new playlist Info

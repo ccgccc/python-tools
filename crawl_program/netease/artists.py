@@ -1,11 +1,11 @@
 # Deine artist to crawl
-artistToCrawl = 'shawn_mendes'
+artistToCrawl = 'phil_chang'
 
 # Deine artists to generate playlists
 generateArtists = {
-    'shawn_mendes': {
-        'name': 'Shawn Mendes',
-        'artistId': 956238
+    'phil_chang': {
+        'name': '张宇',
+        'artistId': 6469
     },
     # ---------- Collections
     # ----- Collection 1: 音乐诗人
@@ -26,6 +26,10 @@ generateArtists = {
         'artistId': 4721
     },
     # ---------- Split
+    'shawn_mendes': {
+        'name': 'Shawn Mendes',
+        'artistId': 956238
+    },
     'amei_chang': {
         'name': '张惠妹',
         'artistId': 10559
