@@ -12,17 +12,20 @@ from processTracks import processTracks
 
 # Define artist here
 artistToCrawlList = [artistToCrawl]
+# Define if overwrite tracksheets
+overwriteTrackSheets = False
 if len(sys.argv) >= 2:
+    overwriteTrackSheets = True
     if sys.argv[1] == 'generate':
         artistToCrawlList = list(generateArtists.keys())
+        if len(sys.argv) > 2 and sys.argv[-1] == 'false':
+            overwriteTrackSheets = False
     elif sys.argv[1] == 'other':
         artistToCrawlList = list(otherArtists.keys())
     elif sys.argv[1] == 'all':
         artistToCrawlList = list(artists.keys())
     else:
         artistToCrawlList = sys.argv[1:]
-# Define if overwrite tracksheets
-overwriteTrackSheets = False
 
 # Define if filter albums
 filterAlbums = True
@@ -39,33 +42,30 @@ spotifyToken = readFileContent('utils/spotifyToken.txt')
 
 
 def main():
-    global filterAlbums
-    global mustMainArtist
-    global filterTrackByName
-    global overwriteTrackSheets
     for artist in artistToCrawlList:
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('Crawling ' + artists[artist]['name'] + '...')
-        if artists[artist].get('filterAlbums') != None:
-            filterAlbums = artists[artist]['filterAlbums']
-        if artists[artist].get('mustMainArtist') != None:
-            mustMainArtist = artists[artist]['mustMainArtist']
-        if artists[artist].get('filterTrackByName') != None:
-            filterTrackByName = artists[artist]['filterTrackByName']
-        if artist in otherArtists:
-            overwriteTrackSheets = True
-        crawlAndProcess(artist, mustMainArtist, filterAlbums=filterAlbums,
-                        filterTrackByName=filterTrackByName, overwriteTrackSheets=overwriteTrackSheets)
+        curFilterAlbums = filterAlbums if artists[artist].get(
+            'filterAlbums') == None else artists[artist]['filterAlbums']
+        curMustMainArtist = mustMainArtist if artists[artist].get(
+            'mustMainArtist') == None else artists[artist]['mustMainArtist']
+        curFilterTrackByName = filterTrackByName if artists[artist].get(
+            'filterTrackByName') == None else artists[artist]['filterTrackByName']
+        curOverwriteTrackSheets = True if artist in otherArtists else overwriteTrackSheets
+        crawlAndProcess(artist, filterAlbums=curFilterAlbums, mustMainArtist=curMustMainArtist,
+                        filterTrackByName=curFilterTrackByName, overwriteTrackSheets=curOverwriteTrackSheets)
     if len(artistToCrawlList) > 1:
         print('All Done!')
 
 
-def crawlAndProcess(artist, mustMainArtist, filterAlbums=False, filterTrackByName=False, overwriteTrackSheets=False):
+def crawlAndProcess(artist, filterAlbums=False, mustMainArtist=False, filterTrackByName=False, overwriteTrackSheets=False):
     # Get all albums
     token = getAccessToken(clientID, clientSecret)
-    allAlbums = crawlAlbums(token, artists, artist, filterAlbums=filterAlbums)
+    allAlbums = crawlAlbums(token, artists, artist,
+                            filterAlbums=filterAlbums, includeFeatureOn=True)
     # Get all albums tracks
-    allAlbumsTracks = getAllAlbumsTracks(spotifyToken, artist, allAlbums)
+    allAlbumsTracks = getAllAlbumsTracks(
+        spotifyToken, artist, allAlbums, simplePrint=True)
     # Process tracks
     processTracks(artists, artist, allAlbumsTracks, mustMainArtist=mustMainArtist,
                   filterTrackByName=filterTrackByName, overwriteTrackSheets=overwriteTrackSheets, printInfo=True)

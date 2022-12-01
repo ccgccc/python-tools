@@ -36,19 +36,24 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
 
     # Filter albums type to album and single
     if filterAlbums:
-        for album in allAlbums[::-1]:
-            if (album['album_type'] != 'album' and album['album_type'] != 'single'):
-                allAlbums.remove(album)
-                continue
-            if not includeFeatureOn and album['album_group'] == 'appears_on':
-                allAlbums.remove(album)
-        print('Filtered albums:', str(len(allAlbums)), '(albumtype=album|single' +
-              (')' if includeFeatureOn else ', album_group!=appears_on)'))
+        filterdAlbums = []
+        for album in allAlbums:
+            if album['album_type'] == 'album' or album['album_type'] == 'single':
+                if not includeFeatureOn:
+                    if album['album_group'] != 'appears_on':
+                        filterdAlbums.append(album)
+                else:
+                    filterdAlbums.append(album)
+        print('Filtered albums:', str(len(filterdAlbums)), '(albumtype=album|single' +
+              (')' if includeFeatureOn else ' & album_group!=appears_on)'))
+    else:
+        filterdAlbums = allAlbums
     # Sort albums by release date
-    allAlbums = sorted(allAlbums, key=lambda album: album['release_date'])
+    filterdAlbums = sorted(
+        filterdAlbums, key=lambda album: album['release_date'])
     # Write json to file
     with open('./files/albums/' + artist + '_albums.json', 'w') as f:
-        json.dump(allAlbums, f, ensure_ascii=False)
+        json.dump(filterdAlbums, f, ensure_ascii=False)
 
     # Process albums
     count = 0
@@ -56,8 +61,7 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
     albumCsvFile = open('./files/albums/' + artist + '_albums.csv', 'w')
     print('AlbumName', 'AlbumId', 'AlbumGroup', 'AlbumType',
           'ReleaseDate', 'TracksNum', 'Artists', sep=', ', file=albumCsvFile)
-    for album in allAlbums:
-        seperation = '--------------------'
+    for album in filterdAlbums:
         count = count + 1
         albumName = album['name']
         albumId = album['id']
@@ -68,6 +72,7 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
         albumArtistsList = list(
             map(lambda artist: artist['name'], album['artists']))
         artists = '，'.join(albumArtistsList)
+        # seperation = '--------------------'
         # print(seperation, str(count) + ': ' + albumName, 'Id: ' + albumId, 'Group: ' + albumGroup,
         #       'Type:  ' + albumType, 'Date:  ' + releaseDate, 'Tracks: ' + tracksNum, 'Artists: ' + artists, sep='\n')
         # print(seperation, albumName, albumId, albumGroup, albumType,
@@ -78,7 +83,7 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
     albumCsvFile.close()
 
     print('--------------------')
-    print('Album Statistic:')
+    print('Album Statistic:', len(allAlbums))
     albumGroupStat = dict()
     albumTypeStat = dict()
     albumGroupTypeStat = dict()
@@ -93,15 +98,15 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
             albumTypeStat[albumType] = 1
         else:
             albumTypeStat[albumType] = albumTypeStat[albumType] + 1
-        albumGroupType = albumGroup + ', ' + albumType
+        albumGroupType = albumType + ', ' + albumGroup
         if albumGroupType not in albumGroupTypeStat:
             albumGroupTypeStat[albumGroupType] = 1
         else:
             albumGroupTypeStat[albumGroupType] = albumGroupTypeStat[albumGroupType] + 1
-    print(albumGroupStat.items())
-    print(albumTypeStat.items())
-    print(albumGroupTypeStat.items())
-    return allAlbums
+    print(json.dumps(albumGroupStat))
+    print(json.dumps(albumTypeStat))
+    print(json.dumps(albumGroupTypeStat))
+    return filterdAlbums
 
 
 if __name__ == '__main__':

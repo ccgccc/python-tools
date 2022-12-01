@@ -40,4 +40,4 @@ for identifier in list(searchArtists.keys())[:12]:
         print(identifier + ':', curArtist)
     else:
         print(artist['name'], 'not found.')
-print(json.dumps(allArtists, ensure_ascii=False, indent=4).replace('"', '\''))
+print(json.dumps(allArtists, ensure_ascii=False, indent=4))

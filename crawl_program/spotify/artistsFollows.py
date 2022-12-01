@@ -2,7 +2,7 @@ from utils.secrets import clientID, clientSecret
 from utils.auth import getAuthorizationToken
 from artists import *
 from spotifyFunc import *
-from artistsGetInfo import printOrWriteArtists
+from artistsGetInfo import *
 
 
 scope = "user-follow-read"
@@ -47,3 +47,5 @@ filteredArtistsZh = [artist for artist in sortedArtistsZh
 printOrWriteArtists(filteredArtists, filteredArtistsZh,
                     fileName + '_filtered.csv', isPrint=False)
 print('Filtered:', len(filteredArtistsZh))
+
+processArtistsJson(filteredArtists, filteredArtistsZh, fileName + '_filtered')

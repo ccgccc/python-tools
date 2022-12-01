@@ -7,6 +7,7 @@ python3 artistsGetInfo.py generate
 python3 artistsGetInfo.py other  
 python3 artistsGetInfo.py all  
 python3 artistsGetInfo.py merge  
+python3 artistsFollows.py  
 
 
 
@@ -20,9 +21,12 @@ python3 generatePlaylistAndTracks.py
 
 Or execute these commands: (***)   
 (Default: artistToCrawl)  
+(overwriteTrackSheets = False)  
 python3 spotifyCrawlAndProcess.py  
 python3 spotifyCrawlAndProcess.py all  
 python3 spotifyCrawlAndProcess.py generate  
+(overwriteTrackSheets = False)  
+python3 spotifyCrawlAndProcess.py generate false  
 python3 spotifyCrawlAndProcess.py other  
 python3 spotifyCrawlAndProcess.py jacky_cheung  
 

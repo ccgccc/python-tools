@@ -5,7 +5,7 @@ from artists import *
 from spotifyFunc import *
 
 # ****************************************
-#     Get spotify artistZh info by ids
+#     Get spotify artist info by ids
 # ****************************************
 
 # Define all artist ids
@@ -97,6 +97,10 @@ def main():
     printOrWriteArtists(sortedArtists, sortedArtistsZh,
                         fileName + '_sorted_by_followers.csv', isPrint=False)
 
+    # Process artists to json
+    if isMerged:
+        processArtistsJson(sortedArtists, sortedArtistsZh, fileName)
+
     # Stat
     print('--------------------')
     print('Generate:', len(generateArtists))
@@ -116,6 +120,20 @@ def main():
               '(' + str(len(artistsEn)) + ')')
         print('Unfollow:', [v['name'] for k, v in otherArtists.items() if v['artistId'] in {
               a['id'] for a in followingArtistsEn['artists']['items']}])
+
+
+def processArtistsJson(artistsEn, artistsZh, fileName):
+    artistsJson = dict()
+    for i in range(len(artistsEn)):
+        curArtistJson = {
+            artistsEn[i]['name'].lower().replace(' ', '_'): {
+                'name': zhconv.convert(artistsZh[i]['name'], 'zh-cn'),
+                'artistId': artistsEn[i]['id']
+            }}
+        artistsJson = artistsJson | curArtistJson
+    # Write json to file
+    with open(fileName + '_processed.json', 'w') as f:
+        json.dump(artistsJson, f, ensure_ascii=False)
 
 
 def printOrWriteArtists(artists, artistsZh, csvFileName, isPrint=True):
