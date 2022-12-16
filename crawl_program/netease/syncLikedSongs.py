@@ -55,7 +55,7 @@ print('Favorite & Like sync songs: ',
       '(Total ', totalTrackNames, ')', sep='')
 print(spotifyArtistTrackNames, '\n')
 
-syncSongs, missingSongs, missingSongsStr = getSpotifyToNeteaseSongs(
+syncSongs, missingSongs, neteaseMissingSongsStr, spotifyMissingTracksStr = getSpotifyToNeteaseSongs(
     spotifyArtistTrackNames, spotifyArtists, isNeedMissingPrompt=False)
 syncSongDict = {str(list(song.values())[0]): list(song.keys())[0]
                 for song in syncSongs}

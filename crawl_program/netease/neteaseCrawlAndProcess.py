@@ -18,7 +18,7 @@ if len(sys.argv) >= 2:
     elif sys.argv[1] == 'all':
         artistToCrawlList = list(artists.keys())
     else:
-        artistToCrawlList = [sys.argv[1]]
+        artistToCrawlList = sys.argv[1:]
 
 
 for artist in artistToCrawlList:

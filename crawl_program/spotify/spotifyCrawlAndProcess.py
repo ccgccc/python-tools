@@ -26,6 +26,9 @@ if len(sys.argv) >= 2:
         artistToCrawlList = list(artists.keys())
     else:
         artistToCrawlList = sys.argv[1:]
+        if len(sys.argv) > 2 and sys.argv[-1] == 'false':
+            overwriteTrackSheets = False
+            artistToCrawlList = sys.argv[1:-1]
 
 # Define if filter albums
 filterAlbums = True

@@ -39,15 +39,20 @@ if len(sys.argv) > 1:
         isPrivate = True
         isIncremental = False
         isUpdateDesc = False
+        if len(sys.argv) > 2:
+            isCollection = True
+            artistToCrawlList = sys.argv[2:]
     elif playlistName.startswith('Collection'):  # Collection
         isCollection = True
         isPrivate = False
-        isIncremental = True
+        isIncremental = False
         isUpdateDesc = True
         if len(sys.argv) > 2:
             artistToCrawlList = sys.argv[2:]
         if playlistName.startswith('Collection 1'):
             playlistID = '5uo2JUVt9WQltVwijJzZmb'
+        elif playlistName.startswith('Collection 2'):
+            playlistID = '1flURo4qPHOPIKGVsHA8Wu'
 
 
 def main():

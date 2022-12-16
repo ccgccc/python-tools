@@ -6,11 +6,12 @@ from utils.auth import getAuthorizationToken
 from artists import *
 from spotifyFunc import *
 
-# Define artist here
-artist = artistToCrawl
 # Read parameters from command line
 if len(sys.argv) >= 2:
     artist = sys.argv[1]
+else:
+    print('Missing artist parameter. Exit...')
+    sys.exit()
 
 
 # Check artist exist

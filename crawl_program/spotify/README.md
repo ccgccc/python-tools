@@ -25,16 +25,20 @@ Or execute these commands: (***)
 python3 spotifyCrawlAndProcess.py  
 python3 spotifyCrawlAndProcess.py all  
 python3 spotifyCrawlAndProcess.py generate  
-(overwriteTrackSheets = False)  
-python3 spotifyCrawlAndProcess.py generate false  
+python3 spotifyCrawlAndProcess.py generate false (overwriteTrackSheets = False)  
 python3 spotifyCrawlAndProcess.py other  
 python3 spotifyCrawlAndProcess.py jacky_cheung  
+python3 spotifyCrawlAndProcess.py jacky_cheung false (overwriteTrackSheets = False)  
 
 (Default: artistToCrawl)  
 python3 generatePlaylistAndTracks.py  
+python3 generatePlaylistAndTracks.py jacky_cheung  
 python3 generatePlaylistAndTracks.py update  
-python3 generatePlaylistAndTracks.py update faye_wong
+python3 generatePlaylistAndTracks.py update faye_wong  
 python3 generatePlaylistAndTracks.py update all  
+
+### Delete generated playlist
+python3 playlistDelete.py artist  
 
 ### Add tracks to Listening Artist playlist
 (Default: artistToCrawl, Listening Artist)  
@@ -44,6 +48,7 @@ or
 python3 playlistAddItemsByNumber.py  
 python3 playlistAddItemsByNumber.py 'Listening Artist'  
 python3 playlistAddItemsByNumber.py 'Collection 1' pushu xuwei lijian zhengjun  
+python3 playlistAddItemsByNumber.py 'Collection 2' sam_hui alan_tam george_lam  
 
 
 
@@ -72,6 +77,6 @@ python3 syncNeteaseSongs.py 'More Hits - 民谣'
 python3 syncNeteaseSongs.py 'More Hits - 流行'  
 python3 syncNeteaseSongs.py 'Collection 1'  
 
-## Like songs
+### Like songs
 python3 tracksDiff.py  
 python3 saveUserTracks.py  

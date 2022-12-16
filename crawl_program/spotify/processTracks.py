@@ -14,6 +14,9 @@ from spotifyFunc import *
 artistToCrawlList = [artistToCrawl]
 # Crawl all artists
 # artistToCrawlList = artists.keys()
+# Read parameters from command line
+if len(sys.argv) >= 2:
+    artistToCrawlList = sys.argv[1:]
 
 
 def main():
@@ -42,7 +45,13 @@ def main():
 
 def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False,
                   filterTrackByName=False, overwriteTrackSheets=False, printInfo=True):
-    artistId = artists[artist]['artistId']
+    artistIds = [artists[artist]['artistId']]
+    print(len(allAlbumsTracks))
+    if artists.get(artist + '-2') != None:
+        artistIds.append(artists[artist + '-2']['artistId'])
+        with open('./files/tracks/' + artist + '-2' + '_alltracks_raw.json') as f:
+            allAlbumsTracks.extend(json.load(f))
+    print(len(allAlbumsTracks))
     # Get all albums tracks
     albumCount = 0
     preAlbumId = ''
@@ -66,10 +75,13 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False,
         if printInfo:
             print('--------------------')
             print(str(albumCount) + ': ' + albumName)
-            print('Album Id: ' + albumId)
-            print('Album Artist: ' + albumArtists)
-            print('Release Date: ' + releaseDate)
-            print('Total Tracks: ' + str(totalTracks))
+            print('Album Info: ', end='')
+            print(albumArtists, releaseDate, str(totalTracks),
+                  albumAlbumType, albumAlbumGroup, sep=', ')
+            # print('Album Id: ' + albumId)
+            # print('Album Artist: ' + albumArtists)
+            # print('Release Date: ' + releaseDate)
+            # print('Total Tracks: ' + str(totalTracks))
             print('Tracks:')
         trackCount = 0
         for track in albumTracks['tracks']['items']:
@@ -85,8 +97,31 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False,
 
             # Check if mustMainArtist
             artistsList = track['track']['artists']['items']
-            if mustMainArtist and artistsList[0]['uri'].find(artistId) < 0:
+            if mustMainArtist and artistsList[0]['uri'].replace('spotify:artist:', '') not in artistIds:
                 continue
+            # Concatenate artists & filter other artists
+            containsArtist = False
+            allArtists = ''
+            for i in range(len(artistsList)):
+                if artistsList[i]['uri'].replace('spotify:artist:', '') in artistIds:
+                    containsArtist = True
+                allArtists = allArtists + artistsList[i]['profile']['name'] + \
+                    (', ' if i < len(artistsList) - 1 else '')
+            if not containsArtist:
+                continue
+
+            # Ignore repeated tracks by playcount & duration.
+            # If trackPlaycount is equal & duration difference is less than 20 seconds, consider them the same track.
+            # Don't process playcount = 0 songs.
+            if int(trackPlaycount) > 0:
+                if trackPlaycount in trackPlaycountToMs.keys() \
+                        and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 20000:
+                    continue
+                else:
+                    trackPlaycountToMs[trackPlaycount] = durationMs
+            else:
+                continue
+
             # Check if filterTrackByName
             if filterTrackByName:
                 # Ignore repeated tracks by track name
@@ -98,23 +133,6 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False,
                 else:
                     trackNames.add(processedTrackName)
 
-            # Concatenate artists & filter other artists
-            containsArtist = False
-            allArtists = ''
-            for i in range(len(artistsList)):
-                if artistsList[i]['uri'].find(artistId) >= 0:
-                    containsArtist = True
-                allArtists = allArtists + artistsList[i]['profile']['name'] + \
-                    (', ' if i < len(artistsList) - 1 else '')
-            if not containsArtist:
-                continue
-            # Ignore repeated tracks by playcount & duration
-            # If trackPlaycount is equal & duration difference is less than 20 seconds, consider them the same track
-            if trackPlaycount in trackPlaycountToMs.keys() and int(trackPlaycount) > 0 \
-                    and abs(trackPlaycountToMs[trackPlaycount] - durationMs) < 20000:
-                continue
-            else:
-                trackPlaycountToMs[trackPlaycount] = durationMs
             if printInfo:
                 print(str(trackCount) + ': ' +
                       trackName + ", " + trackPlaycount)

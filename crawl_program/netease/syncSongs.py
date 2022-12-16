@@ -73,6 +73,7 @@ def getSpotifyToNeteaseSongs(spotifyArtistTrackIdNames, spotifyArtists, addSpoti
     syncSongs = []
     neteaseMissingSongs = []
     neteaseMissingSongsStr = []
+    neteaseMissingSongSpotifyNames = []
     spotifyMissingTracks = []
     spotifyMissingTracksStr = []
     # Get sync songs
@@ -88,6 +89,7 @@ def getSpotifyToNeteaseSongs(spotifyArtistTrackIdNames, spotifyArtists, addSpoti
             artist, trackIdNames, addSpotifyMissing=addSpotifyMissing, isRemoveAlias=True, isNeedPrompt=False, isOkPrompt=False)
         syncSongs.extend(curSyncSongs)
         neteaseMissingSongs.extend(curMissingSongs)
+        neteaseMissingSongSpotifyNames.extend(curMissingSongSpotifyNames)
         if len(curMissingSongs) > 0:
             neteaseMissingSongsStr.append(
                 '、'.join(curMissingSongs) + '(' + artistName + ')')
@@ -105,11 +107,12 @@ def getSpotifyToNeteaseSongs(spotifyArtistTrackIdNames, spotifyArtists, addSpoti
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('All sync songs: ', len(syncSongs), '\n', json.dumps(
         syncSongs, ensure_ascii=False), '\n', sep='')
-    print('All netease missing songs: ', len(neteaseMissingSongs),
-          '\n', json.dumps(neteaseMissingSongs, ensure_ascii=False), '\n', sep='')
+    print('All netease missing songs: ', len(neteaseMissingSongs), '\n', 'spotify name: ',
+          json.dumps(neteaseMissingSongSpotifyNames, ensure_ascii=False), '\n',
+          'converted: ', json.dumps(neteaseMissingSongs, ensure_ascii=False), '\n', sep='')
     if addSpotifyMissing:
         print('All spotify missing songs: ', len(spotifyMissingTracks),
-            '\n', json.dumps(spotifyMissingTracks, ensure_ascii=False), '\n', sep='')
+              '\n', json.dumps(spotifyMissingTracks, ensure_ascii=False), '\n', sep='')
     if isNeedMissingPrompt and len(neteaseMissingSongs) > 0:
         msg = input('Are you sure? Press Y to continue: ')
         if msg != 'y' and msg != 'Y':
@@ -175,8 +178,8 @@ def getSyncSongs(artist, spotifyTrackIdNames, isRemoveAlias=True, addSpotifyMiss
                  if x in seen or seen.add(x)]
         print('Duplicate:', dupes)
     if len(neteaseMissingSongs) > 0:
-        print('Netease missing(spotify name):', missingSongSpotifyNames)
-        print('Netease missing(converted):', neteaseMissingSongs)
+        print('spotify name:', missingSongSpotifyNames)
+        print('converted:', neteaseMissingSongs)
     print('------------------------------')
 
     # Process netease sensitive words

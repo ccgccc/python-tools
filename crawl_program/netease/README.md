@@ -40,9 +40,6 @@ python3 syncSpotifyPlaylist.py update
 python3 syncSpotifyPlaylist.py update faye_wong  
 python3 syncSpotifyPlaylist.py update all  
 
-### Check liked songs
-python3 songsDiff.py  
-
 
 
 ## Sync spotify custom playlists
@@ -72,5 +69,6 @@ python3 syncCustomPlaylist.py 'More Hits - 民谣'
 python3 syncCustomPlaylist.py 'More Hits - 流行'  
 python3 syncCustomPlaylist.py 'Collection 1'  
 
-## Sync spotify liked songs
+### Sync spotify liked songs
+python3 songsDiff.py  
 python3 syncLikedSongs.py  

@@ -21,13 +21,16 @@ artistToGenerateList = [artistToCrawl]
 # Define create playlist or update playlist
 isCreate = True
 # Read parameters from command line
-if len(sys.argv) >= 2 and sys.argv[1] == 'update':
-    isCreate = False
-    if len(sys.argv) >= 3:
-        if sys.argv[2] == 'all':
-            artistToGenerateList = list(generateArtists.keys())
-        else:
-            artistToGenerateList = [sys.argv[2]]
+if len(sys.argv) >= 2:
+    if sys.argv[1] == 'update':
+        isCreate = False
+        if len(sys.argv) >= 3:
+            if sys.argv[2] == 'all':
+                artistToGenerateList = list(generateArtists.keys())
+            else:
+                artistToGenerateList = [sys.argv[2]]
+    else:
+        artistToGenerateList = [sys.argv[1]]
 
 # Define if print playlists
 printPlaylist = False

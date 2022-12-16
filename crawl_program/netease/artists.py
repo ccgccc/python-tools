@@ -1,13 +1,25 @@
 # Deine artist to crawl
-artistToCrawl = "phil_chang"
+artistToCrawl = "coldplay"
 
-# Deine artists to generate playlists
+# === Define artists to generate playlists
 generateArtists = {
-    "phil_chang": {
-        "name": "张宇",
-        "artistId": 6469
+    "coldplay": {
+        "name": "Coldplay",
+        "artistId": 89365
     },
-    # ---------- Collections
+    # ===== Collections
+    "george_lam": {
+        "name": "林子祥",
+        "artistId": 3706
+    },
+    "alan_tam": {
+        "name": "谭咏麟",
+        "artistId": 5205
+    },
+    "sam_hui": {
+        "name": "许冠杰",
+        "artistId": 5782
+    },
     # ----- Collection 1: 音乐诗人
     "zhengjun": {
         "name": "郑钧",
@@ -25,7 +37,23 @@ generateArtists = {
         "name": "朴树",
         "artistId": 4721
     },
-    # ---------- Split
+    # ===== Generated Artists
+    "wakin_chau": {
+        "name": "周华健",
+        "artistId": 6456
+    },
+    "fenghuangchuanqi": {
+        "name": "凤凰传奇",
+        "artistId": 11564
+    },
+    "anita_mui": {
+        "name": "梅艳芳",
+        "artistId": 8918
+    },
+    "phil_chang": {
+        "name": "张宇",
+        "artistId": 6469
+    },
     "shawn_mendes": {
         "name": "Shawn Mendes",
         "artistId": 956238
@@ -128,7 +156,7 @@ generateArtists = {
     }
 }
 
-# Define other artists
+# === Define other artists
 otherArtists = {
     "haoyun": {
         "name": "郝云",

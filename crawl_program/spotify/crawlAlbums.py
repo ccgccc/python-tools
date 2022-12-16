@@ -59,7 +59,7 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
     count = 0
     # albumFile = open('./files/albums/' + artist + '_albums.txt', 'w')
     albumCsvFile = open('./files/albums/' + artist + '_albums.csv', 'w')
-    print('AlbumName', 'AlbumId', 'AlbumGroup', 'AlbumType',
+    print('AlbumName', 'AlbumId', 'AlbumType', 'AlbumGroup',
           'ReleaseDate', 'TracksNum', 'Artists', sep=', ', file=albumCsvFile)
     for album in filterdAlbums:
         count = count + 1
@@ -75,9 +75,9 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
         # seperation = '--------------------'
         # print(seperation, str(count) + ': ' + albumName, 'Id: ' + albumId, 'Group: ' + albumGroup,
         #       'Type:  ' + albumType, 'Date:  ' + releaseDate, 'Tracks: ' + tracksNum, 'Artists: ' + artists, sep='\n')
-        # print(seperation, albumName, albumId, albumGroup, albumType,
+        # print(seperation, albumName, albumId, albumType, albumGroup,
         #       releaseDate, tracksNum, artists, sep='\n', file=albumFile)
-        print(re.sub(r'\,', '，', albumName), albumId, albumGroup, albumType,
+        print(re.sub(r'\,', '，', albumName), albumId, albumType, albumGroup,
               releaseDate, tracksNum, artists, sep=', ', file=albumCsvFile)
     # albumFile.close()
     albumCsvFile.close()
@@ -86,7 +86,7 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
     print('Album Statistic:', len(allAlbums))
     albumGroupStat = dict()
     albumTypeStat = dict()
-    albumGroupTypeStat = dict()
+    albumTypeGroupStat = dict()
     for t in allAlbums:
         albumGroup = 'AlbumGroup: ' + t['album_group']
         if albumGroup not in albumGroupStat:
@@ -98,14 +98,14 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
             albumTypeStat[albumType] = 1
         else:
             albumTypeStat[albumType] = albumTypeStat[albumType] + 1
-        albumGroupType = albumType + ', ' + albumGroup
-        if albumGroupType not in albumGroupTypeStat:
-            albumGroupTypeStat[albumGroupType] = 1
+        albumTypeGroup = albumType + ', ' + albumGroup
+        if albumTypeGroup not in albumTypeGroupStat:
+            albumTypeGroupStat[albumTypeGroup] = 1
         else:
-            albumGroupTypeStat[albumGroupType] = albumGroupTypeStat[albumGroupType] + 1
-    print(json.dumps(albumGroupStat))
+            albumTypeGroupStat[albumTypeGroup] = albumTypeGroupStat[albumTypeGroup] + 1
     print(json.dumps(albumTypeStat))
-    print(json.dumps(albumGroupTypeStat))
+    print(json.dumps(albumGroupStat))
+    print(json.dumps(albumTypeGroupStat))
     return filterdAlbums
 
 
