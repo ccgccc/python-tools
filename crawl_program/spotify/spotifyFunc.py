@@ -235,21 +235,22 @@ def updatePlayList(spotify, token, playlistId, name, description, ispublic):
 def addTracksToPlayList(spotify, token, playlistId, trackUriList):
     playlistAddTracksEndPoint = f"https://api.spotify.com/v1/playlists/{playlistId}/tracks"
     postHeaders = postHeader(token)
-    postData = {
-        "uris": trackUriList
-    }
-    res = spotify.post(playlistAddTracksEndPoint,
-                       headers=postHeaders, data=json.dumps(postData))
-    resJson = res.json()
-    if res.status_code == 201:
-        print('\n**********')
-        print('Successfully add tracks to playlist.')
-        print('**********\n')
-    else:
-        print('\n**********')
-        print('Adding tracks to playlist failed.')
-        print(resJson)
-        print('**********\n')
+    for i in range(0, len(trackUriList), 100):
+        postData = {
+            "uris": trackUriList[i:i+100]
+        }
+        res = spotify.post(playlistAddTracksEndPoint,
+                           headers=postHeaders, data=json.dumps(postData))
+        resJson = res.json()
+        if res.status_code == 201:
+            print('\n**********')
+            print('Successfully add tracks to playlist.')
+            print('**********\n')
+        else:
+            print('\n**********')
+            print('Adding tracks to playlist failed.')
+            print(resJson)
+            print('**********\n')
     return resJson
 
 

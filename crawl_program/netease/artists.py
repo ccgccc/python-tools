@@ -1,13 +1,19 @@
 # Deine artist to crawl
-artistToCrawl = "coldplay"
+artistToCrawl = "joker_xue"
 
 # === Define artists to generate playlists
 generateArtists = {
-    "coldplay": {
-        "name": "Coldplay",
-        "artistId": 89365
+    "joker_xue": {
+        "name": "薛之谦",
+        "artistId": 5781
+    },
+    # --- Split
+    "eric_chou": {
+        "name": "周兴哲",
+        "artistId": 980025
     },
     # ===== Collections
+    # ----- Collection 2: 粤语前辈
     "george_lam": {
         "name": "林子祥",
         "artistId": 3706
@@ -38,6 +44,18 @@ generateArtists = {
         "artistId": 4721
     },
     # ===== Generated Artists
+    "danny_chan": {
+        "name": "陈百强",
+        "artistId": 2115
+    },
+    "leslie_cheung": {
+        "name": "张国荣",
+        "artistId": 6457
+    },
+    "coldplay": {
+        "name": "Coldplay",
+        "artistId": 89365
+    },
     "wakin_chau": {
         "name": "周华健",
         "artistId": 6456

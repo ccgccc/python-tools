@@ -54,7 +54,7 @@ python3 playlistAddItemsByNumber.py 'Collection 2' sam_hui alan_tam george_lam
 
 ## Sync netease playlists (& filter netease non-playable songs)
 (e.g. Favorite, Like, Nice, To Listen, Netease Non-playable)  
-(Default: 'Favorite' 'Like' 'Nice')  
+(Default: 我喜欢的音乐)  
 python3 ../netease/getPlaylistSongs.py  
 python3 ../netease/getPlaylistSongs.py 'Favorite' 'Like' 'Nice'  
 python3 ../netease/getPlaylistSongs.py 'Hmm'  
@@ -65,11 +65,13 @@ python3 ../netease/getPlaylistSongs.py 'More Hits - 民谣'
 python3 ../netease/getPlaylistSongs.py 'Collection 1'  
 
 python3 syncNeteaseSongs.py 'parameter'  
+(Must be incremental!)
 python3 syncNeteaseSongs.py 'Favorite'  
 python3 syncNeteaseSongs.py 'Like'  
 python3 syncNeteaseSongs.py 'Nice'  
 python3 syncNeteaseSongs.py 'Hmm'  
 python3 syncNeteaseSongs.py 'To Listen'  
+python3 syncNeteaseSongs.py 'Listening'  
 python3 syncNeteaseSongs.py 'Netease Non-playable'  
 (To update description)  
 python3 syncNeteaseSongs.py 'One Hit'  

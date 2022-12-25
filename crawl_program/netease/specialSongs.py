@@ -161,7 +161,17 @@ specialSongNames = {
     # 林子祥
     "george_lam": {
     },
-    # === Split
+    # 张国荣  Missing: 怪你过分美丽
+    "leslie_cheung": {
+        "Ming Xing": "明星",
+        "怪你過份美麗": "怪你过份美丽",
+        "M O N I C A": "Monica"
+    },
+    # 薛之谦  All
+    "joker_xue": {
+        "我好像在哪見過你(電影《精靈王座》主題曲)": "我好像在哪见过你"
+    },
+    # === Split specialSongNames
     # Tylor Swift
     "tylor_swift": {
         "I Don’t Wanna Live Forever": "I Don’t Wanna Live Forever (Fifty Shades Darker)"
@@ -272,7 +282,7 @@ specialSongIds = {
         "冲上云宵": 27566512,
         "祝福你": 1341503462
     },
-    # === Split
+    # === Split specialSongIds
 }
 
 # Define spotify missing songs
@@ -298,14 +308,19 @@ spotifyMissingSongs = {
 
 # Netease different version songs
 # 1. not good song source，e.g. 你的名字 我的姓氏(友个人演唱会1999)
-# 2. not first version，e.g. 相爱很难
+# 2. not first version or record version，e.g. 相爱很难
 # (Simplified Chinese)
 replaceSongIds = {
     # 张学友
     "jacky_cheung": {
         "你的名字 我的姓氏": 188728,
         "相爱很难": 276260
-    }
+    },
+    # 张国荣
+    "leslie_cheung": {
+        "沉默是金": 188881,
+        "无需要太多": 188869
+    },
 }
 
 

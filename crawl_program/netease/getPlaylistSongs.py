@@ -7,10 +7,10 @@ from common import *
 
 # Define palylist id
 playlistIds = [
-    # 553778357,  # 我喜欢的音乐
-    7673625615,  # Favorite
-    7673790351,  # Like
-    7680312360,  # Nice
+    553778357,  # 我喜欢的音乐
+    # 7673625615,  # Favorite
+    # 7673790351,  # Like
+    # 7680312360,  # Nice
     # 7722735074,  # Hmm
     # 7741781941,  # One Hit
     # 7759490556,  # More Hits - 民谣
@@ -42,7 +42,6 @@ if len(sys.argv) >= 2:
         else:
             print(playlistName, 'not found. Exit...')
             sys.exit()
-
 
 # Define cookie in cookie.txt
 headers['cookie'] = readFileContent('cookie.txt')

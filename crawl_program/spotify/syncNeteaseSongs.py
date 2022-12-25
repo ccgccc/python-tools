@@ -34,9 +34,11 @@ if len(sys.argv) < 2:
 syncMode = 0
 # Read playlist name & get playlist id
 playlistName = sys.argv[1]
-with open('../spotify/files/playlists/playlist_' + playlistName + '_by ccg ccc.json') as f:
-    spotifyPlaylist = json.load(f)
-    spotifyPlaylistId = spotifyPlaylist['id']
+playlistFileName = '../spotify/files/playlists/playlist_' + playlistName + '_by ccg ccc.json'
+if os.path.isfile(playlistFileName):
+    with open(playlistFileName) as f:
+        spotifyPlaylist = json.load(f)
+        spotifyPlaylistId = spotifyPlaylist['id']
 # Define spotify playlist isPrivate
 isPrivate = True
 # Define is incremental
@@ -68,7 +70,13 @@ elif playlistName.startswith('Collection'):
     spotifySourcePlaylistNames = [playlistName]
 elif playlistName in {'Netease Non-playable'}:
     syncMode = 1
+    neteaseMatchPlaylistName = 'playlist_songs_ccgccc喜欢的音乐_by ccgccc'
     spotifySourcePlaylistNames = ['Favorite', 'Like']
+elif playlistName in {'Listening'}:
+    syncMode = 1
+    spotifyPlaylistId = '4tJNCsjJQugmZwA72R2sJ0'
+    neteaseMatchPlaylistName = 'playlist_songs_Listening Artist_by ccgccc'
+    spotifySourcePlaylistNames = ['Listening Artist']
 print('--------------------')
 print('*** Sync Info ***')
 print('Sync Mode:', syncMode,

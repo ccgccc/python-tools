@@ -138,6 +138,14 @@ def main():
     # Get new playlist Info
     playlist = getPlaylist(playlistId)
     writeJsonToFile(playlist, neteasePlaylistFileName)
+    playlistSongs = getPlaylistSongs(playlistId)
+    fileName = 'playlists/playlist_songs_' + playlistName + \
+        '_by ' + playlist['playlist']['creator']['nickname']
+    playlistSongs['playlist'] = playlist
+    writeJsonToFile(playlistSongs, fileName)
+    printPlaylists([playlist['playlist']])
+    printSongs(playlistSongs['songs'], fileName)
+
 
 
 if __name__ == '__main__':

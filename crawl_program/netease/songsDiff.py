@@ -48,16 +48,16 @@ print(likeOnlySongs)
 # Only in Playlists
 print('--------------------')
 playlistAllSongIds = []
-playlistOnlySongIds = []
+playlistOnlySongs = []
 for song in playlistSongs:
     playlistAllSongIds.append(song['id'])
     if song['id'] not in songIds:
-        print(song['name'])
-        playlistOnlySongIds.append(str(song['id']))
-print('Only in Playlists:', len(playlistOnlySongIds))
-if len(playlistOnlySongIds) > 0:
-    print('\nSong ids:', len(playlistOnlySongIds))
-    print(','.join(playlistOnlySongIds))
+        playlistOnlySongs.append({song['id']: song['name']})
+print('Only in Playlists:', len(playlistOnlySongs))
+print([list(dict.values())[0] for dict in playlistOnlySongs])
+if len(playlistOnlySongs) > 0:
+    print('Song ids:', len(playlistOnlySongs))
+    print(','.join([str(list(dict.keys())[0]) for dict in playlistOnlySongs]))
 seen = set()
 dupes = [songId for songId in playlistAllSongIds
          if songId in seen or seen.add(songId)]
