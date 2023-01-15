@@ -10,8 +10,8 @@ from spotifyFunc import *
 
 # =====
 def main():
-    # getArtistsFisrtAlbum()
-    printArtistsJson()
+    getArtistsFisrtAlbum()
+    # printArtistsJson()
     # countTracks()
     # topPlayTracks()
     # playlistAddTracks()
@@ -27,9 +27,11 @@ def getArtistsFisrtAlbum(printInfo=True):
     files = [f for f in os.listdir(mypath)
              if os.path.isfile(os.path.join(mypath, f)) and f.endswith('_albums.json')]
     artistAlbums = []
+    notCountArtists = []
     for file in files:
         artist = file.replace('_albums.json', '')
         if artists.get(artist) == None:
+            notCountArtists.append(artist)
             continue
         with open(mypath + file) as f:
             albums = json.load(f)
@@ -41,6 +43,7 @@ def getArtistsFisrtAlbum(printInfo=True):
     artistAlbums = sorted(artistAlbums, key=lambda album: album['releaseDate'])
     if not printInfo:
         return artistAlbums
+
     f = open('./files/artists/artist_debuts.csv', 'w')
     print('ReleaseDate', 'Artist', ' Identifier',
           'First Album Name', sep=', ', file=f)
@@ -50,6 +53,7 @@ def getArtistsFisrtAlbum(printInfo=True):
         print(artistAlbum['releaseDate'], artistAlbum['name'],
               artistAlbum['artist'], '"' + artistAlbum['firstAlbum'] + '"', sep=', ', file=f)
     f.close()
+    print('Not count:', notCountArtists)
     return artistAlbums
 
 

@@ -84,7 +84,7 @@ def generatePlaylistAndTracks(artist, accessToken, spotify, authorizeToken):
     else:
         print('Generate method not supported.')
         sys.exit()
-    print('--------------------')
+    print('--------------------\n')
 
     if artists.get(artist) == None:
         print(artist + ' is not defined in artist.py, please define it first.')

@@ -1,11 +1,11 @@
 # Deine artist to crawl
-artistToCrawl = "joker_xue"
+artistToCrawl = "rainie_yang"
 
 # === Define artists to generate playlists
 generateArtists = {
-    "joker_xue": {
-        "name": "薛之谦",
-        "artistId": 5781
+    "rainie_yang": {
+        "name": "杨丞琳",
+        "artistId": 10199
     },
     # --- Split
     "eric_chou": {
@@ -13,6 +13,57 @@ generateArtists = {
         "artistId": 980025
     },
     # ===== Collections
+    # ----- Collection : Big Four
+    "big_four": {
+        "name": "Big Four",
+        "artistId": 137634
+    },
+    "dicky_cheung": {
+        "name": "张卫健",
+        "artistId": 6464
+    },
+    "edmond_leung": {
+        "name": "梁汉文",
+        "artistId": 3722
+    },
+    "william_so": {
+        "name": "苏永康",
+        "artistId": 4948
+    },
+    "andy_hui": {
+        "name": "许志安",
+        "artistId": 5787
+    },
+    # ----- Collection 4: 天后替补席/次天后
+    "cass_phang": {
+        "name": "彭羚",
+        "artistId": 9106
+    },
+    "shirley_kwan": {
+        "name": "关淑怡",
+        "artistId": 7768
+    },
+    "cally_kwong": {
+        "name": "邝美云",
+        "artistId": 8304
+    },
+    # ----- Collection 3: 四大女天王/四大天后
+    "vivian_chow": {
+        "name": "周慧敏",
+        "artistId": 10577
+    },
+    "priscilla_chan": {
+        "name": "陈慧娴",
+        "artistId": 7225
+    },
+    "sandy_lam": {
+        "name": "林忆莲",
+        "artistId": 8336
+    },
+    "sally_yeh": {
+        "name": "叶蒨文",
+        "artistId": 10209
+    },
     # ----- Collection 2: 粤语前辈
     "george_lam": {
         "name": "林子祥",
@@ -44,6 +95,46 @@ generateArtists = {
         "artistId": 4721
     },
     # ===== Generated Artists
+    "cyndi_wang": {
+        "name": "王心凌",
+        "artistId": 9606
+    },
+    "angela_chang": {
+        "name": "张韶涵",
+        "artistId": 10562
+    },
+    "onerepublic": {
+        "name": "OneRepublic",
+        "artistId": 98105
+    },
+    "elva_hsiao": {
+        "name": "萧亚轩",
+        "artistId": 9945
+    },
+    "fish_leong": {
+        "name": "梁静茹",
+        "artistId": 8325
+    },
+    "jolin_tsai": {
+        "name": "蔡依林",
+        "artistId": 7219
+    },
+    "david_tao": {
+        "name": "陶喆",
+        "artistId": 5196
+    },
+    "imagine_dragons": {
+        "name": "Imagine Dragons",
+        "artistId": 94779
+    },
+    "lironghao": {
+        "name": "李荣浩",
+        "artistId": 4292
+    },
+    "joker_xue": {
+        "name": "薛之谦",
+        "artistId": 5781
+    },
     "danny_chan": {
         "name": "陈百强",
         "artistId": 2115

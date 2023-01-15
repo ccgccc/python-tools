@@ -48,6 +48,7 @@ python3 syncSpotifyPlaylist.py update all
 python3 ../spotify/crawlPlaylists.py  
 python3 ../spotify/crawlPlaylists.py 'Listening Artist'  
 python3 ../spotify/crawlPlaylists.py 'Favorite' 'Like' 'Nice'  
+python3 ../spotify/crawlPlaylists.py 'Like' 'Nice'  
 python3 ../spotify/crawlPlaylists.py 'Hmm'  
 python3 ../spotify/crawlPlaylists.py 'To Listen'  
 python3 ../spotify/crawlPlaylists.py 'Netease Non-playable'  
@@ -70,5 +71,5 @@ python3 syncCustomPlaylist.py 'More Hits - 流行'
 python3 syncCustomPlaylist.py 'Collection 1'  
 
 ### Sync spotify liked songs
-python3 songsDiff.py  
 python3 syncLikedSongs.py  
+python3 songsDiff.py  

@@ -29,6 +29,7 @@ python3 spotifyCrawlAndProcess.py generate false (overwriteTrackSheets = False)
 python3 spotifyCrawlAndProcess.py other  
 python3 spotifyCrawlAndProcess.py jacky_cheung  
 python3 spotifyCrawlAndProcess.py jacky_cheung false (overwriteTrackSheets = False)  
+python3 spotifyCrawlAndProcess.py dicky_cheung-2 dicky_cheung    
 
 (Default: artistToCrawl)  
 python3 generatePlaylistAndTracks.py  
@@ -43,12 +44,16 @@ python3 playlistDelete.py artist
 ### Add tracks to Listening Artist playlist
 (Default: artistToCrawl, Listening Artist)  
 python3 playlistAddItemsByPlaycount.py  
-or  
+or   
 (Default: artistToCrawl, Generated Playlist)  
 python3 playlistAddItemsByNumber.py  
 python3 playlistAddItemsByNumber.py 'Listening Artist'  
+python3 playlistAddItemsByNumber.py 'Listening Artist' pushu xuwei lijian zhengjun  
 python3 playlistAddItemsByNumber.py 'Collection 1' pushu xuwei lijian zhengjun  
 python3 playlistAddItemsByNumber.py 'Collection 2' sam_hui alan_tam george_lam  
+python3 playlistAddItemsByNumber.py 'Collection 3' sally_yeh sandy_lam priscilla_chan vivian_chow  
+python3 playlistAddItemsByNumber.py 'Collection 4' cally_kwong shirley_kwan cass_phang  
+python3 playlistAddItemsByNumber.py 'Collection 5' andy_hui william_so edmond_leung dicky_cheung big_four  
 
 
 
@@ -57,6 +62,7 @@ python3 playlistAddItemsByNumber.py 'Collection 2' sam_hui alan_tam george_lam
 (Default: 我喜欢的音乐)  
 python3 ../netease/getPlaylistSongs.py  
 python3 ../netease/getPlaylistSongs.py 'Favorite' 'Like' 'Nice'  
+python3 ../netease/getPlaylistSongs.py 'Like' 'Nice'  
 python3 ../netease/getPlaylistSongs.py 'Hmm'  
 python3 ../netease/getPlaylistSongs.py 'To Listen'  
 python3 ../netease/getPlaylistSongs.py 'Netease Non-playable'  
@@ -71,13 +77,15 @@ python3 syncNeteaseSongs.py 'Like'
 python3 syncNeteaseSongs.py 'Nice'  
 python3 syncNeteaseSongs.py 'Hmm'  
 python3 syncNeteaseSongs.py 'To Listen'  
-python3 syncNeteaseSongs.py 'Listening'  
 python3 syncNeteaseSongs.py 'Netease Non-playable'  
 (To update description)  
 python3 syncNeteaseSongs.py 'One Hit'  
 python3 syncNeteaseSongs.py 'More Hits - 民谣'  
 python3 syncNeteaseSongs.py 'More Hits - 流行'  
 python3 syncNeteaseSongs.py 'Collection 1'  
+
+python3 ../netease/getPlaylistSongs.py 'Listening Artist'  
+python3 syncNeteaseSongs.py 'Listening'  
 
 ### Like songs
 python3 tracksDiff.py  

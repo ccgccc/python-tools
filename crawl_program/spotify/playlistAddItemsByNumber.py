@@ -53,21 +53,26 @@ if len(sys.argv) > 1:
             playlistID = '5uo2JUVt9WQltVwijJzZmb'
         elif playlistName.startswith('Collection 2'):
             playlistID = '1flURo4qPHOPIKGVsHA8Wu'
+        elif playlistName.startswith('Collection 3'):
+            playlistID = '5LttjuXGEC9cpcphLK7TLi'
+        elif playlistName.startswith('Collection 4'):
+            playlistID = '2r9Iqy5D80rSs7QKmRnN6f'
+        elif playlistName.startswith('Collection 5'):
+            playlistID = '3OCCmC4Q9PlC363BbDa3w2'
+        else:
+            print('Collection not created yet...')
+            sys.exit()
 
 
 def main():
     # Get accessToken
     accessToken = getAccessToken(clientID, clientSecret)
     # Get spotify authorization authorizeToken by scope
-    if isPrivate:
-        scope = [
-            "playlist-read-private",
-            "playlist-modify-private"
-        ]
-    else:
-        scope = [
-            "playlist-modify-public"
-        ]
+    scope = [
+        "playlist-read-private",
+        "playlist-modify-private",
+        "playlist-modify-public"
+    ]
     spotify, authorizeToken = getAuthorizationToken(
         clientID, clientSecret, scope)
 
@@ -101,14 +106,15 @@ def main():
                 playlistId = playlist['id']
                 oldplaylistDescription = playlist['description']
                 if oldplaylistDescription:
-                    playlistDescription = oldplaylistDescription.split('Updated on')[0] \
-                        + 'Updated on ' + time.strftime("%Y-%m-%d") + '.'
+                    playlistDescription = re.sub(r'(.*?) ?Updated on.*', r'\1', oldplaylistDescription) \
+                        + ' Updated on ' + time.strftime("%Y-%m-%d") + '.'
                 else:
-                    playlistDescription = 'Sync between spotify and netease. Updated on ' + \
-                        time.strftime("%Y-%m-%d") + '.'
-                res = updatePlayList(spotify, authorizeToken, playlistId,
-                                     None, playlistDescription, True)
-                print('Response:', res)
+                    playlistDescription = 'Sync between spotify and netease. Generated on ' + \
+                        time.strftime("%Y-%m-%d") + ' by ccg.'
+                updatePlayList(spotify, authorizeToken, playlistId,
+                               None, playlistDescription, True)
+                crawlSinglePlaylist(accessToken, playlistId,
+                                    './files/playlists/', isPrivate=isPrivate, spotify=spotify)
 
 
 def playlistAddItemsByNumber(artist, trackNumber, accessToken, spotify, authorizeToken):
@@ -148,9 +154,8 @@ def playlistAddItemsByNumber(artist, trackNumber, accessToken, spotify, authoriz
 
 def playlistAddTracksByNumber(spotify, token, playlistId, playlist, artist, allTracks, trackNumber,
                               isCollection=False, isUpdateDesc=True):
-    resJson = addTracksToPlaylistByNumber(
-        spotify, token, playlistId, allTracks, trackNumber)
-    print('Response:', json.dumps(resJson, ensure_ascii=False))
+    addTracksToPlaylistByNumber(
+        spotify, token, playlistId, artist, allTracks, trackNumber)
 
     if not isCollection and isUpdateDesc:
         # Playlist name & description
@@ -159,21 +164,22 @@ def playlistAddTracksByNumber(spotify, token, playlistId, playlist, artist, allT
             allTracks[0]['playcount'])
         minimumPlaycountStr = getPlaycountStr(
             allTracks[trackNumber - 1]['playcount'])
+        playlistDescription = artists[artist]['name'] + \
+            ' most played songs (top ' + str(trackNumber) + \
+            ', maxPlay: ' + maximumPlaycountStr + \
+            ', minPlay: ' + minimumPlaycountStr + \
+            (', special adding: ' + ','.join(artists[artist]['includeTracks'].values())
+             if artists[artist].get('includeTracks') != None else '') + '). '
         if playlist == None:  # Create playlist
-            playlistDescription = artists[artist]['name'] \
-                + ' most played songs (top ' + str(trackNumber) \
-                + ', maxPlay: ' + maximumPlaycountStr + ', minPlay: ' + minimumPlaycountStr + '). ' + \
+            playlistDescription = playlistDescription + \
                 'Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'
         else:  # Update playlist
             oldDescription = playlist['description']
-            playlistDescription = artists[artist]['name'] \
-                + ' most played songs (top ' + str(trackNumber) \
-                + ', maxPlay: ' + maximumPlaycountStr + ', minPlay: ' + minimumPlaycountStr + '). ' + \
+            playlistDescription = playlistDescription + \
                 'Generated on ' + re.match(r'.*Generated on (.*)by ccg.*', oldDescription).group(1) + ' by ccg. ' + \
                 'Updated on ' + time.strftime("%Y-%m-%d") + '.'
-        res = updatePlayList(spotify, token, playlistId,
-                             playlistName, playlistDescription, True)
-        print('Response:', res)
+        updatePlayList(spotify, token, playlistId,
+                       playlistName, playlistDescription, True)
 
 
 if __name__ == '__main__':

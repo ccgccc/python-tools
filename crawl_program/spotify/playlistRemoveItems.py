@@ -52,11 +52,11 @@ def playlistRemoveAllItems(accessToken, spotify, authorizeToken, playlistId,
         if tracksToKeep != None and trackUri.split(':')[-1] in tracksToKeep:
             continue
         trackUriList.append(trackUri)
+    print('--------------------')
     print('To remove: ', len(trackUriList), '\n', trackUriList, sep='')
     if len(trackUriList) > 0:
         resJson = removePlayListTracks(
             spotify, authorizeToken, playlistId, trackUriList)
-        print('Response:', resJson)
 
 
 if __name__ == '__main__':

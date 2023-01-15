@@ -23,19 +23,18 @@ def getPlaylistSongs():
 
 # ********** Add playlist songs **********
 def addPlaylistSongs():
-    syncSongIds = ['109998', '110215', '33248189', '110411', '29729145']
+    syncSongIds = ['307679', '1411752556']
 
     # Playlist id
     # playlistId = 7673625615,  # Favorite
-    playlistId = 7673790351,  # Like
-    # playlistId = 7680312360,  # Nice
+    # playlistId = 7673790351,  # Like
+    playlistId = 7680312360,  # Nice
     addSongsToPlayList(playlistId, ','.join(syncSongIds))
 
 
 # ********** Like songs **********
 def LikeSongs():
-    syncSongIds = ['28815250', '139371', '139357', '139377', '139385', '168091', '167975', '168141', '167880',
-                   '167971', '109998', '110215', '33248189', '110411', '29729145', '186842', '186816', '186513', '186838', '4878093']
+    syncSongIds = ['1335640448', '1334799022', '1335640447']
 
     # My like songs playlist id
     likePlaylistId = 553778357

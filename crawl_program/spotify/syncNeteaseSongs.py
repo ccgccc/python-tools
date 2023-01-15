@@ -34,7 +34,8 @@ if len(sys.argv) < 2:
 syncMode = 0
 # Read playlist name & get playlist id
 playlistName = sys.argv[1]
-playlistFileName = '../spotify/files/playlists/playlist_' + playlistName + '_by ccg ccc.json'
+playlistFileName = '../spotify/files/playlists/playlist_' + \
+    playlistName + '_by ccg ccc.json'
 if os.path.isfile(playlistFileName):
     with open(playlistFileName) as f:
         spotifyPlaylist = json.load(f)
@@ -43,8 +44,8 @@ if os.path.isfile(playlistFileName):
 isPrivate = True
 # Define is incremental
 isIncremental = True
-# Define if describe missing tracks
-descMissingTracks = False
+# Define if update description
+isUpdateDesc = False
 # Spotify source playlists names
 spotifySourcePlaylistNames = [playlistName]
 # Netease match playlist name
@@ -52,21 +53,23 @@ neteaseMatchPlaylistName = 'playlist_songs_' + playlistName + '_by ccgccc'
 if playlistName in {'Favorite', 'Like'}:
     isPrivate = False
     spotifySourcePlaylistNames = [playlistName, 'Listening Artist']
+    isUpdateDesc = True
     # spotifySourcePlaylistNames = [playlistName, 'Collection 1']
     # # Update description
-    # descMissingTracks = True
+    # isUpdateDesc = True
     # spotifySourcePlaylistNames = [playlistName]
 elif playlistName in {'Nice', 'Hmm', 'To Listen'}:
     spotifySourcePlaylistNames = [playlistName, 'Listening Artist']
+    isUpdateDesc = True
     # spotifySourcePlaylistNames = [playlistName, 'Collection 1']
     # # Update description
-    # descMissingTracks = True
+    # isUpdateDesc = True
     # spotifySourcePlaylistNames = [playlistName]
 elif playlistName in {'One Hit', 'More Hits - 民谣', 'More Hits - 流行'}:
-    descMissingTracks = True
+    isUpdateDesc = True
     spotifySourcePlaylistNames = [playlistName]
 elif playlistName.startswith('Collection'):
-    descMissingTracks = True
+    isUpdateDesc = True
     spotifySourcePlaylistNames = [playlistName]
 elif playlistName in {'Netease Non-playable'}:
     syncMode = 1
@@ -84,7 +87,7 @@ print('Sync Mode:', syncMode,
 print('Playlist:', playlistName)
 print('IsPrivate:', isPrivate)
 print('IsIncremental:', isIncremental)
-print('DescMissingTracks:', descMissingTracks)
+print('IsUpdateDesc:', isUpdateDesc)
 print('SpotifySourcePlaylistNames:', spotifySourcePlaylistNames)
 print('NeteaseMatchPlaylistName:', neteaseMatchPlaylistName)
 print('--------------------')
@@ -183,7 +186,7 @@ def main():
           len(spotifyTracksFromNetease))
     print([list(track.values())[0]
           for track in spotifyTracksFromNetease])
-    if descMissingTracks:
+    if isUpdateDesc:
         spotifyMissingTracks = [songName for songName in reversed(neteaseAllSyncSongNames)
                                 if songName not in {list(dict.values())[0] for dict in spotifyTracksFromNetease}]
         print('\nSpotify missing tracks:', len(spotifyMissingTracks))
@@ -206,7 +209,7 @@ def main():
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     trackUriList = [list(dict.keys())[0] for dict in spotifyTracksFromNetease]
     # Get spotify authorization token by scope and accessToken
-    if isPrivate or descMissingTracks:
+    if isPrivate or isUpdateDesc:
         scope = [
             "playlist-read-private",
             "playlist-modify-private",
@@ -235,38 +238,50 @@ def main():
     # Check before sync
     print('------------------------------')
     print('Incremental:', isIncremental)
-    print('DescMissingTracks:', descMissingTracks)
+    print('UpdateDesc:', isUpdateDesc)
     print('To sync tracks:', len(trackUriList))
     print('track uris:', trackUriList)
     print('track names:', [list(dict.values())[0] for dict in spotifyTracksFromNetease
                            if list(dict.keys())[0] in trackUriList])
-    if descMissingTracks and missingSongsStr != '':
-        if not oldPlaylistDescription:
-            playlistDescription = 'Sync between spotify and netease. Spotify missing: ' + \
-                missingSongsStr + '. Updated on ' + time.strftime("%Y-%m-%d") + '.'
+    if isUpdateDesc:
+        missingPart = ('Spotify missing(' + str(len(missingSongs)) +
+                       '): ' + missingSongsStr + '. ') if missingSongsStr else ''
+        playlistDescription = 'Sync between spotify and netease. ' + \
+            missingPart + 'Updated on ' + time.strftime("%Y-%m-%d") + '.'
+        # if not oldPlaylistDescription:
+        #     playlistDescription = 'Sync between spotify and netease. Spotify missing: ' + \
+        #         missingSongsStr + '. Updated on ' + time.strftime("%Y-%m-%d") + '.'
+        # else:
+        #     playlistDescription = re.sub(r'(Sync.*?\. ).*(Updated on.*)',
+        #                                 r'\1' + 'Spotify missing: ' + missingSongsStr + '. ' + r'\2', oldPlaylistDescription)
+        print('\n------------------------------')
+        print('Playlist description:', playlistDescription)
+        msg = input(
+            '\n*** Are you sure to update playlist description? Press Y to continue. (y/n): ')
+        if msg == 'y' or msg == 'Y':
+            updatePlayList(spotify, authorizeToken, spotifyPlaylistId,
+                           None, playlistDescription, True)
         else:
-            playlistDescription = re.sub(r'(Sync.*\. ).*(Updated on.*)',
-                                        r'\1' + 'Spotify missing: ' + missingSongsStr + '. ' + r'\2', oldPlaylistDescription)
-        res = updatePlayList(spotify, authorizeToken, spotifyPlaylistId,
-                             None, playlistDescription, True)
-        print('Response:', res.text if not res.text else 'ok.')
+            print('Didn\'t update description, continue...\n')
     if len(trackUriList) == 0:
-        print('\nNothing to sync. Exit...')
+        print('Nothing to sync. Exit...')
         sys.exit()
+    print('------------------------------')
     msg = input(
-        '\nAre you sure to sync these tracks? Press Y to continue. (y/n): ')
+        '*** Are you sure to sync these tracks? Press Y to continue. (y/n): ')
     if msg != 'y' and msg != 'n':
         sys.exit()
-    print()
     # Add tracks to spotify playlist
-    if not isPrivate:
+    if not (isPrivate or isUpdateDesc):
         scope = "playlist-modify-public"
         spotify, authorizeToken = getAuthorizationToken(
             clientID, clientSecret, scope)
     addTracksToPlayList(spotify, authorizeToken,
                         spotifyPlaylistId, trackUriList)
+    print('Crawling playlist new info...')
     crawlSinglePlaylist(accessToken, spotifyPlaylistId,
-                        './files/playlists/', isPrivate=isPrivate, spotify=spotify)
+                        './files/playlists/', isPrivate=isPrivate, spotify=spotify, printPlaylist=False)
+    print('Done!')
 
 
 if __name__ == '__main__':

@@ -20,6 +20,8 @@ def main():
 
 
 def playlistRomoveSongs(playlistId, isSureCheck=False):
+    print("\n--------------------")
+    print('Crawling netease playlist current songs...')
     playlistSongs = getPlaylistSongs(playlistId)
     if (len(playlistSongs['songs']) == 0):
         print('Nothing to delete, continue...')

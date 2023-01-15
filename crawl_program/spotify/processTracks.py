@@ -46,17 +46,14 @@ def main():
 def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False,
                   filterTrackByName=False, overwriteTrackSheets=False, printInfo=True):
     artistIds = [artists[artist]['artistId']]
-    print(len(allAlbumsTracks))
     if artists.get(artist + '-2') != None:
         artistIds.append(artists[artist + '-2']['artistId'])
         with open('./files/tracks/' + artist + '-2' + '_alltracks_raw.json') as f:
             allAlbumsTracks.extend(json.load(f))
-    print(len(allAlbumsTracks))
     # Get all albums tracks
     albumCount = 0
     preAlbumId = ''
     filterdTracks = []
-    trackNames = set()
     trackPlaycountToMs = {}
     for albumTracks in allAlbumsTracks:
         album = albumTracks['album']
@@ -122,17 +119,6 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False,
             else:
                 continue
 
-            # Check if filterTrackByName
-            if filterTrackByName:
-                # Ignore repeated tracks by track name
-                # Not recomendded, sometimes repeated track names are alright, e.g. K歌之王 (国+粤)
-                processedTrackName = re.sub(
-                    r' \(.*', '', re.sub(r' - .*', '', trackName))
-                if processedTrackName in trackNames:
-                    continue
-                else:
-                    trackNames.add(processedTrackName)
-
             if printInfo:
                 print(str(trackCount) + ': ' +
                       trackName + ", " + trackPlaycount)
@@ -146,14 +132,33 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False,
     sortedTracks = sorted(
         filterdTracks, key=lambda track: track['playcount'], reverse=True)
 
+    # Filter tracks by track name
+    if filterTrackByName:
+        filterdTracks = []
+        trackNames = set()
+        for track in sortedTracks:
+            trackName = track['trackName']
+            # Ignore repeated tracks by track name
+            # Not recomendded, sometimes repeated track names are alright, e.g. K歌之王 (国+粤)
+            processedTrackName = re.sub(
+                r' \(.*', '', re.sub(r' - .*', '', trackName))
+            if processedTrackName in trackNames:
+                continue
+            else:
+                filterdTracks.append(track)
+                trackNames.add(processedTrackName)
+        processedTracks = filterdTracks
+    else:
+        processedTracks = sortedTracks
+
     # Write json to file
     with open('./files/tracks/' + artist + '_alltracks.json', 'w') as f:
-        json.dump(sortedTracks, f, ensure_ascii=False)
+        json.dump(processedTracks, f, ensure_ascii=False)
     trackSheetDir = './files/trackSheets/'
     if artist in otherArtists:
         trackSheetDir = trackSheetDir + 'other/'
     if overwriteTrackSheets:
-        writeToXlsx(sortedTracks, trackSheetDir +
+        writeToXlsx(processedTracks, trackSheetDir +
                     artists[artist]['name'] + '_All Tracks.xlsx')
     else:
         fileNames = [f for f in os.listdir(trackSheetDir)
@@ -162,9 +167,9 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False,
             artists[artist]['name']) >= 0}) > 0 else False
         if existFile:
             trackSheetDir = trackSheetDir + 'update/'
-        writeToXlsx(sortedTracks, trackSheetDir + artists[artist]['name'] +
+        writeToXlsx(processedTracks, trackSheetDir + artists[artist]['name'] +
                     '_All Tracks_Generated on ' + time.strftime("%Y-%m-%d") + '.xlsx')
-    return sortedTracks
+    return processedTracks
 
 
 def writeToXlsx(allTracks, fileName):

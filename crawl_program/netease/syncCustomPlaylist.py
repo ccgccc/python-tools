@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 import inspect
 # Enable import parent directory modules
 currentdir = os.path.dirname(os.path.abspath(
@@ -30,6 +31,8 @@ def main():
     playlistName = sys.argv[1]
     # Define isPrivate & private playlist name
     isPrivate = False
+    # Define is collection playlist
+    isCollection = False
     # Define is incremental
     isIncremental = True
     # Define is reversed (usually same as isIncremental)
@@ -45,6 +48,7 @@ def main():
         isIncremental = False
         isReversed = False
     elif playlistName.startswith('Collection'):
+        isCollection = True
         isPrivate = False
         isIncremental = False
         isReversed = False
@@ -98,13 +102,15 @@ def main():
         playlist = loadJsonFromFile(neteasePlaylistFileName)
         playlistId = playlist['playlist']['id']
         if isIncremental:
+            print('Crawling netease playlist current songs...')
             playlistSongs = getPlaylistSongs(playlistId)['songs']
             playlistSongIdsSet = {song['id']
                                   for song in playlistSongs}
             # Find not added songs
             syncSongs = [song for song in syncSongs
                          if list(song.values())[0] not in playlistSongIdsSet]
-            print('Playlist \'' + playlistName + '\' songs:', len(playlistSongs))
+            print('Playlist \'' + playlistName +
+                  '\' songs:', len(playlistSongs))
             print('Incremental sync songs: ', len(
                 syncSongs), '\n', syncSongs, '\n', sep='')
             if (len(syncSongs) == 0):
@@ -125,17 +131,24 @@ def main():
     syncSongIds = ','.join([str(list(song.values())[0]) for song in syncSongs])
     addSongsToPlayList(playlistId, syncSongIds)
 
-    spotifyDesciption = spotifyPlaylist['description']
-    updateMatch = re.search(r' Updated on.*', spotifyDesciption)
-    playlistDescription = 'Sync between spotify and netease.' + \
-        ((' Netease missing: ' + ', '.join(neteaseMissingSongsStr) +
-         '.') if len(neteaseMissingSongsStr) > 0 else '') + \
-        ((' Spotify Missing: ' + ', '.join(spotifyMissingSongsStr) +
-          '.') if len(spotifyMissingSongsStr) > 0 else '') + \
-        (updateMatch.group(0) if updateMatch != None else '')
+    if not isCollection:
+        playlistDescription = 'Sync between spotify and netease.' + \
+            ((' Netease missing: ' + ', '.join(neteaseMissingSongsStr) +
+            '.') if len(neteaseMissingSongsStr) > 0 else '') + \
+            ((' Spotify Missing: ' + ', '.join(spotifyMissingSongsStr) +
+            '.') if len(spotifyMissingSongsStr) > 0 else '') + \
+            'Updated on ' + time.strftime("%Y-%m-%d") + '.'
+            # (updateMatch.group(0) if updateMatch != None else '')
+    else:
+        spotifyDesciption = spotifyPlaylist['description']
+        datePart = re.sub(r'.*(Generated.*)', r'\1', spotifyDesciption)
+        playlistDescription = 'Sync between spotify and netease.' + \
+            ((' Netease missing: ' + ', '.join(neteaseMissingSongsStr) + \
+            '.') if len(neteaseMissingSongsStr) > 0 else '') + ' ' + datePart
     updatePlaylistDesc(playlistId, playlistDescription)
 
     # Get new playlist Info
+    print('\nCrawling playlist new info...')
     playlist = getPlaylist(playlistId)
     writeJsonToFile(playlist, neteasePlaylistFileName)
     playlistSongs = getPlaylistSongs(playlistId)
@@ -143,9 +156,9 @@ def main():
         '_by ' + playlist['playlist']['creator']['nickname']
     playlistSongs['playlist'] = playlist
     writeJsonToFile(playlistSongs, fileName)
-    printPlaylists([playlist['playlist']])
-    printSongs(playlistSongs['songs'], fileName)
-
+    # printPlaylists([playlist['playlist']])
+    # printSongs(playlistSongs['songs'], fileName)
+    print('Done!')
 
 
 if __name__ == '__main__':

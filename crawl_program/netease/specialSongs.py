@@ -7,7 +7,8 @@ specialSongNames = {
         "袛有情永在": "只有情永在",
         "我醒著做夢": "我醒着做梦",
         "祇有你不知道": "只有你不知道",
-        "每天愛你多一些_2_張學友": "每天爱你多一些(国)"
+        "每天愛你多一些_2_張學友": "每天爱你多一些(国)",
+        "相愛很難": "相爱很难 (电影\"男人四十\"歌曲)"
     },
     # 周杰伦  All
     "jay_chou": {
@@ -51,7 +52,8 @@ specialSongNames = {
     },
     # 王菲  All
     "faye_wong": {
-        "你快樂所以我快樂": "你快乐所以我快乐 (Live)"
+        "你快樂所以我快樂": "你快乐所以我快乐 (Live)",
+        "執迷不悔": "执迷不悔 (粤语版)"
     },
     # 莫文蔚  All
     "kare_mok": {
@@ -160,8 +162,9 @@ specialSongNames = {
     },
     # 林子祥
     "george_lam": {
+        "衝上雲宵": "冲上云霄"
     },
-    # 张国荣  Missing: 怪你过分美丽
+    # 张国荣  All
     "leslie_cheung": {
         "Ming Xing": "明星",
         "怪你過份美麗": "怪你过份美丽",
@@ -170,6 +173,90 @@ specialSongNames = {
     # 薛之谦  All
     "joker_xue": {
         "我好像在哪見過你(電影《精靈王座》主題曲)": "我好像在哪见过你"
+    },
+    # 李荣浩  All
+    "lironghao": {
+    },
+    # Imagine Dragons  All
+    "imagine_dragons": {
+        "Enemy": "Enemy (from the series Arcane League of Legends)",
+        "Sucker for Pain": "Sucker for Pain (with Logic, Ty Dolla $ign & X Ambassadors)",
+        "On Top Of The World": "On Top of the World"
+    },
+    # 叶蒨文
+    "sally_yeh": {
+    },
+    # 林忆莲
+    "sandy_lam": {
+    },
+    # 陈慧娴
+    "priscilla_chan": {
+    },
+    # 周慧敏
+    "vivian_chow": {
+    },
+    # 陶喆  All
+    "david_tao": {
+        "愛, 很簡單": "爱，很简单",
+        "22": "二十二",
+        "Susan說": "Susan 说"
+    },
+    # 蔡依林  All
+    "jolin_tsai": {
+        "I'm not yours": "I'm not yours (feat. 安室奈美惠)",
+        "睜一隻眼閉一隻眼(OT: I Did It Again)": "睁一只眼闭一只眼"
+    },
+    # 梁静茹  All
+    "fish_leong": {
+    },
+    # 萧亚轩  All
+    "elva_hsiao": {
+    },
+    # OneRepublic  All
+    "onerepublic": {
+    },
+    # 邝美云
+    "cally_kwong": {
+    },
+    # 关淑怡
+    "shirley_kwan": {
+    },
+    # 彭羚
+    "cass_phang": {
+    },
+    # 张韶涵  Missing: 淋雨一直走
+    "angela_chang": {
+        "隠形的翅膀": "隐形的翅膀",
+        "JOURNEY": "Journey",
+        "親愛的那不是愛情": "亲爱的，那不是爱情"
+    },
+    # 王心凌  All
+    "cyndi_wang": {
+    },
+    # 杨丞琳  All
+    "rainie_yang": {
+        "其實我們值得幸褔": "其实我们值得幸福",
+        "一千零一個願望": "一千零一个愿望 (单人版)"
+    },
+    # 许志安
+    "andy_hui": {
+        "美中不足": "美中不足 (Solo Version)",
+        "火熱動感la La La": "火热动感La La La(Live)"
+    },
+    # 苏永康
+    "william_so": {
+        "和每天講再見": "和每天讲再见 (Duet Version)"
+    },
+    # 梁汉文
+    "edmond_leung": {
+    },
+    # 张卫健
+    "dicky_cheung": {
+    },
+    # Big Four
+    "big_four": {
+        "name": "Big Four",
+        "artistId": 137634
     },
     # === Split specialSongNames
     # Tylor Swift
@@ -195,10 +282,14 @@ specialSongNames = {
 }
 
 # Define netease missing songs
-# 1. Not included in netease artist songs
+# 1. Not included in netease artist's songs
 # 2. Not included because of spotify repeated song names
 # (Simplified Chinese)
 specialSongIds = {
+    # 张学友
+    "jacky_cheung": {
+        "相爱很难 (电影\"男人四十\"歌曲)": 276260
+    },
     # 周杰伦
     "jay_chou": {
         "屋顶": 298317,
@@ -225,8 +316,9 @@ specialSongIds = {
     # 王菲
     "faye_wong":  {
         "因为爱情": 64317,
-        "执迷不悔": 300587,  # 执迷不悔 (粤语版)
-        "执迷不悔_2_王菲": 300603  # 执迷不悔 (国语版)
+        # because spotify and netease names don't match, a bit compromise here.
+        # "执迷不悔": 300587,  # 执迷不悔 (粤语版)
+        "执迷不悔 (粤语版)_2_王菲": 300603  # 执迷不悔 (国语版)
     },
     # 五月天
     "mayday": {
@@ -279,8 +371,37 @@ specialSongIds = {
     },
     # 林子祥
     "george_lam": {
-        "冲上云宵": 27566512,
+        "冲上云霄": 27566512,
         "祝福你": 1341503462
+    },
+    # 叶蒨文
+    "sally_yeh": {
+        "选择": 406073996
+    },
+    # 梁静茹
+    "fish_leong": {
+        "问": 108143
+    },
+    # OneRepublic
+    "onerepublic": {
+        "Stranger Things": 515947224
+    },
+    # 张韶涵
+    "angela_chang": {
+        "如果的事": 229372,
+        "天分": 1342798235
+    },
+    # 王心凌
+    "cyndi_wang": {
+        "彩虹的微笑": 4874555
+    },
+    # 梁汉文
+    "edmond_leung": {
+        "男子组": 115529
+    },
+    # 张卫健
+    "dicky_cheung": {
+        "祝新岁": 1341503464
     },
     # === Split specialSongIds
 }
@@ -304,22 +425,44 @@ spotifyMissingSongs = {
     "zhengjun": [
         {"流星": 4878093}
     ],
+    # 李荣浩
+    "lironghao": [
+        {"老街": 133998}
+    ],
+    # 萧亚轩
+    "elva_hsiao": [
+        {"表白": 307081}
+    ],
+    # 张韶涵
+    "angela_chang": [
+        {"淋雨一直走": 25640392}
+    ],
 }
 
 # Netease different version songs
-# 1. not good song source，e.g. 你的名字 我的姓氏(友个人演唱会1999)
-# 2. not first version or record version，e.g. 相爱很难
+# 1. not good song source，e.g. 你的名字 我的姓氏(友个人演唱会1999, first release)
+# 2. not first version (e.g. 相爱很难) or record version (e.g. 沉默是金、无需要太多)
+#    or no copyright (e.g. 年少有为)
 # (Simplified Chinese)
 replaceSongIds = {
     # 张学友
     "jacky_cheung": {
-        "你的名字 我的姓氏": 188728,
-        "相爱很难": 276260
+        "你的名字 我的姓氏": 188728,  # first release in a concert
+        # "相爱很难": 276260  # not first version
     },
     # 张国荣
     "leslie_cheung": {
-        "沉默是金": 188881,
-        "无需要太多": 188869
+        "沉默是金": 188881,  # not record version
+        "无需要太多": 188869,  # not record version
+        "芳华绝代": 276257  # not first version
+    },
+    # 李荣浩
+    "lironghao": {
+        "年少有为": 1293886117  # no copyright
+    },
+    # 关淑怡
+    "shirley_kwan": {
+        "难得有情人": 235690  # netease trash data
     },
 }
 

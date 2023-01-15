@@ -107,9 +107,8 @@ def playlistAddItemsByPlaycount(
 
 
 def playlistAddTracksByPlaycount(spotify, token, playlistId, playlist, artist, allTracks, playcount, isUpdateDesc=True):
-    resJson = addTracksToPlaylistByPlaycount(
-        spotify, token, playlistId, allTracks, playcount)
-    print('Response:', json.dumps(resJson, ensure_ascii=False))
+    addTracksToPlaylistByPlaycount(
+        spotify, token, playlistId, artist, allTracks, playcount)
 
     if isUpdateDesc:
         # Playlist name & description

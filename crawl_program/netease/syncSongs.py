@@ -20,8 +20,9 @@ def getSpotifyArtistTrackIdNames(spotifyPlaylistName, spotifyPlaylistTracks, spo
           '(Total ', totalPlaylistTracks, ')', sep='')
     print(allPlaylistTrackNames, '\n')
 
-    # Get spotify artists IDs
-    spotifyArtistIds = {v['artistId']: k for k, v in spotifyArtists.items()}
+    # Get spotify artists IDs (must in netease artists)
+    spotifyArtistIds = {v['artistId']: k for k, v in spotifyArtists.items()
+                        if k in artists.keys() or k.split('-')[0] in artists.keys()}
     spotifyArtistIdsSet = spotifyArtistIds.keys()
     # Initialize spotify artist track names, like this: {'artist': ['trackname', 'trackname2']}
     spotifyArtistTrackNames = {}
@@ -38,10 +39,10 @@ def getSpotifyArtistTrackIdNames(spotifyPlaylistName, spotifyPlaylistTracks, spo
                     spotifyArtistTrackNames[artist] = []
                 trackUri = track['track']['uri']
                 trackName = track['track']['name']
-                if trackName not in seenTrackNames:
+                if trackName + '_' + artist not in seenTrackNames:
                     spotifyArtistTrackNames[artist].append(
                         {trackUri: trackName})
-                    seenTrackNames.add(trackName)
+                    seenTrackNames.add(trackName + '_' + artist)
                 else:
                     spotifyArtistTrackNames[artist].append(
                         {trackUri: trackName + '_2_' + track['track']['artists'][0]['name']})
@@ -170,6 +171,8 @@ def getSyncSongs(artist, spotifyTrackIdNames, isRemoveAlias=True, addSpotifyMiss
                                for songName in neteaseMissingSongs]
     print('------------------------------')
     missingCount = len(spotifyTrackOriginalNames) - len(syncSongs)
+    if addSpotifyMissing and spotifyMissingSongs.get(artist) != None:
+        missingCount = missingCount + len(spotifyMissingSongs[artist])
     print('Netease missing songs:', missingCount)
     if missingCount > len(neteaseMissingSongs):
         # Already modified duplicated names before, so  probably no duplicates here
