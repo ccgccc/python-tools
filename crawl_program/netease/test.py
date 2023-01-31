@@ -1,8 +1,5 @@
 from common import *
 
-# Define cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
-
 
 def main():
     # getPlaylistSongs()
@@ -23,18 +20,19 @@ def getPlaylistSongs():
 
 # ********** Add playlist songs **********
 def addPlaylistSongs():
-    syncSongIds = ['307679', '1411752556']
+    syncSongIds = ['523249071', '155910']
 
     # Playlist id
     # playlistId = 7673625615,  # Favorite
     # playlistId = 7673790351,  # Like
-    playlistId = 7680312360,  # Nice
+    # playlistId = 7680312360,  # Nice
+    playlistId = 8075889883,  # High
     addSongsToPlayList(playlistId, ','.join(syncSongIds))
 
 
 # ********** Like songs **********
 def LikeSongs():
-    syncSongIds = ['1335640448', '1334799022', '1335640447']
+    syncSongIds = ['254572', '254328']
 
     # My like songs playlist id
     likePlaylistId = 553778357

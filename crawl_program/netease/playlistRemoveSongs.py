@@ -7,8 +7,6 @@ from common import *
 
 
 def main():
-    headers['cookie'] = readFileContent('cookie.txt')
-
     playlist = loadJsonFromFile(
         'playlists/generated_playlists/' + artistToCrawl + '_playlist')
     playlistId = playlist['playlist']['id']

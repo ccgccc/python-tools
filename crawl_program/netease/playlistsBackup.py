@@ -7,9 +7,6 @@ from common import *
 # ****************************************
 # Note: doesn't contain mv
 
-# Define cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
-
 
 playlistName = 'playlists/all_my_playlists'
 playlists = loadJsonFromFile(playlistName)

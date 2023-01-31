@@ -1,16 +1,30 @@
+import os
 import re
 import sys
 import json
+import time
 import requests
 from datetime import datetime
 
-
+# Define my user id
 myUserId = 389958855
 
-baseUrl = 'https://netease-cloud-music-api-three-rose.vercel.app'
+# Define baseUrl
+baseUrl = 'https://service-4ipff8tq-1259202535.gz.apigw.tencentcs.com/release'
+# baseUrl = 'https://netease-cloud-music-api-three-rose.vercel.app'
+
+# Define headers to get private info in terminal
 headers = {
-    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'
 }
+# First use https://service-4ipff8tq-1259202535.gz.apigw.tencentcs.com/release/qrlogin.html
+#   in browser to log in,
+# Then use https://service-4ipff8tq-1259202535.gz.apigw.tencentcs.com/release/login/status
+#   and copy cookie from request.
+# Define cookie in cookie.txt
+os.chdir(os.path.dirname(__file__))
+with open('cookie.txt') as f:
+    headers['cookie'] = f.read()
 
 
 def getAlbum(id):
@@ -45,7 +59,8 @@ def getArtistAlbums(artistId):
 def getPlaylist(playlistId):
     url = baseUrl + '/playlist/detail'
     params = {
-        'id': playlistId
+        'id': playlistId,
+        'timestamp': int(time.time() * 1000)
     }
     res = requests.get(url, headers=headers, params=params)
     if res.status_code == 401:
@@ -62,13 +77,20 @@ def getPlaylistSongs(playlistId):
     params = {
         'id': playlistId,
         'limit': limit,
-        'offset': 0
+        'offset': 0,
+        'timestamp': int(time.time() * 1000)
     }
     res = requests.get(url, headers=headers, params=params)
     if res.status_code == 401:
         print('请求失败！返回信息：' + res.text)
         sys.exit()
-    resJson = res.json()
+    try:
+        resJson = res.json()
+    except:
+        print(res)
+        print(res.text)
+        print('Request error, exit...')
+        sys.exit()
     playlistSongs = resJson
     # print(json.dumps(resJson, ensure_ascii=False))
     while len(resJson['songs']) == limit:
@@ -170,7 +192,8 @@ def addSongsToPlayList(playlistId, tracks):
 def deleteSongsToPlayList(playlistId, tracks):
     res = addOrDeleteSongsToPlayList('del', playlistId, tracks)
     resJson = res.json()
-    if res.status_code == 200 and resJson['body']['code'] == 200:
+    if res.status_code == 200 and resJson.get('body') != None \
+            and resJson['body']['code'] == 200:
         print('\n**********')
         print('Successfully removed playlist songs.')
         print('**********\n')
@@ -189,8 +212,10 @@ def addOrDeleteSongsToPlayList(opeartion, playlistId, tracks):
     params = {
         'op': opeartion,
         'pid': playlistId,
-        'tracks': tracks
+        'tracks': tracks,
+        'timestamp': int(time.time() * 1000)
     }
+    print('Request time:', time.strftime("%H:%M:%S"))
     return requests.get(url, headers=headers, params=params)
 
 
@@ -293,7 +318,7 @@ def printSongs(songs, csvFileName=None, isWriteToConsole=True):
         csvFile.write('songCount, songId, songName, songArtists, ' +
                       'genre, duration, publishTime, popularity, albumName\n')
     songCount = 0
-    for song in songs:
+    for song in reversed(songs):
         songCount = songCount + 1
         songId = song['id']
         songName = re.sub(r'\,', '，', song['name'])
@@ -353,11 +378,6 @@ def printPlaylists(playlists, csvFileName=None):
                   createTime, updateTime, trackUpdateTime, trackNumberUpdateTime, sep=', ', file=csvFile)
     if isWriteToFile:
         csvFile.close()
-
-
-def readFileContent(fileName):
-    with open(fileName) as f:
-        return f.read()
 
 
 def writeJsonToFile(jsonObject, fileName):

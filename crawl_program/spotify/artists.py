@@ -1,5 +1,5 @@
 # Define artist to crawl
-artistToCrawl = "rainie_yang"
+artistToCrawl = "julie_sue"
 
 # === Define artists to generate playlists
 # (Search artist on spotfy (e.g. 张学友 on spotify) to get artistId)
@@ -7,12 +7,30 @@ artistToCrawl = "rainie_yang"
 # For method 1: Define track number to add tracks
 # For method 2: Define minimum playcount to add tracks
 generateArtists = {
-    "rainie_yang": {
-        "name": "杨丞琳",  # 2005-09-09, 可爱教主
-        "artistId": "0MEchSWR9pJvw1S5CV3Kuk",
+    "julie_sue": {
+        "name": "苏芮",  # 1983-01-01
+        "artistId": "0B2g2ZF6jP0WkaZb33iPhX",
+        "filterTrackByName": True,
         "generateInfo": {
             "generateMethod": 1,
-            "number": 20  # 忘課
+            "number": 15
+        },
+        "excludeTracks": {
+            "4FtvRL1kxZAQIxbpfJDIPY": "酒矸倘賣嘸"  # 重复
+        }
+    },
+    "teresa_teng": {
+        "name": "邓丽君",  # 1970-01-01
+        "artistId": "3ienC90A5I1X3irDyQoqWZ",
+        "generateInfo": {
+            "generateMethod": 1,
+            "number": 25
+        },
+        "includeTracks": {
+            "58atR1rjI1gYtusJheguZU": "路邊野花不要採"
+        },
+        "excludeTracks": {
+            "7BvRirLX1FGRM7Ud03kQoU": "Tsugunai"  # 重复，即 つぐない (偿还)
         }
     },
     # ----- Split
@@ -553,6 +571,14 @@ generateArtists = {
         "name": "田震",  # 1995-09-30
         "artistId": "09mk8X1qeA7JlMHMSmqw7c"
     },
+    "laolang": {
+        "name": "老狼",  # 1995.05.01
+        "artistId": "1piwhsT7JM9pBzmLcLCg8v"
+    },
+    "laolang-2": {
+        "name": "老狼2",
+        "artistId": "0xNZutIrvMMbw2u9ww3oMD"
+    },
     "naying": {
         "name": "那英",  # 1994-01-01
         "artistId": "35ig3ZjuqVyGeovLsj4xNm"
@@ -650,10 +676,6 @@ generateArtists = {
         "name": "飞轮海",  # 2006-06-01
         "artistId": "37Ge9MTQaJqJknImNwYhWF"
     },
-    "a_lin": {
-        "name": "黄丽玲",  # 2006-02-10
-        "artistId": "28gf2piFx6cAKOMIwcky5a"
-    },
     "yangpeian": {
         "name": "杨培安",  # 2006-01-01
         "artistId": "5zxmrXIwrLuSfIJM3Dz6y1"
@@ -718,25 +740,13 @@ generateArtists = {
         "name": "F4",  # 2001-08-27
         "artistId": "1JadFMFTjfKAVtOqbrgv0X"
     },
-    "genie_chuo": {
-        "name": "卓文萱",  # 2001-07-26
-        "artistId": "5XHBjJm3bCgQCjpnInCxfT"
-    },
     "mc_hotdog": {
         "name": "MC HotDog",  # 2001-02-16
         "artistId": "4maR8o69pil8CrclOiFVVW"
     },
-    "where_chou": {
-        "name": "周蕙",  # 2000-05-01
-        "artistId": "0T1grpeZ4qvXm7ALeRPKno"
-    },
     "kenji_wu": {
         "name": "吴克群",  # 2000
         "artistId": "1MgybycH8k36NX0Ifzlddb"
-    },
-    "penny_tai": {
-        "name": "戴佩妮",  # 2000
-        "artistId": "0qmPs7q4bykvrS8NMZk7ud"
     },
     "landy_wen": {
         "name": "温岚",  # 1999-12-15
@@ -745,10 +755,6 @@ generateArtists = {
     "dick_and_cowboy": {
         "name": "迪克牛仔",  # 1999-01-01
         "artistId": "0cnqUQJBnf0AeIjyOX2xGF"
-    },
-    "yuki_hsu": {
-        "name": "徐怀钰",  # 1998-01-16
-        "artistId": "06w51RzkHkpkp2x09REY7v"
     },
     "power_station": {
         "name": "动力火车",  # 1997-10-07
@@ -761,14 +767,6 @@ generateArtists = {
     "victor_wong": {
         "name": "品冠",  # 1996-10-24
         "artistId": "70ht8hGTKjvbPJ37xVO9cW"
-    },
-    "laolang": {
-        "name": "老狼",  # 1995.05.01
-        "artistId": "1piwhsT7JM9pBzmLcLCg8v"
-    },
-    "laolang-2": {
-        "name": "老狼2",
-        "artistId": "0xNZutIrvMMbw2u9ww3oMD"
     },
     "valen_hsu": {
         "name": "许茹芸",  # 1995-01-01
@@ -862,10 +860,6 @@ generateArtists = {
         "name": "姜育恒",  # 1984
         "artistId": "0Nb4cyosZVQQ5x3QxZkVJL"
     },
-    "julie_sue": {
-        "name": "苏芮",  # 1983-01-01
-        "artistId": "0B2g2ZF6jP0WkaZb33iPhX"
-    },
     "coco_lee": {
         "name": "李玟",  # 1982
         "artistId": "3ioHf138TiMxYRCWmC8yJX"
@@ -913,6 +907,10 @@ generateArtists = {
             "number": 20  # 大雨將至
         }
     },
+    "a_lin": {
+        "name": "黄丽玲",  # 2006-02-10
+        "artistId": "28gf2piFx6cAKOMIwcky5a"
+    },
     "ella_chen": {
         "name": "陈嘉桦",  # 2004
         "artistId": "1DNci4XjJlglg629j3yO5n"
@@ -941,6 +939,18 @@ generateArtists = {
         "name": "范玮琪",  # 2001-08-01
         "artistId": "1q7sCl0vg0EcaFdRz0XDGg"
     },
+    "genie_chuo": {
+        "name": "卓文萱",  # 2001-07-26
+        "artistId": "5XHBjJm3bCgQCjpnInCxfT"
+    },
+    "where_chou": {
+        "name": "周蕙",  # 2000-05-01
+        "artistId": "0T1grpeZ4qvXm7ALeRPKno"
+    },
+    "penny_tai": {
+        "name": "戴佩妮",  # 2000
+        "artistId": "0qmPs7q4bykvrS8NMZk7ud"
+    },
     "cheer_chen": {
         "name": "陈绮贞",  # 1998-07-14
         "artistId": "4m0xrEWYU0yCUFMaga015T",
@@ -949,18 +959,13 @@ generateArtists = {
             "number": 20  # 一一
         }
     },
+    "yuki_hsu": {
+        "name": "徐怀钰",  # 1998-01-16
+        "artistId": "06w51RzkHkpkp2x09REY7v"
+    },
     "linzhixuan": {
         "name": "林志炫",  # 1996
         "artistId": "6O9BAkGBRRzHUDrWqdT68r"
-    },
-    "rene_liu": {
-        "name": "刘若英",  # 1992-08-07
-        "artistId": "6qzfo7jiO4OrhxrvPFPlWX",
-        "mustMainArtist": True,
-        "generateInfo": {
-            "generateMethod": 1,
-            "number": 15  # 我很好
-        }
     },
     "wubai": {
         "name": "伍佰",  # 1992-04-16
@@ -986,14 +991,6 @@ generateArtists = {
         "generateInfo": {
             "generateMethod": 1,
             "number": 20  # 閃亮的日子
-        }
-    },
-    "teresa_teng": {
-        "name": "邓丽君",  # 1970-01-01
-        "artistId": "3ienC90A5I1X3irDyQoqWZ",
-        "generateInfo": {
-            "generateMethod": 1,
-            "number": 25
         }
     },
     # === Candidates for collections
@@ -1148,20 +1145,22 @@ generateArtists = {
     "dicky_cheung-2": {
         "name": "张卫健2",
         "artistId": "3de8fL3wVnfUEtOlGIoFy5",
-        "filterAlbums": True,
         "mustMainArtist": True
     },
     "edmond_leung": {
         "name": "梁汉文",  # 1991.01.18
         "artistId": "1THfyLd3iyJYJ6X2U36K0y",
+        "filterAlbums": False,
+        "mustMainArtist": True,
         "generateInfo": {
             "generateMethod": 1,
-            "number": 2  # 纏綿遊戲
+            "number": 4  # 纏綿遊戲
         }
     },
     "william_so": {
         "name": "苏永康",  # 1989.09.01
         "artistId": "2oK5cSlJAH5s2Kx5e1zcvh",
+        "filterAlbums": False,
         "generateInfo": {
             "generateMethod": 1,
             "number": 14  # 愛一個人好難
@@ -1170,9 +1169,10 @@ generateArtists = {
     "andy_hui": {
         "name": "许志安",  # 1988.05.05
         "artistId": "1q8BvOdpOtapWOIgO26sOn",
+        "mustMainArtist": True,
         "generateInfo": {
             "generateMethod": 1,
-            "number": 22  # 愛妳
+            "number": 20  # 愛妳
         }
     },
     # ----- Collection 4: 天后替补席/次天后
@@ -1306,6 +1306,39 @@ generateArtists = {
         }
     },
     # == Generated Artists
+    "maroon_5": {
+        "name": "Maroon 5",
+        "artistId": "04gDigrS5kc9YWfZHwBETP",
+        "generateInfo": {
+            "generateMethod": 1,
+            "number": 20  # Daylight
+        },
+        "excludeTracks": {
+            "6FRLCMO5TUHTexlWo8ym1W": "Girls Like You (feat. Cardi B)",  # 重复
+            "2sLS4tVaEoMYrNS67PVz0V": "She Will Be Loved - Acoustic"  # 重复
+        }
+    },
+    "rene_liu": {
+        "name": "刘若英",  # 1992-08-07, 奶茶
+        "artistId": "6qzfo7jiO4OrhxrvPFPlWX",
+        "mustMainArtist": True,
+        "generateInfo": {
+            "generateMethod": 1,
+            "number": 20
+            # "number": 15  # 我很好
+        },
+        "excludeTracks": {
+            "6uuIh4ZiwG3cu2C3XCr0vy": "繼續-給十五歲的自己 - Live"  # 重复，演唱会版本
+        }
+    },
+    "rainie_yang": {
+        "name": "杨丞琳",  # 2005-09-09, 可爱教主
+        "artistId": "0MEchSWR9pJvw1S5CV3Kuk",
+        "generateInfo": {
+            "generateMethod": 1,
+            "number": 20  # 忘課
+        }
+    },
     "cyndi_wang": {
         "name": "王心凌",  # 2003-02-01, 流行教主
         "artistId": "3AroL2oDPiAnMpTmIQv3KP",
@@ -1669,10 +1702,6 @@ otherArtists = {
         "name": "钟欣潼",  # 2003, 放低過去
         "artistId": "7ICw984KHxGz5WtEzfjxG3"
     },
-    "haoyun": {
-        "name": "郝云",  # 2008-01-01
-        "artistId": "7rHYKc9hKD1bCHiuKv2R09"
-    },
     "hailun": {
         "name": "海伦",  # 2018-05-25
         "artistId": "2f9O9Vy7xlAghr07uxXYMh"
@@ -1719,6 +1748,10 @@ otherArtists = {
         "filterAlbums": False
     },
     # ----- 民谣
+    "haoyun": {
+        "name": "郝云",  # 2008-01-01
+        "artistId": "7rHYKc9hKD1bCHiuKv2R09"
+    },
     "huazhou": {
         "name": "花粥",  # 2012-05-05
         "artistId": "148sD27V3Nr0XFl3TZNwmw"

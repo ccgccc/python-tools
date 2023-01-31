@@ -18,8 +18,6 @@ from playlistRemoveSongs import playlistRomoveSongs
 
 # Define create playlist or update playlist
 isCreate = False
-# Define cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
 
 
 def main():
@@ -137,7 +135,7 @@ def main():
             '.') if len(neteaseMissingSongsStr) > 0 else '') + \
             ((' Spotify Missing: ' + ', '.join(spotifyMissingSongsStr) +
             '.') if len(spotifyMissingSongsStr) > 0 else '') + \
-            'Updated on ' + time.strftime("%Y-%m-%d") + '.'
+            ' Updated on ' + time.strftime("%Y-%m-%d") + '.'
             # (updateMatch.group(0) if updateMatch != None else '')
     else:
         spotifyDesciption = spotifyPlaylist['description']

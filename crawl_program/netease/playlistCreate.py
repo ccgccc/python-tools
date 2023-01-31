@@ -10,8 +10,6 @@ from common import *
 
 
 def main():
-    headers['cookie'] = readFileContent('cookie.txt')
-
     dir = './files/playlists/generated_playlists/'
     fileNames = [f for f in listdir(dir) if isfile(join(dir, f))]
     if artistToCrawl + '_playlist.json' in fileNames:

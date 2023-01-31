@@ -36,8 +36,6 @@ playlistToKeep = {
     7140236506: 'Learn Waitlist',
     6936670073: 'her like',
 }
-# Define cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
 
 
 fileName = 'playlists/all_my_playlists_bak_' + time.strftime("%Y-%m-%d")

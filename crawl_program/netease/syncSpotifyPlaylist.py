@@ -45,10 +45,6 @@ if len(sys.argv) >= 2:
         sys.exit()
 
 
-# Define cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
-
-
 def main():
     for artist in artistToSyncList:
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')

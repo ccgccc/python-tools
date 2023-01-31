@@ -20,9 +20,6 @@ from playlistRemoveSongs import playlistRomoveSongs
 likePlaylistId = 553778357
 # Define is incremental
 isIncremental = True
-# Define cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
-
 
 # Sync from spotify Favorite & Like playlist
 # Get spotify Favorite playlist

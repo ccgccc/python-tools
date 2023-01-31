@@ -25,6 +25,7 @@ playlistIDs = {
     # '1cd55XqNdveVHn8DUJRJM1': True,  # To Listen
     # '2UuyNeehZW9HQXhTkmFKBj': True,  # Netease Non-playable
     # '2R48aLSO7QmOaHAGaV0zIM': True  # Listening Artist
+    # '1SncTeu3d4b7PtSLHtghnl': False,  # High
 }
 
 # Define if simple print

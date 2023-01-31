@@ -7,7 +7,7 @@ from common import *
 
 # Define palylist id
 playlistIds = [
-    553778357,  # 我喜欢的音乐
+    # 553778357,  # 我喜欢的音乐
     # 7673625615,  # Favorite
     # 7673790351,  # Like
     # 7680312360,  # Nice
@@ -17,12 +17,12 @@ playlistIds = [
     # 7759804520,  # More Hits - 流行
     # 7690539370,  # Listening Artist
     # 7674298063,  # To Listen
+    8075889883,  # High
 ]
 # # Liked songs playlist id
 # playlistIds = [553778357]
 
 # Read parameters from command line
-os.chdir(os.path.dirname(__file__))
 if len(sys.argv) >= 2:
     playlistNames = sys.argv[1:]
     playlistIds = []
@@ -42,9 +42,6 @@ if len(sys.argv) >= 2:
         else:
             print(playlistName, 'not found. Exit...')
             sys.exit()
-
-# Define cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
 
 
 for playlistId in playlistIds:

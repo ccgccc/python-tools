@@ -6,9 +6,6 @@ from common import *
 #     Delete netease most played songs playlist
 # **************************************************
 
-# Define cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
-
 
 # Sure check
 sureCheck()

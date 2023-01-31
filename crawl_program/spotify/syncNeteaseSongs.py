@@ -52,6 +52,7 @@ spotifySourcePlaylistNames = [playlistName]
 neteaseMatchPlaylistName = 'playlist_songs_' + playlistName + '_by ccgccc'
 if playlistName in {'Favorite', 'Like'}:
     isPrivate = False
+    isIncremental = True
     spotifySourcePlaylistNames = [playlistName, 'Listening Artist']
     isUpdateDesc = True
     # spotifySourcePlaylistNames = [playlistName, 'Collection 1']
@@ -59,6 +60,8 @@ if playlistName in {'Favorite', 'Like'}:
     # isUpdateDesc = True
     # spotifySourcePlaylistNames = [playlistName]
 elif playlistName in {'Nice', 'Hmm', 'To Listen'}:
+    isPrivate = True
+    isIncremental = True
     spotifySourcePlaylistNames = [playlistName, 'Listening Artist']
     isUpdateDesc = True
     # spotifySourcePlaylistNames = [playlistName, 'Collection 1']
@@ -68,6 +71,11 @@ elif playlistName in {'Nice', 'Hmm', 'To Listen'}:
 elif playlistName in {'One Hit', 'More Hits - 民谣', 'More Hits - 流行'}:
     isUpdateDesc = True
     spotifySourcePlaylistNames = [playlistName]
+elif playlistName in {'High'}:
+    isIncremental = True
+    isUpdateDesc = False
+    spotifySourcePlaylistNames = ['Listening Artist']
+    # spotifySourcePlaylistNames = ['Favorite', 'Like', 'Nice', '张学友']
 elif playlistName.startswith('Collection'):
     isUpdateDesc = True
     spotifySourcePlaylistNames = [playlistName]
@@ -269,7 +277,7 @@ def main():
     print('------------------------------')
     msg = input(
         '*** Are you sure to sync these tracks? Press Y to continue. (y/n): ')
-    if msg != 'y' and msg != 'n':
+    if msg != 'y':
         sys.exit()
     # Add tracks to spotify playlist
     if not (isPrivate or isUpdateDesc):

@@ -58,7 +58,7 @@ if len(sys.argv) > 1:
         elif playlistName.startswith('Collection 4'):
             playlistID = '2r9Iqy5D80rSs7QKmRnN6f'
         elif playlistName.startswith('Collection 5'):
-            playlistID = '3OCCmC4Q9PlC363BbDa3w2'
+            playlistID = '0sE2cDp3NTGmKzy64rr9mL'
         else:
             print('Collection not created yet...')
             sys.exit()

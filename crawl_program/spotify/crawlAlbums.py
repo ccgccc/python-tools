@@ -49,8 +49,7 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
     else:
         filterdAlbums = allAlbums
     # Sort albums by release date
-    filterdAlbums = sorted(
-        filterdAlbums, key=lambda album: album['release_date'])
+    filterdAlbums.sort(key=lambda album: (album['release_date'], album['name']))
     # Write json to file
     with open('./files/albums/' + artist + '_albums.json', 'w') as f:
         json.dump(filterdAlbums, f, ensure_ascii=False)

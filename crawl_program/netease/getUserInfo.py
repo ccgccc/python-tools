@@ -5,9 +5,6 @@ from common import *
 #        Get netease user's info
 # ****************************************
 
-# Use right cookie to retrive private playlists
-headers['cookie'] = readFileContent('cookie.txt')
-
 
 # User Detail
 url = baseUrl + '/user/detail'
@@ -30,6 +27,7 @@ params = {
 userAccount = requests.get(url, headers=headers, params=params).json()
 # print(json.dumps(userAccount, ensure_ascii=False))
 print('UserName:', userAccount['profile']['userName'])
+# print('UserName:', userAccount['account']['userName'])
 
 url = baseUrl + '/user/subcount'
 params = {

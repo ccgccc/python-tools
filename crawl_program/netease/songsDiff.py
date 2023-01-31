@@ -4,9 +4,6 @@ from common import *
 #  Like vs Playlists difference
 # ******************************
 
-# Define cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
-
 
 # Get liked songs
 likePlaylistId = 553778357  # 我喜欢的音乐

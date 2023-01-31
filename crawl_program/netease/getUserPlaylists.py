@@ -6,9 +6,6 @@ from common import *
 #    Get netease user's all playlists
 # ****************************************
 
-# Define cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
-
 
 url = baseUrl + '/user/playlist'
 limit = 1000

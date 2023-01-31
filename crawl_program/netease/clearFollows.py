@@ -5,9 +5,6 @@ from common import *
 #   Clear netease all follows
 # ******************************
 
-# Define cookie in cookie.txt
-headers['cookie'] = readFileContent('cookie.txt')
-
 
 # Sure check
 sureCheck()

@@ -12,7 +12,8 @@ def main():
 
 def crawlAlbums(artists, artistToCrawl):
     allAlbums = getArtistAlbums(artists[artistToCrawl]['artistId'])
-    allAlbums = sorted(allAlbums, key=lambda album: album['publishTime'])
+    # allAlbums = loadJsonFromFile('albums/' + artistToCrawl + '_albums')
+    allAlbums.sort(key=lambda album: (album['publishTime'], album['name']))
 
     fileName = 'albums/' + artistToCrawl + '_albums'
     writeJsonToFile(allAlbums, fileName)

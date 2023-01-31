@@ -1,11 +1,15 @@
 # Deine artist to crawl
-artistToCrawl = "rainie_yang"
+artistToCrawl = "julie_sue"
 
 # === Define artists to generate playlists
 generateArtists = {
-    "rainie_yang": {
-        "name": "杨丞琳",
-        "artistId": 10199
+    "julie_sue": {
+        "name": "苏芮",
+        "artistId": 9274
+    },
+    "teresa_teng": {
+        "name": "邓丽君",
+        "artistId": 7570
     },
     # --- Split
     "eric_chou": {
@@ -95,6 +99,18 @@ generateArtists = {
         "artistId": 4721
     },
     # ===== Generated Artists
+    "maroon_5": {
+        "name": "Maroon 5",
+        "artistId": 96266
+    },
+    "rene_liu": {
+        "name": "刘若英",
+        "artistId": 8326
+    },
+    "rainie_yang": {
+        "name": "杨丞琳",
+        "artistId": 10199
+    },
     "cyndi_wang": {
         "name": "王心凌",
         "artistId": 9606

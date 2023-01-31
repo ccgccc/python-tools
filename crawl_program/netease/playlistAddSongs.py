@@ -18,8 +18,6 @@ from netease.syncSongs import getSyncSongs
 
 
 def main():
-    headers['cookie'] = readFileContent('cookie.txt')
-
     # Get netease playlist
     playlist = loadJsonFromFile(
         'playlists/generated_playlists/' + artistToCrawl + '_playlist')

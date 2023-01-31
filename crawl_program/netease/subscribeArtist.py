@@ -10,8 +10,6 @@ from common import *
 artistIds = ['32809', '35050']
 # 0: unsubcribe, 1: subcribe
 operation = 0
-# Use right cookie to retrive private playlists
-headers['cookie'] = readFileContent('cookie.txt')
 
 
 url = baseUrl + '/artist/sub'
