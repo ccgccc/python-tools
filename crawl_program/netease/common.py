@@ -5,13 +5,16 @@ import json
 import time
 import requests
 from datetime import datetime
+from artists import *
 
 # Define my user id
 myUserId = 389958855
+# Define my user name
+myUserName = 'ccgccc'
 
 # Define baseUrl
+global baseUrl
 baseUrl = 'https://service-4ipff8tq-1259202535.gz.apigw.tencentcs.com/release'
-# baseUrl = 'https://netease-cloud-music-api-three-rose.vercel.app'
 
 # Define headers to get private info in terminal
 headers = {
@@ -27,13 +30,26 @@ with open('cookie.txt') as f:
     headers['cookie'] = f.read()
 
 
+def setBaseUrl(needCheck=False):
+    global baseUrl
+    baseUrl = 'https://netease-cloud-music-api-three-rose.vercel.app'
+    if needCheck:
+        print('Base Url:', baseUrl)
+        msg = input('Set proxy to global. Press Y to continue: ')
+        if msg != 'y' and msg != 'Y':
+            sys.exit()
+
+
+def getBaseUrl():
+    return baseUrl
+
+
 def getAlbum(id):
     url = baseUrl + '/album'
     params = {
         'id': id
     }
-    album = requests.get(url, headers=headers, params=params).json()
-    # print(json.dumps(album, ensure_ascii=False))
+    album = requests.get(url, params=params).json()
     return album
 
 
@@ -45,7 +61,7 @@ def getArtistAlbums(artistId):
         'limit': limit,
         'offset': 0
     }
-    resJson = requests.get(url, headers=headers, params=params).json()
+    resJson = requests.get(url, params=params).json()
     allAlbums = resJson['hotAlbums']
     # while allAlbums['more'] == True: # seems not working
     while len(resJson['hotAlbums']) == limit:
@@ -56,11 +72,49 @@ def getArtistAlbums(artistId):
     return allAlbums
 
 
+def getArtistSongs(artist):
+    url = baseUrl + '/artist/songs'
+    # url = baseUrl + '/artist/top/song'
+    limit = 200  # max 200
+    params = {
+        'id': artists[artist]['artistId'],
+        'limit': limit,
+        'offset': 0
+    }
+    resJson = requests.get(url, headers=headers, params=params).json()
+    allSongs = resJson
+    while resJson['more'] == True:
+        params['offset'] = params['offset'] + limit
+        print(params)
+        resJson = requests.get(url, headers=headers, params=params).json()
+        allSongs['songs'].extend(resJson['songs'])
+    return allSongs
+
+
+def getSongLyric(songId):
+    url = baseUrl + '/lyric'
+    params = {
+        'id': songId
+    }
+    lyric = requests.get(url, params=params).json()
+    return lyric
+
+
+def getSongComments(songId, limit=5):
+    url = baseUrl + '/comment/music'
+    params = {
+        'id': songId,
+        'limit': limit
+    }
+    comments = requests.get(url, params=params).json()
+    return comments
+
+
 def getPlaylist(playlistId):
     url = baseUrl + '/playlist/detail'
     params = {
         'id': playlistId,
-        'timestamp': int(time.time() * 1000)
+        # 'timestamp': int(time.time() * 1000)
     }
     res = requests.get(url, headers=headers, params=params)
     if res.status_code == 401:
@@ -71,16 +125,21 @@ def getPlaylist(playlistId):
     return playlist
 
 
-def getPlaylistSongs(playlistId):
+def getPlaylistSongs(playlistId, addTs=False):
     url = baseUrl + '/playlist/track/all'
     limit = 500
     params = {
         'id': playlistId,
         'limit': limit,
-        'offset': 0,
-        'timestamp': int(time.time() * 1000)
+        'offset': 0
     }
+    if addTs:
+        params['timestamp'] = int(time.time() * 1000)
+    # print('Request start time(playlist tracks):', time.strftime("%H:%M:%S"))
+    # print('Url:', url)
+    # print('Params:', params)
     res = requests.get(url, headers=headers, params=params)
+    # print('Request end time:', time.strftime("%H:%M:%S"), '\n')
     if res.status_code == 401:
         print('请求失败！返回信息：' + res.text)
         sys.exit()
@@ -95,7 +154,7 @@ def getPlaylistSongs(playlistId):
     # print(json.dumps(resJson, ensure_ascii=False))
     while len(resJson['songs']) == limit:
         params['offset'] = params['offset'] + limit
-        print(params)
+        # print(params)
         resJson = requests.get(url, headers=headers, params=params).json()
         playlistSongs['songs'].extend(resJson['songs'])
         playlistSongs['privileges'].extend(resJson['privileges'])
@@ -172,8 +231,8 @@ def deletePlaylist(playlistIds):
         sys.exit()
 
 
-def addSongsToPlayList(playlistId, tracks):
-    res = addOrDeleteSongsToPlayList('add', playlistId, tracks)
+def addSongsToPlayList(playlistId, tracks, addTs=True):
+    res = addOrDeleteSongsToPlayList('add', playlistId, tracks, addTs=addTs)
     resJson = res.json()
     if res.status_code == 200 and resJson.get('body') != None and resJson['body']['code'] == 200:
         print('\n**********')
@@ -189,8 +248,8 @@ def addSongsToPlayList(playlistId, tracks):
         sys.exit()
 
 
-def deleteSongsToPlayList(playlistId, tracks):
-    res = addOrDeleteSongsToPlayList('del', playlistId, tracks)
+def deleteSongsToPlayList(playlistId, tracks, addTs=True):
+    res = addOrDeleteSongsToPlayList('del', playlistId, tracks, addTs=addTs)
     resJson = res.json()
     if res.status_code == 200 and resJson.get('body') != None \
             and resJson['body']['code'] == 200:
@@ -207,7 +266,7 @@ def deleteSongsToPlayList(playlistId, tracks):
         sys.exit()
 
 
-def addOrDeleteSongsToPlayList(opeartion, playlistId, tracks):
+def addOrDeleteSongsToPlayList(opeartion, playlistId, tracks, addTs=True):
     url = baseUrl + '/playlist/tracks'
     params = {
         'op': opeartion,
@@ -215,7 +274,9 @@ def addOrDeleteSongsToPlayList(opeartion, playlistId, tracks):
         'tracks': tracks,
         'timestamp': int(time.time() * 1000)
     }
-    print('Request time:', time.strftime("%H:%M:%S"))
+    if addTs:
+        params['timestamp'] = int(time.time() * 1000)
+    print('\nRequest time:', time.strftime("%H:%M:%S"))
     return requests.get(url, headers=headers, params=params)
 
 
@@ -273,7 +334,7 @@ def search(type, keywords, limit=None):
     }
     if limit != None:
         params['limit'] = limit
-    return requests.get(url, headers=headers, params=params).json()
+    return requests.get(url, params=params).json()
 
 
 def printAlbums(albums, csvFileName=None):
@@ -308,7 +369,9 @@ def printAlbums(albums, csvFileName=None):
         csvFile.close()
 
 
-def printSongs(songs, csvFileName=None, isWriteToConsole=True):
+def printSongs(songs, reverse=False, csvFileName=None, isWriteToConsole=True):
+    if reverse:
+        songs.reverse()
     isWriteToFile = csvFileName != None
     if isWriteToConsole:
         print('----------')
@@ -317,13 +380,17 @@ def printSongs(songs, csvFileName=None, isWriteToConsole=True):
         csvFile = open('files/' + csvFileName + '.csv', 'w')
         csvFile.write('songCount, songId, songName, songArtists, ' +
                       'genre, duration, publishTime, popularity, albumName\n')
+    processedSongs = []
     songCount = 0
-    for song in reversed(songs):
+    artistDict = {v['artistId']: k for k, v in artists.items()}
+    for song in songs:
         songCount = songCount + 1
         songId = song['id']
         songName = re.sub(r'\,', '，', song['name'])
         songAlias = song['alia']
-        songArtists = '_'.join(
+        artistKeys = [artistDict[ar['id']]
+                      for ar in song['ar'] if ar['id'] in artistDict]
+        songArtists = '/'.join(
             list(map(lambda artist: re.sub(r'\,', '，', artist['name']), song['ar'])))
         durationMs = song['dt']
         duration = "{:02d}".format(durationMs // 60000) + ":" + \
@@ -336,6 +403,8 @@ def printSongs(songs, csvFileName=None, isWriteToConsole=True):
         popularity = song['pop']
         albumId = song['al']['id']
         albumName = re.sub(r'\,', '，', song['al']['name'])
+        processedSongs.append({'song': song, 'id': songId, 'name': songName, 'artistKeys': artistKeys, 'artists': songArtists, 'genre': genre,
+                              'duration': duration, 'publishTime': publishTime, 'popularity': popularity, 'albumId': albumId, 'albumName': albumName})
         if isWriteToConsole:
             print(songCount, songId, songName, songArtists, genre,
                   duration, publishTime, popularity, albumName, sep=', ')
@@ -344,6 +413,7 @@ def printSongs(songs, csvFileName=None, isWriteToConsole=True):
                   duration, publishTime, popularity, albumName, sep=', ', file=csvFile)
     if isWriteToFile:
         csvFile.close()
+    return processedSongs
 
 
 def printPlaylists(playlists, csvFileName=None):

@@ -45,8 +45,9 @@ python3 playlistDelete.py artist
 (Default: artistToCrawl, Listening Artist)  
 python3 playlistAddItemsByPlaycount.py  
 or   
-(Default: artistToCrawl, Generated Playlist)  
+(Default: artistToCrawl, generated playlist)  
 python3 playlistAddItemsByNumber.py  
+(Default: artistToCrawl)  
 python3 playlistAddItemsByNumber.py 'Listening Artist'  
 python3 playlistAddItemsByNumber.py 'Listening Artist' pushu xuwei lijian zhengjun  
 python3 playlistAddItemsByNumber.py 'Collection 1' pushu xuwei lijian zhengjun  
@@ -61,6 +62,7 @@ python3 playlistAddItemsByNumber.py 'Collection 5' andy_hui william_so edmond_le
 (e.g. Favorite, Like, Nice, To Listen, Netease Non-playable)  
 (Default: 我喜欢的音乐)  
 python3 ../netease/getPlaylistSongs.py  
+python3 ../netease/getPlaylistSongs.py 'Listening Artist'  
 python3 ../netease/getPlaylistSongs.py 'Favorite' 'Like' 'Nice'  
 python3 ../netease/getPlaylistSongs.py 'Like' 'Nice'  
 python3 ../netease/getPlaylistSongs.py 'Hmm'  
@@ -89,6 +91,21 @@ python3 syncNeteaseSongs.py 'Collection 1'
 python3 ../netease/getPlaylistSongs.py 'Listening Artist'  
 python3 syncNeteaseSongs.py 'Listening'  
 
+python3 ../netease/getPlaylistSongs.py '好歌拾遗'  
+python3 syncArtistSongs.py  
+
 ### Like songs
 python3 tracksDiff.py  
 python3 saveUserTracks.py  
+
+
+
+## Other
+### Get playlist songs
+(Default: 'Favorite' 'Like' 'Nice')  
+python3 crawlPlaylists.py  
+python3 crawlPlaylists.py 'Listening Artist'  
+python3 crawlPlaylists.py 'Favorite' 'Like' 'Nice'  
+python3 crawlPlaylists.py 'Favorite' 'Like'  
+python3 crawlPlaylists.py 'Like' 'Nice'  
+python3 crawlPlaylists.py '好歌拾遗'  

@@ -5,6 +5,9 @@ from common import *
 #   Clear netease all follows
 # ******************************
 
+# Set baseUrl
+setBaseUrl()
+
 
 # Sure check
 sureCheck()

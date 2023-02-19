@@ -33,5 +33,9 @@ def processSongs(artist, allSongs, filterSongByName=True):
 
     fileName = 'songs/' + artist + '_allsongs'
     writeJsonToFile(filterdSongs, fileName)
-    printSongs(filterdSongs, fileName)
+    printSongs(filterdSongs, reverse=False, csvFileName=fileName)
     return filterdSongs
+
+
+if __name__ == '__main__':
+    main()

@@ -1,5 +1,5 @@
 # Define artist to crawl
-artistToCrawl = "julie_sue"
+artistToCrawl = "queen"
 
 # === Define artists to generate playlists
 # (Search artist on spotfy (e.g. 张学友 on spotify) to get artistId)
@@ -7,6 +7,37 @@ artistToCrawl = "julie_sue"
 # For method 1: Define track number to add tracks
 # For method 2: Define minimum playcount to add tracks
 generateArtists = {
+    "queen": {
+        "name": "Queen",  # 1973-02-05
+        "artistId": "1dfeR4HaWDbWqFHLkxsg1d",
+        "filterTrackByName": True,
+        "generateInfo": {
+            "generateMethod": 1,
+            "number": 20  #
+        }
+    },
+    "jonathan_lee": {
+        "name": "李宗盛",  # 1985-03-27
+        "artistId": "2TXF68WgfTZlipUvLBsQre",
+        "filterTrackByName": True,
+        "generateInfo": {
+            "generateMethod": 1,
+            "number": 25  # 聽見有人叫妳寶貝
+        },
+        "excludeTracks": {
+            # 演唱会串烧
+            "3XKYMHHwcQZUiZmojZ2ES5": "別怕我傷心/聽見有人叫你寶貝/愛情少尉/愛如潮水(OT:愛你的餘溫) - Live",
+            "1b5VyMuRN2Hzg6WV5RbcmC": "在晴朗的天空下(粵)"  # 真心英雄粤语版
+        }
+    },
+    "luodayou": {
+        "name": "罗大佑",  # 1981-11-18
+        "artistId": "7tuWI2luTp61HHGmviWid8",
+        "generateInfo": {
+            "generateMethod": 1,
+            "number": 20  # 閃亮的日子
+        }
+    },
     "julie_sue": {
         "name": "苏芮",  # 1983-01-01
         "artistId": "0B2g2ZF6jP0WkaZb33iPhX",
@@ -82,10 +113,6 @@ generateArtists = {
     "whitney_houston": {
         "name": "Whitney Houston",  # 1983-04-18
         "artistId": "6XpaIBNiVzIetEPCWDvAFP"
-    },
-    "queen": {
-        "name": "Queen",  # 1973-02-05
-        "artistId": "1dfeR4HaWDbWqFHLkxsg1d"
     },
     "david_bowie": {
         "name": "David Bowie",  # 1967-06-01
@@ -363,10 +390,6 @@ generateArtists = {
         "name": "毛不易",  # 2017-09-01
         "artistId": "6gvSKE72vF6N20LfBqrDmm"
     },
-    "erbai": {
-        "name": "贰佰",  # 2017-03-01
-        "artistId": "1uLtjg16pURFbIEsdp1XWz"
-    },
     "tfboys": {
         "name": "TFBOYS",  # 2016-08-26
         "artistId": "1dywcVTpMrP7VmQUhngSce"
@@ -395,10 +418,6 @@ generateArtists = {
         "name": "吉克隽逸",  # 2013-12-06
         "artistId": "2dIGGnfI63aDJNR6eL50AZ"
     },
-    "songdongye": {
-        "name": "宋冬野",  # 2013-08-30
-        "artistId": "5aJFmaCc09jEz9ghzppUxo"
-    },
     "ada_zhuang": {
         "name": "庄心妍",  # 2013
         "artistId": "42l9R70OWvywz9JN9DCVOM"
@@ -406,10 +425,6 @@ generateArtists = {
     "liuruiqi": {
         "name": "刘瑞琦",  # 2013
         "artistId": "4mpD7eRd38R1tUcheDWrxQ"
-    },
-    "haomeimei": {
-        "name": "好妹妹",  # 2012-11-10
-        "artistId": "55WwHAHZZasWq8QM0LF5JR"
     },
     "dazhuang": {
         "name": "大壮",  # 2012-07-02
@@ -499,10 +514,6 @@ generateArtists = {
         "name": "胡歌",  # 2006
         "artistId": "04T9gfyccsmxG79OSJp5r1"
     },
-    "lizhi": {
-        "name": "李志",  # 2006
-        "artistId": "1fqb04dI9vaEcGDbIVrcib"
-    },
     "xianzi": {
         "name": "弦子",  # 2005-07-08
         "artistId": "2CBuGdj5Nmgx1VfrgLnGoJ"
@@ -570,14 +581,6 @@ generateArtists = {
     "tianzhen": {
         "name": "田震",  # 1995-09-30
         "artistId": "09mk8X1qeA7JlMHMSmqw7c"
-    },
-    "laolang": {
-        "name": "老狼",  # 1995.05.01
-        "artistId": "1piwhsT7JM9pBzmLcLCg8v"
-    },
-    "laolang-2": {
-        "name": "老狼2",
-        "artistId": "0xNZutIrvMMbw2u9ww3oMD"
     },
     "naying": {
         "name": "那英",  # 1994-01-01
@@ -880,6 +883,220 @@ generateArtists = {
         "name": "蔡琴",  # 1970-02-01
         "artistId": "0hXEo26JJ0u5lD763cTvRW"
     },
+    # ==== 民谣
+    "zuoxiaozuzhou": {
+        "name": "左小祖咒",  # 1998.10.31
+        "artistId": "4vxioc97hgfD8zIEbfFBZP"
+    },
+    "zhangruoshui": {
+        "name": "张若水",  # 2017.6.05
+        "artistId": "1e1SBWjGspT4KuuDZAHPcI"
+    },
+    "haiweiba": {
+        "name": "海尾巴",  # 2021.08.30
+        "artistId": "6MBqbSKEMSX8hYj2GmBt1t"
+    },
+    "ln_party": {
+        "name": "昨夜派对",  # 2019.09.03
+        "artistId": "59MFqh1jNapkIS6bqoTjIX"
+    },
+    "xiaoliu": {
+        "name": "小六",  # 2018.12.04
+        "artistId": "2en090WOuRJMvwgOODDzuR"
+    },
+    "liulimin": {
+        "name": "刘莉旻",  # 2017.02.15
+        "artistId": "26BDquR2kESolItPDlDXx7"
+    },
+    "xujun": {
+        "name": "许钧",  # 2016.08.26
+        "artistId": "3kU8TgZ3WouCr0GDkYnPbN"
+    },
+    "lujingzhou": {
+        "name": "鹿京周",  # 2016-06-15
+        "artistId": "5N9jkiZ8FolT1fZU7A7UgI"
+    },
+    "zhuangdafei": {
+        "name": "庄达菲",  # 2016.5.24
+        "artistId": "6FAEeyf2nMghNBoFFE9DQV"
+    },
+    "fengzi": {
+        "name": "风子",  # 2014.11.17
+        "artistId": "22yTMqlBXEbAcL3STX5ey2"
+    },
+    "liushuang": {
+        "name": "柳爽",  # 2014.02.05
+        "artistId": "7vzmSiBMYT0aSIjHFoWbhV"
+    },
+    "haomeimei": {
+        "name": "好妹妹",  # 2012.07.05
+        "artistId": "55WwHAHZZasWq8QM0LF5JR"
+    },
+    # ----- Collection :
+    "maliang": {
+        "name": "马良",  # 2018.08.14
+        "artistId": "713WTosB61RDO5KwQtNKQA"
+    },
+    "chenhongyu": {
+        "name": "陈鸿宇",  # 2016.03.01
+        "artistId": "7ukU2IyqxXp80Jnxf4lzTv"
+    },
+    "madi": {
+        "name": "马頔",  # 2013.07.10
+        "artistId": "6INLZbPHXGj6ERrjFGPYD6"
+    },
+    "zhaolei": {
+        "name": "赵雷",  # 2011.08.07
+        "artistId": "2KwZ9xnULczo0Z7Y7Bp57R"
+    },
+    "zhaolei-2": {
+        "name": "赵雷2",
+        "artistId": "7EP8l31VxgD0MAOwh7uez5"
+    },
+    # ----- Collection :
+    "xiechunhua": {
+        "name": "谢春花",  # 2016.06.21
+        "artistId": "0gYt4XG9A0hyZW7rt745ZY"
+    },
+    "chenli": {  # **
+        "name": "陈粒",  # 2015.02.02
+        "artistId": "3SyC3U06X0DjdWd2Jf6V8Q"
+    },
+    "fangdongdemao": {
+        "name": "房东的猫",  # 2015.01.01
+        "artistId": "6oxtUCWftDouZzeso3oXcF"
+    },
+    "huazhou": {
+        "name": "花粥",  # 2012.03.03
+        "artistId": "148sD27V3Nr0XFl3TZNwmw"
+    },
+    # ----- Collection :
+    "floruit_show": {
+        "name": "福禄寿",  # 2018.09.02
+        "artistId": "08R79pzvOjaPaU3YOGFspZ"
+    },
+    "luxianshenyuedui": {
+        "name": "鹿先森乐队",  # 2016.11.09
+        "artistId": "4SklOYXOJe2H6R1Vz2gc0F"
+    },
+    "yanbaeryuedui": {
+        "name": "烟把儿",  # 2014.06.12
+        "artistId": "6CivYgdvK9LYT1gj8Jd9ev"
+    },
+    "diuhuocheyuedui": {
+        "name": "丢火车",  # 2008.06.23
+        "artistId": "32LfBpNksY6Hegjif5kyVN"
+    },
+    "wutiaoren": {
+        "name": "五条人",  # 2008.09.25
+        "artistId": "6NQwuxgsebzIzixLkAHDCT"
+    },
+    "yehaiziyuedui": {
+        "name": "野孩子",  # 2000.08.01
+        "artistId": "2VEgQum6bFrsImZgqxxg1L"
+    },
+    # ----- Collection :
+    "erbai": {
+        "name": "贰佰",  # 2014.03.25
+        "artistId": "1uLtjg16pURFbIEsdp1XWz"
+    },
+    "haoyun": {
+        "name": "郝云",  # 2008.03.05
+        "artistId": "7rHYKc9hKD1bCHiuKv2R09"
+    },
+    # ----- Collection :
+    "songdongye": {
+        "name": "宋冬野",  # 2013.08.26
+        "artistId": "5aJFmaCc09jEz9ghzppUxo"
+    },
+    "yaoshisan": {
+        "name": "尧十三",  # 2008.01.02
+        "artistId": "017rAXpcsnXpHaPKdKbbsJ"
+    },
+    "lizhi": {
+        "name": "李志",  # 2005
+        "artistId": "1fqb04dI9vaEcGDbIVrcib"
+    },
+    # ----- Collection :
+    "valley_children": {
+        "name": "小娟&山谷里的居民",  # 2007.02.06
+        "artistId": "5kggU4ADmSLyUtrnEMMB45"
+    },
+    "zhouyunpeng": {
+        "name": "周云蓬",  # 2004.10.01
+        "artistId": "0dmiv2QPPnG4JlJ05QH6nh"
+    },
+    # ----- Collection :
+    "mafei": {
+        "name": "马飞",  # 2014.04.24
+        "artistId": "5mkR7uUsJM0hKUmIx4lpqr"
+    },
+    "matiao": {
+        "name": "马条",  # 2009.02.11
+        "artistId": "1ng1KwfjSjnRo44TE8ovtL"
+    },
+    "zhonglifeng": {
+        "name": "钟立风",  # 2006.03.25
+        "artistId": "1YOY2N3DvznXjloTYGRF6E"
+    },
+    # ----- Collection :
+    "xiaohe": {
+        "name": "小河",  # 2002.12.01
+        "artistId": "3HQtVlagT1RApOFulrNoJ6"
+    },
+    "xiaohe-2": {
+        "name": "小河与寻谣计划",
+        "artistId": "2EQaYTsagYgRssoLjg7jc9"
+    },
+    "zhangweiwei": {
+        "name": "张玮玮",  # 2008.8.11
+        "artistId": "4xeb2oTygsZaLfPNFpowi9"
+    },
+    "wanxiaoli": {
+        "name": "万晓利",  # 2002.12.01
+        "artistId": "1T2LQiNaPlo5Ke7XMQq39D"
+    },
+    "wanxiaoli-2": {
+        "name": "万晓利2",
+        "artistId": "5q8TJt4PBR0eXaRFcXUsMm"
+    },
+    # ----- Collection :
+    "shuimunianhua": {
+        "name": "水木年华",  # 2001.10.01
+        "artistId": "1jebNwQMcbQxpbzlW9j7Gu",
+        "generateInfo": {
+            "generateMethod": 1,
+            "number": 5
+        }
+    },
+    "shuimunianhua-2": {
+        "name": "水木年华2",
+        "artistId": "59oZhkDlvOwLrOOQtlzG5o"
+    },
+    "yepei": {
+        "name": "叶蓓",  # 1999.01.01
+        "artistId": "0m0rriPCYLgXXb3D8hHYFp",
+        "generateInfo": {
+            "generateMethod": 1,
+            "number": 5
+        }
+    },
+    "yepei-2": {
+        "name": "叶蓓2",
+        "artistId": "13UktfkM0Z8TgbemrxsSzv"
+    },
+    "laolang": {
+        "name": "老狼",  # 1995.05.01
+        "artistId": "1piwhsT7JM9pBzmLcLCg8v",
+        "generateInfo": {
+            "generateMethod": 1,
+            "number": 10
+        }
+    },
+    "laolang-2": {
+        "name": "老狼2",
+        "artistId": "0xNZutIrvMMbw2u9ww3oMD"
+    },
     # === Candidates
     "kary_ng": {
         "name": "吴雨霏",  # 2003-01-01
@@ -976,23 +1193,6 @@ generateArtists = {
             "number": 20  # 與妳到永久
         }
     },
-    "jonathan_lee": {
-        "name": "李宗盛",  # 1985-03-27
-        "artistId": "2TXF68WgfTZlipUvLBsQre",
-        "filterTrackByName": True,
-        "generateInfo": {
-            "generateMethod": 1,
-            "number": 20  # 在晴朗的天空下(粵)
-        }
-    },
-    "luodayou": {
-        "name": "罗大佑",  # 1981-11-18
-        "artistId": "7tuWI2luTp61HHGmviWid8",
-        "generateInfo": {
-            "generateMethod": 1,
-            "number": 20  # 閃亮的日子
-        }
-    },
     # === Candidates for collections
     "sarah_chen": {
         "name": "陈淑桦",  # 1971-01-01
@@ -1032,7 +1232,6 @@ generateArtists = {
     "grasshopper": {
         "name": "草蜢",  # 1988-02-26
         "artistId": "5IxPdROZmnCyD6TBuSJMYE",
-        "filterAlbums": False,
         "generateInfo": {
             "generateMethod": 1,
             "number": 7  # 半點心
@@ -1125,7 +1324,6 @@ generateArtists = {
     "big_four": {
         "name": "Big Four",  # 2010
         "artistId": "5aV8N1m8QyReq34R3qeUx0",
-        "filterAlbums": False,
         "generateInfo": {
             "generateMethod": 1,
             "number": 4  # Big Four
@@ -1134,7 +1332,6 @@ generateArtists = {
     "dicky_cheung": {
         "name": "张卫健",  # 1992.08.01
         "artistId": "05U40G1dajZMe9KdTG8LTo",
-        "filterAlbums": False,
         "mustMainArtist": True,
         "filterTrackByName": True,
         "generateInfo": {
@@ -1150,7 +1347,6 @@ generateArtists = {
     "edmond_leung": {
         "name": "梁汉文",  # 1991.01.18
         "artistId": "1THfyLd3iyJYJ6X2U36K0y",
-        "filterAlbums": False,
         "mustMainArtist": True,
         "generateInfo": {
             "generateMethod": 1,
@@ -1160,7 +1356,6 @@ generateArtists = {
     "william_so": {
         "name": "苏永康",  # 1989.09.01
         "artistId": "2oK5cSlJAH5s2Kx5e1zcvh",
-        "filterAlbums": False,
         "generateInfo": {
             "generateMethod": 1,
             "number": 14  # 愛一個人好難
@@ -1211,6 +1406,7 @@ generateArtists = {
     "vivian_chow": {
         "name": "周慧敏",  # 1988
         "artistId": "4bzVQLX2gMBQVMINdAGElJ",
+        # "filterAlbums": False,
         "generateInfo": {
             "generateMethod": 1,
             "number": 9  # 自作多情
@@ -1219,6 +1415,7 @@ generateArtists = {
     "priscilla_chan": {
         "name": "陈慧娴",  # 1984-01-01
         "artistId": "5SLOTZhruJRRGgIRtTSPc5",
+        # "filterAlbums": False,
         "generateInfo": {
             "generateMethod": 1,
             "number": 6  # 人生何處不相逢
@@ -1230,12 +1427,13 @@ generateArtists = {
         "filterTrackByName": True,
         "generateInfo": {
             "generateMethod": 1,
-            "number": 9  # 詞不達意
+            "number": 10  # 不必在乎我是誰
         }
     },
     "sally_yeh": {
         "name": "叶蒨文",  # 1983-06-30
         "artistId": "7Bx0SBZoIX73eywmBcdqFb",
+        # "filterAlbums": False,
         "generateInfo": {
             "generateMethod": 1,
             "number": 7  # 曾經心痛
@@ -1262,7 +1460,6 @@ generateArtists = {
     "sam_hui": {
         "name": "许冠杰",  # 1971.12.01
         "artistId": "1SglpJrPltamdJLLwInIL7",
-        "filterAlbums": False,
         "mustMainArtist": True,
         "generateInfo": {
             "generateMethod": 1,
@@ -1282,7 +1479,6 @@ generateArtists = {
     "lijian": {
         "name": "李健",  # 2003-09-01
         "artistId": "47FbECPoJxk1TjHVZPzVzG",
-        "filterAlbums": False,
         "generateInfo": {
             "generateMethod": 1,
             "number": 1  # 贝加尔湖畔
@@ -1350,7 +1546,6 @@ generateArtists = {
     "angela_chang": {
         "name": "张韶涵",  # 2003-05-01, 电眼教主
         "artistId": "4txug0T3vYc9p20tuhfCUa",
-        "filterAlbums": False,
         "filterTrackByName": True,
         "generateInfo": {
             "generateMethod": 1,
@@ -1648,8 +1843,8 @@ generateArtists = {
         "name": "林俊杰",  # 2003-04-01
         "artistId": "7Dx7RhX0mFuXhCOUgB01uM",
         "generateInfo": {
-            "generateMethod": 2,
-            "number": 6000000
+            "generateMethod": 1,
+            "number": 40
         }
     },
     "g_e_m": {
@@ -1663,6 +1858,7 @@ generateArtists = {
     "bruno_mars": {
         "name": "Bruno Mars",  # 2009-01-27
         "artistId": "0du5cEVh5yTK9QJze8zA0C",
+        "filterAlbums": True,
         "generateInfo": {
             "generateMethod": 1,
             "number": 20
@@ -1671,18 +1867,20 @@ generateArtists = {
     "eason_chan": {
         "name": "陈奕迅",  # 1997-01-10
         "artistId": "2QcZxAgcs2I1q7CtCkl6MI",
-        "filterAlbums": False,
         "generateInfo": {
-            "generateMethod": 2,
-            "number": 5000000
+            "generateMethod": 1,
+            "number": 50
         }
     },
     "jay_chou": {
         "name": "周杰伦",  # 2000-11-06
         "artistId": "2elBjNSdBE2Y3f0j1mjrql",
         "generateInfo": {
-            "generateMethod": 2,
-            "number": 5000000
+            "generateMethod": 1,
+            "number": 100
+        },
+        "excludeTracks": {
+            "6iTu6axECEKNS13qL3XOfw": "不能說的秘密"  # 重复&演唱会版本
         }
     },
     "jacky_cheung": {
@@ -1692,6 +1890,9 @@ generateArtists = {
         "generateInfo": {
             "generateMethod": 1,
             "number": 50
+        },
+        "excludeTracks": {
+            "3EON61J0AHJxHYwVqmJXez": "In Love with You"  # 重复&演唱会版本
         }
     }
 }
@@ -1744,33 +1945,7 @@ otherArtists = {
     },
     "asi": {  # **
         "name": "阿肆",  # 2012-12-01
-        "artistId": "4yamiVzQPYBb02ceSu0jaI",
-        "filterAlbums": False
-    },
-    # ----- 民谣
-    "haoyun": {
-        "name": "郝云",  # 2008-01-01
-        "artistId": "7rHYKc9hKD1bCHiuKv2R09"
-    },
-    "huazhou": {
-        "name": "花粥",  # 2012-05-05
-        "artistId": "148sD27V3Nr0XFl3TZNwmw"
-    },
-    "zhaolei-2": {
-        "name": "赵雷2",
-        "artistId": "7EP8l31VxgD0MAOwh7uez5"
-    },
-    "zhaolei": {
-        "name": "赵雷",  # 2011-08-07
-        "artistId": "2KwZ9xnULczo0Z7Y7Bp57R"
-    },
-    "chenli": {  # **
-        "name": "陈粒",  # 2015
-        "artistId": "3SyC3U06X0DjdWd2Jf6V8Q"
-    },
-    "xiechunhua": {
-        "name": "谢春花",  # 2016-06-21
-        "artistId": "0gYt4XG9A0hyZW7rt745ZY"
+        "artistId": "4yamiVzQPYBb02ceSu0jaI"
     },
     # ----- One hit (<4)
     "bojue": {
@@ -1795,8 +1970,7 @@ otherArtists = {
     },
     "suyunying": {
         "name": "苏运莹",  # 2015-03-13, 2015年中国好歌曲第二季全国总决赛亚军
-        "artistId": "63tzlZxY9iaOeUnmGfwlyA",
-        "filterAlbums": False
+        "artistId": "63tzlZxY9iaOeUnmGfwlyA"
     },
     "baoshi_gem": {
         "name": "宝石Gem",  # 2019-09-02, 2019年参加中国新说唱2019
@@ -1830,10 +2004,6 @@ otherArtists = {
         "name": "音阙诗听",  # 2017-02-14
         "artistId": "6JZIgN9gEgNSS8lY5pmwbx"
     },
-    "liushuang": {
-        "name": "柳爽",  # 2015-01-01
-        "artistId": "7vzmSiBMYT0aSIjHFoWbhV"
-    },
     "zhanzhanyuluoluo": {
         "name": "展展与罗罗",  # 2019-02-22
         "artistId": "7jqlVGxCx6cj6o9FPmO98s"
@@ -1846,29 +2016,9 @@ otherArtists = {
         "name": "任素汐",  # 2016
         "artistId": "16rAFXQVz2WBpTH9uc1LA8"
     },
-    "fangdongdemao": {
-        "name": "房东的猫",  # 2015
-        "artistId": "6oxtUCWftDouZzeso3oXcF"
-    },
-    "madi": {
-        "name": "马頔",  # 2014-11-25
-        "artistId": "6INLZbPHXGj6ERrjFGPYD6"
-    },
-    "maliang": {
-        "name": "马良",  # 2018-08-29
-        "artistId": "713WTosB61RDO5KwQtNKQA"
-    },
-    "luxianshenyuedui": {
-        "name": "鹿先森乐队",  # 2016-11-09
-        "artistId": "4SklOYXOJe2H6R1Vz2gc0F"
-    },
     "xufei": {
         "name": "许飞",  # 2007.06.04, 2006年超级女生第三届全国总决赛第6名
         "artistId": "7jQNVznzEejg5gU5B0AmfQ"
-    },
-    "chenhongyu": {
-        "name": "陈鸿宇",  # 2016-07-22
-        "artistId": "7ukU2IyqxXp80Jnxf4lzTv"
     },
     "wangerlang": {
         "name": "王贰浪",  # 2018

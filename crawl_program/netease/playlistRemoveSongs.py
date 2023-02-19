@@ -5,6 +5,9 @@ from common import *
 #  Remove netease most played songs playlist songs
 # **************************************************
 
+# Set baseUrl
+setBaseUrl()
+
 
 def main():
     playlist = loadJsonFromFile(
@@ -20,7 +23,7 @@ def main():
 def playlistRomoveSongs(playlistId, isSureCheck=False):
     print("\n--------------------")
     print('Crawling netease playlist current songs...')
-    playlistSongs = getPlaylistSongs(playlistId)
+    playlistSongs = getPlaylistSongs(playlistId, addTs=True)
     if (len(playlistSongs['songs']) == 0):
         print('Nothing to delete, continue...')
         return

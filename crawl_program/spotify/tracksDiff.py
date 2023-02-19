@@ -9,7 +9,8 @@ from spotifyFunc import *
 
 # Get liked songs
 scope = [
-    "user-library-read"
+    "user-library-read",
+    "user-library-modify"
 ]
 spotify, token = getAuthorizationToken(clientID, clientSecret, scope)
 tracks = getUserAllLikedSongs(spotify, token)
@@ -48,9 +49,15 @@ trackIds2 = set(map(lambda track: track['track']['id'], trackItems2))
 print('\n--------------------')
 # print('Only in Like:')
 print('Only in \u2764\uFE0F:')  # heart symbol
+likeOnlyTrackIds = []
 for track in trackItems:
-    if track['track']['id'] not in trackIds2:
+    trackId = track['track']['id']
+    if trackId not in trackIds2:
+        likeOnlyTrackIds.append(trackId)
         print(track['track']['name'])
+if len(likeOnlyTrackIds) > 0:
+    print('\nTrack ids:', len(likeOnlyTrackIds))
+    print(likeOnlyTrackIds)
 
 # Only in Playlists
 print('--------------------')
@@ -63,4 +70,14 @@ for track in trackItems2:
 if len(playlistOnlyTrackIds) > 0:
     print('\nTrack ids:', len(playlistOnlyTrackIds))
     print(','.join(playlistOnlyTrackIds))
+
 print('--------------------')
+sureCheck()
+# API requests
+if len(likeOnlyTrackIds) > 0:
+    print('Unsaving tracks...')
+    unSaveUserTracks(spotify, token, ','.join(likeOnlyTrackIds))
+if len(playlistOnlyTrackIds) > 0:
+    print('Saving tracks...')
+    saveUserTracks(spotify, token, ','.join(playlistOnlyTrackIds))
+print('Done!')

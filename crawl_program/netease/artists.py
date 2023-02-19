@@ -1,8 +1,185 @@
 # Deine artist to crawl
-artistToCrawl = "julie_sue"
+artistToCrawl = "jj_lin"
 
 # === Define artists to generate playlists
 generateArtists = {
+    "zuoxiaozuzhou": {
+        "name": "左小祖咒",
+        "artistId": 6467
+    },
+    "zhangruoshui": {
+        "name": "张若水",
+        "artistId": 12271403
+    },
+    "haiweiba": {
+        "name": "海尾巴",
+        "artistId": 49470180
+    },
+    "ln_party": {
+        "name": "昨夜派对（L.N Party）",
+        "artistId": 13104057
+    },
+    "xiaoliu": {
+        "name": "小六",
+        "artistId": 12504024
+    },
+    "liulimin": {
+        "name": "刘莉旻",
+        "artistId": 12028182
+    },
+    "xujun": {
+        "name": "许钧",
+        "artistId": 1190143
+    },
+    "lujingzhou": {
+        "name": "鹿京周",
+        "artistId": 12064014
+    },
+    "zhuangdafei": {
+        "name": "庄达菲",
+        "artistId": 12048298
+    },
+    "fengzi": {
+        "name": "风子",
+        "artistId": 1032016
+    },
+    "liushuang": {
+        "name": "柳爽",
+        "artistId": 1060132
+    },
+    "haomeimei": {
+        "name": "好妹妹",
+        "artistId": 711683
+    },
+    "maliang": {
+        "name": "马良",
+        "artistId": 13609637
+    },
+    "chenhongyu": {
+        "name": "陈鸿宇",
+        "artistId": 1058228
+    },
+    "madi": {
+        "name": "马頔",
+        "artistId": 4592
+    },
+    "zhaolei": {
+        "name": "赵雷",
+        "artistId": 6731
+    },
+    "xiechunhua": {
+        "name": "谢春花",
+        "artistId": 1039895
+    },
+    "chenli": {
+        "name": "陈粒",
+        "artistId": 1007170
+    },
+    "fangdongdemao": {
+        "name": "房东的猫",
+        "artistId": 1050282
+    },
+    "huazhou": {
+        "name": "花粥",
+        "artistId": 8103
+    },
+    "floruit_show": {
+        "name": "福禄寿FloruitShow",
+        "artistId": 29393033
+    },
+    "luxianshenyuedui": {
+        "name": "鹿先森乐队",
+        "artistId": 1195028
+    },
+    "yanbaeryuedui": {
+        "name": "烟把儿",
+        "artistId": 1021160
+    },
+    "diuhuocheyuedui": {
+        "name": "丢火车",
+        "artistId": 11370
+    },
+    "wutiaoren": {
+        "name": "五条人",
+        "artistId": 938017
+    },
+    "yehaiziyuedui": {
+        "name": "野孩子",
+        "artistId": 13416
+    },
+    "erbai": {
+        "name": "贰佰",
+        "artistId": 896894
+    },
+    "haoyun": {
+        "name": "郝云",
+        "artistId": 3071
+    },
+    "songdongye": {
+        "name": "宋冬野",
+        "artistId": 5073
+    },
+    "yaoshisan": {
+        "name": "尧十三",
+        "artistId": 4903
+    },
+    "valley_children": {
+        "name": "小娟&山谷里的居民",
+        "artistId": 13279
+    },
+    "zhouyunpeng": {
+        "name": "周云蓬",
+        "artistId": 6461
+    },
+    "mafei": {
+        "name": "马飞",
+        "artistId": 842005
+    },
+    "matiao": {
+        "name": "马条",
+        "artistId": 4480
+    },
+    "zhonglifeng": {
+        "name": "钟立风",
+        "artistId": 6474
+    },
+    "xiaohe": {
+        "name": "小河与寻谣计划",
+        "artistId": 5766
+    },
+    "zhangweiwei": {
+        "name": "张玮玮",
+        "artistId": 173002
+    },
+    "wanxiaoli": {
+        "name": "万晓利",
+        "artistId": 5345
+    },
+    "shuimunianhua": {
+        "name": "水木年华",
+        "artistId": 12712
+    },
+    "yepei": {
+        "name": "叶蓓",
+        "artistId": 10197
+    },
+    "laolang": {
+        "name": "老狼",
+        "artistId": 3682
+    },
+
+    "queen": {
+        "name": "Queen",
+        "artistId": 41906
+    },
+    "jonathan_lee": {
+        "name": "李宗盛",
+        "artistId": 3683
+    },
+    "luodayou": {
+        "name": "罗大佑",
+        "artistId": 3686
+    },
     "julie_sue": {
         "name": "苏芮",
         "artistId": 9274

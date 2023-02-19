@@ -20,7 +20,6 @@ if len(sys.argv) >= 2:
     else:
         artistToCrawlList = sys.argv[1:]
 
-
 for artist in artistToCrawlList:
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('Crawling ' + artists[artist]['name'] + '...')

@@ -14,8 +14,9 @@ from spotifyFunc import *
 playlistIDs = {
     "7J6PrVFDlPWiQe0m6NF2ie": False,  # Favorite
     "2QBH6yCLDJhTiXKqDfCtOA": False,  # Like
-    '4SqLcwtjZJXdkH8twICyOa': False,  # Nice
+    # '4SqLcwtjZJXdkH8twICyOa': False,  # Nice
     # '64s4sAZyFPc9v2siw2XdX7': True,  # Hmm
+    # '4qaMezDPYbUUCUaKVuOa44': False,  # 好歌拾遗
     # '5H1dMlatPh81JQEoHF0bvf': False,  # One Hit
     # '2B7UkIuXV6Y3jr5fubpy2d': False,  # More Hits - 民谣
     # '4RLhUHXLbNsKlOqMrMdqgi': False,  # More Hits - 流行

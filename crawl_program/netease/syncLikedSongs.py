@@ -16,6 +16,9 @@ from playlistRemoveSongs import playlistRomoveSongs
 #    Sync spotify Favorite & Like playlists to netease liked songs
 # **********************************************************************
 
+# Set baseUrl
+setBaseUrl()
+
 # My like songs playlist id
 likePlaylistId = 553778357
 # Define is incremental
@@ -51,6 +54,11 @@ totalTrackNames = sum([len(v) for k, v in spotifyArtistTrackNames.items()])
 print('Favorite & Like sync songs: ',
       '(Total ', totalTrackNames, ')', sep='')
 print(spotifyArtistTrackNames, '\n')
+print('\nAll track ids:')
+print(','.join([list(track.keys())[0].replace('spotify:track:', '')
+                for artistKey, artistTracks in spotifyArtistTrackNames.items()
+                for track in artistTracks]), '\n')
+sureCheck()
 
 syncSongs, missingSongs, neteaseMissingSongsStr, spotifyMissingTracksStr = getSpotifyToNeteaseSongs(
     spotifyArtistTrackNames, spotifyArtists, isNeedMissingPrompt=False)
@@ -60,7 +68,7 @@ syncSongDict = {str(list(song.values())[0]): list(song.keys())[0]
 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 if isIncremental:
     # Get liked songs
-    likedSongs = getPlaylistSongs(likePlaylistId)['songs']
+    likedSongs = getPlaylistSongs(likePlaylistId, addTs=True)['songs']
     syncSongIds = {str(list(song.values())[0]) for song in syncSongs}\
         - {str(song['id']) for song in likedSongs}
     if len(syncSongIds) > 0:

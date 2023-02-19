@@ -16,6 +16,9 @@ from playlistRemoveSongs import playlistRomoveSongs
 #    Sync spotify custom playlists to netease
 # **************************************************
 
+# Set baseUrl
+setBaseUrl()
+
 # Define create playlist or update playlist
 isCreate = False
 
@@ -27,7 +30,7 @@ def main():
         sys.exit()
     # Read playlist name
     playlistName = sys.argv[1]
-    # Define isPrivate & private playlist name
+    # Define netease playlist is private or not
     isPrivate = False
     # Define is collection playlist
     isCollection = False
@@ -41,7 +44,7 @@ def main():
         isPrivate = False
     elif playlistName in {'Nice', 'One Hit', 'To Listen', 'Netease Non-playable'}:
         isPrivate = True
-    elif playlistName in {'Listening Artist'}:
+    elif playlistName in {'Listening Artist', 'Listening'}:
         isPrivate = True
         isIncremental = False
         isReversed = False
@@ -78,7 +81,7 @@ def main():
         playlistName, spotifyPlaylist['tracks'], spotifyArtists)
     # Get netease sync songs from spotify for every artist & merge all sync songs
     syncSongs, neteaseMissingSongs, neteaseMissingSongsStr, spotifyMissingSongsStr = getSpotifyToNeteaseSongs(
-        spotifyArtistTrackIdNames, spotifyArtists, addSpotifyMissing=addSpotifyMissing, isNeedMissingPrompt=False)
+        spotifyArtistTrackIdNames, spotifyArtists, playlistName=playlistName, addSpotifyMissing=addSpotifyMissing, isNeedMissingPrompt=False)
     # if len(neteaseMissingSongs) > 0:
     #     sureCheck()
 
@@ -101,7 +104,7 @@ def main():
         playlistId = playlist['playlist']['id']
         if isIncremental:
             print('Crawling netease playlist current songs...')
-            playlistSongs = getPlaylistSongs(playlistId)['songs']
+            playlistSongs = getPlaylistSongs(playlistId, addTs=True)['songs']
             playlistSongIdsSet = {song['id']
                                   for song in playlistSongs}
             # Find not added songs
@@ -132,17 +135,17 @@ def main():
     if not isCollection:
         playlistDescription = 'Sync between spotify and netease.' + \
             ((' Netease missing: ' + ', '.join(neteaseMissingSongsStr) +
-            '.') if len(neteaseMissingSongsStr) > 0 else '') + \
+              '.') if len(neteaseMissingSongsStr) > 0 else '') + \
             ((' Spotify Missing: ' + ', '.join(spotifyMissingSongsStr) +
-            '.') if len(spotifyMissingSongsStr) > 0 else '') + \
+              '.') if len(spotifyMissingSongsStr) > 0 else '') + \
             ' Updated on ' + time.strftime("%Y-%m-%d") + '.'
-            # (updateMatch.group(0) if updateMatch != None else '')
+        # (updateMatch.group(0) if updateMatch != None else '')
     else:
         spotifyDesciption = spotifyPlaylist['description']
         datePart = re.sub(r'.*(Generated.*)', r'\1', spotifyDesciption)
         playlistDescription = 'Sync between spotify and netease.' + \
-            ((' Netease missing: ' + ', '.join(neteaseMissingSongsStr) + \
-            '.') if len(neteaseMissingSongsStr) > 0 else '') + ' ' + datePart
+            ((' Netease missing: ' + ', '.join(neteaseMissingSongsStr) +
+              '.') if len(neteaseMissingSongsStr) > 0 else '') + ' ' + datePart
     updatePlaylistDesc(playlistId, playlistDescription)
 
     # Get new playlist Info

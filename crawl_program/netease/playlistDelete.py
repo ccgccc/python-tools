@@ -6,6 +6,9 @@ from common import *
 #     Delete netease most played songs playlist
 # **************************************************
 
+# Set baseUrl
+setBaseUrl()
+
 
 # Sure check
 sureCheck()

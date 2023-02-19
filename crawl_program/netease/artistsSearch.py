@@ -6,8 +6,8 @@ currentdir = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
-from spotify.artists import *
 from common import *
+from spotify.artists import *
 
 # Define artist here
 searchArtists = generateArtists
@@ -26,7 +26,7 @@ if len(sys.argv) >= 2:
 
 
 allArtists = {}
-for identifier in list(searchArtists.keys())[:12]:
+for identifier in list(searchArtists.keys())[:50]:
     artist = searchArtists[identifier]
     result = searchArtist(artist['name'])
     if result.get('result') != None and result.get('result').get('artists') != None\

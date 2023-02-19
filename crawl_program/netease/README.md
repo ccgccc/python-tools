@@ -15,6 +15,12 @@ python3 artistsGetInfo.py other
 python3 artistsGetInfo.py all  
 python3 artistsGetInfo.py jacky_cheung  
 
+### Get artist all songs' comments
+(Default: artistToCrawl)  
+python3 getArtistComments.py  
+(张学友 Most Played Songs)  
+python3 getArtistComments.py jacky_cheung  
+
 
 
 ## Sync spotify most playlist songs playlists
@@ -51,6 +57,7 @@ python3 ../spotify/crawlPlaylists.py 'Favorite' 'Like' 'Nice'
 python3 ../spotify/crawlPlaylists.py 'Like' 'Nice'  
 python3 ../spotify/crawlPlaylists.py 'Hmm'  
 python3 ../spotify/crawlPlaylists.py 'High'  
+python3 ../spotify/crawlPlaylists.py '好歌拾遗'  
 python3 ../spotify/crawlPlaylists.py 'Listening'  
 python3 ../spotify/crawlPlaylists.py 'To Listen'  
 python3 ../spotify/crawlPlaylists.py 'Netease Non-playable'  
@@ -66,6 +73,7 @@ python3 syncCustomPlaylist.py 'Like'
 python3 syncCustomPlaylist.py 'Nice'  
 python3 syncCustomPlaylist.py 'Hmm'  
 python3 syncCustomPlaylist.py 'High'  
+python3 syncCustomPlaylist.py '好歌拾遗'  
 python3 syncCustomPlaylist.py 'Listening'  
 python3 syncCustomPlaylist.py 'To Listen'  
 python3 syncCustomPlaylist.py 'Netease Non-playable'  
@@ -77,3 +85,25 @@ python3 syncCustomPlaylist.py 'Collection 1'
 ### Sync spotify liked songs
 python3 syncLikedSongs.py  
 python3 songsDiff.py  
+
+
+
+## Other
+### Get playlist songs
+(Default: 我喜欢的音乐)  
+python3 getPlaylistSongs.py  
+python3 getPlaylistSongs.py 'Favorite' 'Like' 'Nice' 'Listening Artist'  
+python3 getPlaylistSongs.py 'Favorite' 'Like' 'Nice'  
+python3 getPlaylistSongs.py 'Listening Artist'  
+python3 getPlaylistSongs.py 'Collection 1'  
+python3 getPlaylistSongs.py 张学友  
+(张学友 Most Played Songs)  
+python3 getPlaylistSongs.py jacky_cheung  
+
+### Get playlist song details
+(Default: artistToCrawl)  
+python3 getPlaylistDetails.py  
+(张学友 Most Played Songs)  
+python3 getPlaylistDetails.py jacky_cheung  
+python3 getPlaylistDetails.py 'Collection 1'  
+python3 getPlaylistDetails.py 张学友  

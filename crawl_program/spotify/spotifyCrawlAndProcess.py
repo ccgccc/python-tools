@@ -31,7 +31,7 @@ if len(sys.argv) >= 2:
             artistToCrawlList = sys.argv[1:-1]
 
 # Define if filter albums
-filterAlbums = True
+filterAlbums = False
 # Define must first artist
 mustMainArtist = False
 # Filter track by track name or not

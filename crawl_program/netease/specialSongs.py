@@ -8,7 +8,14 @@ specialSongNames = {
         "我醒著做夢": "我醒着做梦",
         "祇有你不知道": "只有你不知道",
         "每天愛你多一些_2_張學友": "每天爱你多一些(国)",
-        "相愛很難": "相爱很难 (电影\"男人四十\"歌曲)"
+        "相愛很難": "相爱很难 (电影\"男人四十\"歌曲)",
+        "如果愛": "如果·爱",
+        "我 Love 你": "I Love You",
+        "playlist": {
+            "Nice": {
+                "每天愛你多一些": "每天爱你多一些(国)",
+            }
+        }
     },
     # 周杰伦  All
     "jay_chou": {
@@ -18,15 +25,21 @@ specialSongNames = {
         "蛇 舞": "蛇舞",
         "花 海": "花海",
         "免費教學錄影帶": "免费教学录影带",
-        "不能說的秘密_2_周杰倫": "不能说的秘密(Live)"
+        # "不能說的秘密_2_周杰倫": "不能说的秘密(Live)",
+        "我落淚˙情緒零碎": "我落泪情绪零碎",
+        "印地安老斑鳩": "印第安老斑鸠",
+        "TRY": "Try"
     },
     # 陈奕迅 All
     "eason_chan": {
         "Wu Ren Zhi Jing": "无人之境",
-        "孤獨患者(國)": "孤独患者"
+        "孤獨患者(國)": "孤独患者",
+        "愛情轉移(國)": "爱情转移",
+        "紅玫瑰(國)": "红玫瑰"
     },
     # Bruno Mars  All
     "bruno_mars": {
+        "Nothin' on You": "Nothin' On You"
     },
     # 邓紫棋  Missing: 漂向北方(with 黄明志)
     "g_e_m": {
@@ -270,8 +283,28 @@ specialSongNames = {
         "時の流れに身をまかせ": "時の流れに身をまかせ",
         "路邊野花不要採": "路边的野花不要采\u3000"
     },
-    # 苏芮
+    # 苏芮  All
     "julie_sue": {
+    },
+    # 罗大佑  Missing: 皇后大道东
+    "luodayou": {
+        "name": "罗大佑",
+        "artistId": 3686
+    },
+    # 李宗盛
+    "jonathan_lee": {
+        "飄洋過海來看你": "漂洋过海来看你",
+        "明明白白我的心": "明明白白我的心 (Live)",
+        "我終於失去了你": "我终于失去了你 (Live)",
+        "不必在乎我是誰": "不必在乎我是谁 (Live)",
+        "別怕我傷心/聽見有人叫你寶貝/愛情少尉/愛如潮水(OT:愛你的餘溫)": "别怕我伤心+听见有人叫你宝贝+爱情少尉+爱如潮水 (Live)",
+        "晚婚": "晚婚 (Live)",
+        "領悟": "领悟 (Live)",
+        "因為單身的緣故": "因为单身的缘故 (Live)",
+        "問": "问 (Live)",
+        "傷心地鐵": "伤心地铁 (Live)",
+        "寂寞的戀人": "寂寞的恋人 (Live)",
+        "陰天": "阴天 (Live)"
     },
     # === Split specialSongNames
     # Tylor Swift
@@ -303,7 +336,9 @@ specialSongNames = {
 specialSongIds = {
     # 张学友
     "jacky_cheung": {
-        "相爱很难 (电影\"男人四十\"歌曲)": 276260
+        "相爱很难 (电影\"男人四十\"歌曲)": 276260,
+        "谁是大英雄": 27906003,
+        "I Love You": 27906144
     },
     # 周杰伦
     "jay_chou": {
@@ -317,7 +352,9 @@ specialSongIds = {
     },
     # 邓紫棋
     "g_e_m": {
-        "手心的蔷薇": 29848657
+        "手心的蔷薇": 29848657,
+        "你不是真正的快乐": 32924539,
+        "桃花诺": 480579393
     },
     # Bruno Mars
     "bruno_mars": {
@@ -382,7 +419,8 @@ specialSongIds = {
     # 周华健
     "wakin_chau": {
         "真心英雄": 27901965,
-        "突然想爱你": 223766
+        "突然想爱你": 223766,
+        "最近比较烦": 108632
     },
     # 林子祥
     "george_lam": {
@@ -392,6 +430,10 @@ specialSongIds = {
     # 叶蒨文
     "sally_yeh": {
         "选择": 406073996
+    },
+    # 林忆莲
+    "sandy_lam": {
+        "当爱已成往事": 196753,
     },
     # 梁静茹
     "fish_leong": {
@@ -425,7 +467,17 @@ specialSongIds = {
         "我想更懂你": 139703,
         "梦醒的我": 158859
     },
-    # === Split specialSongIds
+    # 李宗盛
+    "jonathan_lee": {
+        "当爱已成往事": 196753,
+        "给自己的歌": 394670,
+        "真心英雄": 27901965,
+        "不必在乎我是谁 (Live)": 441102570,
+        "我是一只小小鸟": 144453,
+        "你走你的路": 211656,
+        "问 (Live)": 441102590
+    },
+    # === Split specialSongIds (netease crawled missing songs)
 }
 
 # Define spotify missing songs
@@ -469,22 +521,40 @@ spotifyMissingSongs = {
 replaceSongIds = {
     # 张学友
     "jacky_cheung": {
-        "你的名字 我的姓氏": 188728,  # first release in a concert
-        # "相爱很难": 276260  # not first version
+        "你的名字 我的姓氏": 188728,  # record version, first release in a concert
+        # "相爱很难": 276260  # first version, processed above
+        "左右为难": 191783,  # in album 《左右为难》
+        "甲乙丙丁": 171793,  # in album 《甲乙丙丁》
+        "只有情永在": 253915,  # first version
+        "烦恼歌": 187672,  # first version
+        "旧情绵绵": 189714,  # copyright & more comments
+        "雨夜的浪漫": 188747,  # more comments
+        "旗开得胜": 5240551  # first version
     },
     # 张国荣
     "leslie_cheung": {
-        "沉默是金": 188881,  # not record version
-        "无需要太多": 188869,  # not record version
-        "芳华绝代": 276257  # not first version
+        "沉默是金": 188881,  # record version
+        "无需要太多": 188869,  # record version
+        "芳华绝代": 276257  # first version
+    },
+    # 陈奕迅
+    "eason_chan": {
+        # for netease wrong version
+        "富士山下": 65766,
+        "不如不见": 65769,
+        "沙龙": 64833,
+        "七百年后": 64815,
+        "于心有愧": 64797,
+        "圣诞结": 65355,
+        "白玫瑰": 65761,
     },
     # 李荣浩
     "lironghao": {
-        "年少有为": 1293886117  # no copyright
+        "年少有为": 1293886117  # copyright
     },
     # 关淑怡
     "shirley_kwan": {
-        "难得有情人": 235690  # netease trash data
+        "难得有情人": 235690  # for netease trash data
     },
     # 刘若英
     "rene_liu": {
@@ -492,11 +562,11 @@ replaceSongIds = {
     },
     # 苏永康
     "william_so": {
-        "从不喜欢孤单一个": 282690  # not first version
+        "从不喜欢孤单一个": 282690  # first version
     },
     # 邓丽君
     "teresa_teng": {
-        # no copyright
+        # netease copyright
         "月亮代表我的心": 1847408145,
         "我只在乎你": 1888076998,
         "甜蜜蜜": 26608741,
@@ -504,12 +574,12 @@ replaceSongIds = {
         "つぐない": 4908982,  # 偿还
         "你怎么说": 226836,
         "别れの予感": 225798,  # 别离的预感(日)
-        "但愿人长久": 229369,  # netease wrong vresion
+        "但愿人长久": 229369,  # for netease wrong version
         "小城故事": 473005028,
-        "漫步人生路": 229285,  # netease wrong vresion
+        "漫步人生路": 229285,  # for netease wrong version
         "千言万语": 226803,
         "爱人": 27620648,
-        "忘记他": 229597,   # netease wrong vresion & still wrong
+        "忘记他": 229597,   # for netease wrong version & still wrong
         "再见!我的爱人": 1461399189,
         "空港": 1861100253,
         "恰似你的温柔": 473289829,
@@ -521,6 +591,10 @@ replaceSongIds = {
         "云河": 1397663824,
         "雨夜花": 1397663826,
         "路边的野花不要采\u3000": 473336809  # 路边的野花不要采
+    },
+    # 苏芮
+    "julie_sue": {
+        "跟着感觉走": 287542  # copyright
     },
 }
 

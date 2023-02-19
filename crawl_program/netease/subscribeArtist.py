@@ -6,6 +6,9 @@ from common import *
 #      sub or unsub netease artist
 # ****************************************
 
+# Set baseUrl
+setBaseUrl()
+
 # Define artist ids
 artistIds = ['32809', '35050']
 # 0: unsubcribe, 1: subcribe

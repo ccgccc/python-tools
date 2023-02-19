@@ -8,6 +8,9 @@ from common import *
 #   Remove netease user's all playlists
 # ****************************************
 
+# Set baseUrl
+setBaseUrl()
+
 # Excel formula: =CONCATENATE(B2,": '",TRIM(C2),"',")
 playlistToKeep = {
     553778357: 'ccgccc喜欢的音乐',

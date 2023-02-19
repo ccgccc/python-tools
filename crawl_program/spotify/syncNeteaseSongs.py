@@ -11,7 +11,7 @@ currentdir = os.path.dirname(os.path.abspath(
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 from netease.specialSongs import *
-from netease.syncSongs import getSpotifyArtistTrackIdNames
+from netease.syncSongs import getSpotifyArtistTrackIdNames, getArtistSpecialSongNames
 from artists import artists as spotifyArtists
 from utils.auth import getAccessToken, getAuthorizationToken
 from utils.secrets import clientID, clientSecret
@@ -25,6 +25,7 @@ from playlistRemoveItems import playlistRemoveAllItems
 # From spotify playlists(spotifySourcePlaylistNames),
 # match songs in netease playlist(neteaseMatchPlaylistName)
 # and sync them to another spotify playlist(spotifyPlaylistId)
+# Note: spotify歌单有重名歌曲的时候只会同步其中一个
 
 # Read parameters from command line
 if len(sys.argv) < 2:
@@ -53,7 +54,7 @@ neteaseMatchPlaylistName = 'playlist_songs_' + playlistName + '_by ccgccc'
 if playlistName in {'Favorite', 'Like'}:
     isPrivate = False
     isIncremental = True
-    spotifySourcePlaylistNames = [playlistName, 'Listening Artist']
+    spotifySourcePlaylistNames = [playlistName, 'Listening Artist', '好歌拾遗']
     isUpdateDesc = True
     # spotifySourcePlaylistNames = [playlistName, 'Collection 1']
     # # Update description
@@ -62,13 +63,13 @@ if playlistName in {'Favorite', 'Like'}:
 elif playlistName in {'Nice', 'Hmm', 'To Listen'}:
     isPrivate = True
     isIncremental = True
-    spotifySourcePlaylistNames = [playlistName, 'Listening Artist']
+    spotifySourcePlaylistNames = [playlistName, 'Listening Artist', '好歌拾遗']
     isUpdateDesc = True
     # spotifySourcePlaylistNames = [playlistName, 'Collection 1']
     # # Update description
     # isUpdateDesc = True
     # spotifySourcePlaylistNames = [playlistName]
-elif playlistName in {'One Hit', 'More Hits - 民谣', 'More Hits - 流行'}:
+elif playlistName in {'好歌拾遗', 'One Hit', 'More Hits - 民谣', 'More Hits - 流行'}:
     isUpdateDesc = True
     spotifySourcePlaylistNames = [playlistName]
 elif playlistName in {'High'}:
@@ -83,11 +84,13 @@ elif playlistName in {'Netease Non-playable'}:
     syncMode = 1
     neteaseMatchPlaylistName = 'playlist_songs_ccgccc喜欢的音乐_by ccgccc'
     spotifySourcePlaylistNames = ['Favorite', 'Like']
-elif playlistName in {'Listening'}:
+elif playlistName in {'Listening', 'Listening Artist'}:
     syncMode = 1
-    spotifyPlaylistId = '4tJNCsjJQugmZwA72R2sJ0'
+    isIncremental = False
     neteaseMatchPlaylistName = 'playlist_songs_Listening Artist_by ccgccc'
-    spotifySourcePlaylistNames = ['Listening Artist']
+    # spotifySourcePlaylistNames = ['Listening Artist']
+    syncMode = 0
+    spotifySourcePlaylistNames = ['张学友']
 print('--------------------')
 print('*** Sync Info ***')
 print('Sync Mode:', syncMode,
@@ -144,8 +147,8 @@ def main():
         print('Netease need purchase songs:', len(neteaseNeedPurchaseSongs))
         print({song['id']: song['name']
                for song in neteaseNeedPurchaseSongs}, '\n')
-        neteaseAllSyncSongNames = {song['name']
-                                   for song in neteaseAllSyncSongs}
+        neteaseAllSyncSongNames = [song['name']
+                                   for song in neteaseAllSyncSongs]
     else:
         print('Sync mode not supported. Exiting...')
         sys.exit()
@@ -167,7 +170,7 @@ def main():
             # Process spotify track names for each playlist & artist
             spotifyProcessedTracks = [{list(dict.keys())[0]: re.sub(r' \(.*', '', re.sub(r' - .*', '', list(dict.values())[0]))}
                                       for dict in spotifyTrackIdNames]
-            spotifyProcessedTracks = [{list(dict.keys())[0]: zhconv.convert(list(dict.values())[0], 'zh-cn', update=specialSongNames.get(artist))}
+            spotifyProcessedTracks = [{list(dict.keys())[0]: zhconv.convert(list(dict.values())[0], 'zh-cn', update=getArtistSpecialSongNames(artist, playlistName))}
                                       for dict in spotifyProcessedTracks]
             if spotifyArtistTrackIdNames.get(artist) != None:
                 spotifyArtistTrackIdNames[artist].extend(
@@ -188,6 +191,11 @@ def main():
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('------------------------------')
+    # seen = set()
+    # dupes = [name for name in neteaseAllSyncSongNames if name in seen or seen.add(name)]
+    # print(dupes)
+    # spotifyTracksFromNetease = {list(dict.keys())[0]: list(dict.values())[0] for dict in spotifyAllTrackIdNames if list(
+    #     dict.values())[0] in neteaseAllSyncSongNames}
     spotifyTracksFromNetease = [dict for dict in spotifyAllTrackIdNames if list(
         dict.values())[0] in neteaseAllSyncSongNames]
     print('Spotify sync tracks from netease:',
@@ -203,10 +211,10 @@ def main():
         for song in reversed(neteasePlaylist['songs']):
             for missingSongName in spotifyMissingTracks:
                 if missingSongName == song['name']:
-                    songArtists = '_'.join(artist['name']
-                                           for artist in song['ar'])
+                    songArtists = '/'.join(artist['name']
+                                           for artist in song['ar'][:3])
                     missingSongs.append(
-                        missingSongName + '(' + songArtists + ')')
+                        missingSongName + '(' + songArtists + ('等' if len(song['ar']) > 3 else '') + ')')
         missingSongsStr = '、'.join(missingSongs) if len(
             missingSongs) > 0 else ''
         print('Missing:', missingSongsStr)
@@ -236,10 +244,13 @@ def main():
         oldPlaylistDescription = playlist['description']
         playlistTrackUris = [track['track']['uri']
                              for track in playlist['tracks']['items']]
+        # Filter track uri & remove duplication
+        seen = set()
         trackUriList = [trackUri for trackUri in trackUriList
-                        if trackUri not in playlistTrackUris]
+                        if trackUri not in playlistTrackUris
+                        and trackUri not in seen and not seen.add(trackUri)]
     else:
-        # Remove playlist songs
+        # Remove playlist tracks
         playlistRemoveAllItems(
             accessToken, spotify, authorizeToken, spotifyPlaylistId, isPrivate=isPrivate)
         print()

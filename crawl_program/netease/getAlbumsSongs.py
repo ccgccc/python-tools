@@ -45,11 +45,14 @@ def getAlbumsSongs(artist, allAlbums, mustMainArtist=False):
         albumSongs = getAlbum(albumId)
         # printAlbums([albumSongs['album']])
         allSongs.extend(albumSongs['songs'])
-        printSongs(albumSongs['songs'])
+        printSongs(albumSongs['songs'], reverse=False)
+    print([song['name'] for song in allSongs[0:5]])
     # Write json to file
     fileName = 'songs/' + artist + '_allsongs_raw'
     writeJsonToFile(allSongs, fileName)
-    printSongs(allSongs, fileName, isWriteToConsole=False)
+    print([song['name'] for song in allSongs[0:5]])
+    printSongs(allSongs, reverse=False, csvFileName=fileName, isWriteToConsole=False)
+    print([song['name'] for song in allSongs[0:5]])
     return allSongs
 
 

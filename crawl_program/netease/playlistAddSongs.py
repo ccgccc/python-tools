@@ -16,6 +16,9 @@ from netease.syncSongs import getSyncSongs
 #  Add synced songs to netease playlists by spotify playlists
 # ************************************************************
 
+# Set baseUrl
+setBaseUrl()
+
 
 def main():
     # Get netease playlist

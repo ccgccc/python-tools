@@ -9,11 +9,14 @@ from artists import artists
 #    Client Credentials Flow
 # ******************************
 # Get artist all albums, filtered and sorted
-def getArtistAllAlbums(token, artistId):
+def getArtistAllAlbums(token, artistId, market=None):
     # First request
     limit = 50
     albumsEndPoint = f"https://api.spotify.com/v1/artists/{artistId}/albums?limit={limit}&offset=0"
     getHeaders = getHeader(token)
+    if market != None:
+        getHeaders['market'] = market
+    # print(getHeaders)
     artistAlbums = requests.get(albumsEndPoint, headers=getHeaders).json()
     allAlbums = artistAlbums['items']
     # More requests
@@ -175,9 +178,16 @@ def getUserSavedTracks(spotify, token, limit=50, offset=0):
 
 
 # Get my liked songs by request once
-def saveUserTracks(spotify, token, ids):
-    userTracksEndPoint = f"https://api.spotify.com/v1/me/tracks?ids={ids}"
+def saveUserTracks(spotify, token, idStr):
+    userTracksEndPoint = f"https://api.spotify.com/v1/me/tracks?ids={idStr}"
     res = spotify.put(userTracksEndPoint)
+    return res
+
+
+# Get my liked songs by request once
+def unSaveUserTracks(spotify, token, idStr):
+    userTracksEndPoint = f"https://api.spotify.com/v1/me/tracks?ids={idStr}"
+    res = spotify.delete(userTracksEndPoint)
     return res
 
 
@@ -299,6 +309,9 @@ def removePlayListTracks(spotify, token, playlistId, trackUriList):
     postHeaders = postHeader(token)
     print('\n**********')
     print('Removing playlist tracks...')
+    if (len(trackUriList) == 0):
+        print('Nothing to remove...')
+        return None
     for i in range(0, len(trackUriList), 100):
         postData = {
             "uris": trackUriList[i:i+100]
@@ -343,6 +356,13 @@ def unfollowPlayList(spotify, token, playlistId):
 def readFileContent(fileName):
     with open(fileName) as f:
         return f.read()
+
+
+# Sure check
+def sureCheck():
+    msg = input('Are you sure? Press Y to continue: ')
+    if msg != 'y' and msg != 'Y':
+        sys.exit()
 
 
 # Get playcount string

@@ -70,7 +70,7 @@ def getSpotifyArtistTrackIdNames(spotifyPlaylistName, spotifyPlaylistTracks, spo
 
 
 # Get netease sync songs from spotify for every artist & merge all sync songs
-def getSpotifyToNeteaseSongs(spotifyArtistTrackIdNames, spotifyArtists, addSpotifyMissing=False, isNeedMissingPrompt=True):
+def getSpotifyToNeteaseSongs(spotifyArtistTrackIdNames, spotifyArtists, playlistName=None, addSpotifyMissing=False, isNeedMissingPrompt=True):
     syncSongs = []
     neteaseMissingSongs = []
     neteaseMissingSongsStr = []
@@ -87,7 +87,7 @@ def getSpotifyToNeteaseSongs(spotifyArtistTrackIdNames, spotifyArtists, addSpoti
         print('************************************************************')
         print('Processing', artistName, '......')
         curSyncSongs, curMissingSongs, curMissingSongSpotifyNames = getSyncSongs(
-            artist, trackIdNames, addSpotifyMissing=addSpotifyMissing, isRemoveAlias=True, isNeedPrompt=False, isOkPrompt=False)
+            artist, trackIdNames, playlistName=playlistName, addSpotifyMissing=addSpotifyMissing, isRemoveAlias=True, isNeedPrompt=False, isOkPrompt=False)
         syncSongs.extend(curSyncSongs)
         neteaseMissingSongs.extend(curMissingSongs)
         neteaseMissingSongSpotifyNames.extend(curMissingSongSpotifyNames)
@@ -121,8 +121,21 @@ def getSpotifyToNeteaseSongs(spotifyArtistTrackIdNames, spotifyArtists, addSpoti
     return syncSongs, neteaseMissingSongs, neteaseMissingSongsStr, spotifyMissingTracksStr
 
 
+# Get artist special song names
+def getArtistSpecialSongNames(artist, playlistName):
+    artistSpecialSongNames = specialSongNames.get(artist)
+    if playlistName == None:
+        return artistSpecialSongNames
+    if artistSpecialSongNames != None and artistSpecialSongNames.get('playlist') != None:
+        playlistSpecialSongNames = artistSpecialSongNames['playlist'].get(
+            playlistName)
+        if playlistSpecialSongNames != None:
+            artistSpecialSongNames = artistSpecialSongNames | playlistSpecialSongNames
+    return artistSpecialSongNames
+
+
 # Process spotify track names & match netease songs for one artist
-def getSyncSongs(artist, spotifyTrackIdNames, isRemoveAlias=True, addSpotifyMissing=False,
+def getSyncSongs(artist, spotifyTrackIdNames, playlistName=None, isRemoveAlias=True, addSpotifyMissing=False,
                  isNeedPrompt=True, isOkPrompt=True, confirmOnceMode=True):
     # Get spotify playlist song names
     spotifyTrackOriginalNames = [
@@ -130,7 +143,8 @@ def getSyncSongs(artist, spotifyTrackIdNames, isRemoveAlias=True, addSpotifyMiss
     if isRemoveAlias == True:
         spotifyTrackOriginalNames = [re.sub(r' \(.*', '', re.sub(r' - .*', '', track))
                                      for track in spotifyTrackOriginalNames]
-    spotifyTrackNames = [zhconv.convert(track, 'zh-cn', update=specialSongNames.get(artist))
+
+    spotifyTrackNames = [zhconv.convert(track, 'zh-cn', update=getArtistSpecialSongNames(artist, playlistName))
                          for track in spotifyTrackOriginalNames]
     print('------------------------------')
     print('Spotify Tracks:', len(spotifyTrackOriginalNames))

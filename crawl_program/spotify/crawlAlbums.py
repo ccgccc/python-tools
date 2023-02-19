@@ -27,8 +27,11 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
     print('--------------------')
     print('Crawling Albums...')
     artistId = artists[artist]['artistId']
-    #  Get artist albums
+    # Get artist albums
     allAlbums = getArtistAllAlbums(token, artistId)
+    # Only US market
+    allAlbums = [album for album in allAlbums
+                 if 'US' in album['available_markets']]
     print('Total albums: ' + str(len(allAlbums)))
     # Write json to file
     with open('./files/albums/' + artist + '_albums_raw.json', 'w') as f:
@@ -49,7 +52,8 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
     else:
         filterdAlbums = allAlbums
     # Sort albums by release date
-    filterdAlbums.sort(key=lambda album: (album['release_date'], album['name']))
+    filterdAlbums.sort(key=lambda album: (
+        album['release_date'], album['name']))
     # Write json to file
     with open('./files/albums/' + artist + '_albums.json', 'w') as f:
         json.dump(filterdAlbums, f, ensure_ascii=False)

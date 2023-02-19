@@ -8,6 +8,9 @@ from common import *
 #     Create netease most played songs playlist
 # **************************************************
 
+# Set baseUrl
+setBaseUrl()
+
 
 def main():
     dir = './files/playlists/generated_playlists/'

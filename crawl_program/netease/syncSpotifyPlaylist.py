@@ -17,6 +17,9 @@ from playlistAddSongs import playlistAddSongs
 #     Sync spotify most played songs playlists to netease
 # ************************************************************
 
+# Set baseUrl
+setBaseUrl()
+
 # Define artist here
 artistToSyncList = [artistToCrawl]
 # Define create playlist or update playlist
