@@ -71,11 +71,11 @@ def syncSinglePlaylist(playlistName):
     spotifySourcePlaylistNames = [playlistName]
     # Netease match playlist name
     neteaseMatchPlaylistName = 'playlist_songs_' + playlistName + '_by ccgccc'
-    if playlistName in {'Favorite', 'Like', 'Nice'}:
+    if playlistName in {'Favorite', 'Like', 'Nice', 'Like But More', 'Nice But Classic'}:
         isPrivate = False
         isIncremental = True
-        spotifySourcePlaylistNames = [playlistName, 'Listening Artist', '好歌拾遗']
         isUpdateDesc = True
+        spotifySourcePlaylistNames = [playlistName, 'Listening Artist', '好歌拾遗']
         # spotifySourcePlaylistNames = [playlistName, 'Collection 1']
         # # Update description
         # isUpdateDesc = True
@@ -83,18 +83,12 @@ def syncSinglePlaylist(playlistName):
     elif playlistName in {'Hmm', 'To Listen'}:
         isPrivate = True
         isIncremental = True
-        spotifySourcePlaylistNames = [playlistName, 'Listening Artist', '好歌拾遗']
         isUpdateDesc = True
+        spotifySourcePlaylistNames = [playlistName, 'Listening Artist', '好歌拾遗']
         # spotifySourcePlaylistNames = [playlistName, 'Collection 1']
         # # Update description
         # isUpdateDesc = True
         # spotifySourcePlaylistNames = [playlistName]
-    elif playlistName in {'Like But More'}:
-        isPrivate = False
-        isIncremental = True
-        spotifySourcePlaylistNames = [
-            playlistName, 'Like', 'Listening Artist', '好歌拾遗']
-        isUpdateDesc = True
     elif playlistName in {'好歌拾遗', 'One Hit', 'More Hits - 民谣', 'More Hits - 流行'}:
         isUpdateDesc = True
         spotifySourcePlaylistNames = [playlistName]
