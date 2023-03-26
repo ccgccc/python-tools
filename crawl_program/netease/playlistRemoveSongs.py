@@ -5,11 +5,11 @@ from common import *
 #  Remove netease most played songs playlist songs
 # **************************************************
 
-# Set baseUrl
-setBaseUrl()
-
 
 def main():
+    # Set baseUrl
+    setBaseUrl()
+
     playlist = loadJsonFromFile(
         'playlists/generated_playlists/' + artistToCrawl + '_playlist')
     playlistId = playlist['playlist']['id']
@@ -22,6 +22,7 @@ def main():
 
 def playlistRomoveSongs(playlistId, isSureCheck=False):
     print("\n--------------------")
+    # print(getBaseUrl())
     print('Crawling netease playlist current songs...')
     playlistSongs = getPlaylistSongs(playlistId, addTs=True)
     if (len(playlistSongs['songs']) == 0):
@@ -33,7 +34,9 @@ def playlistRomoveSongs(playlistId, isSureCheck=False):
         playlistSongs['songs']), '\n', removeSongIds, sep='')
 
     if isSureCheck:
-        sureCheck()
+        # sureCheck()
+        # Set baseUrl
+        setBaseUrl(needCheck=True)
 
     deleteSongsToPlayList(playlistId, removeSongIds)
 

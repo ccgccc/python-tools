@@ -1,5 +1,6 @@
 ##### My Gitignore
 *.DS_Store
+.vscode/
 *.csv
 *.xls
 *.xlsx

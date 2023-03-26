@@ -7,6 +7,7 @@ specialSongNames = {
         "袛有情永在": "只有情永在",
         "我醒著做夢": "我醒着做梦",
         "祇有你不知道": "只有你不知道",
+        "祇想一生跟你走": "只想一生跟你走",
         "每天愛你多一些_2_張學友": "每天爱你多一些(国)",
         "相愛很難": "相爱很难 (电影\"男人四十\"歌曲)",
         "如果愛": "如果·爱",
@@ -49,34 +50,47 @@ specialSongNames = {
     # 林俊杰  Missing: Lose Control(电影尚气主题曲)
     "jj_lin": {
         "Bedroom": "Bedroom (feat. Anne-Marie)",
-        "Stay With You": "Stay With You (英文版)"
+        "Stay With You": "Stay With You (英文版)",
+        "加油!": "加油！"
     },
     # 许嵩  All
     "xusong": {
     },
     # 王力宏  Missing: 漂向北方(with 黄明志)
     "leehom_wang": {
+        "天地龍鱗(大型紀錄片《紫禁城》主題歌)": "天地龙鳞"
     },
     # Beyond  Missing: 长城、岁月无声
     "beyond": {
+        "為了你為了我": "为了你 为了我"
     },
     # 汪峰  All
     "wangfeng": {
     },
     # 王菲  All
     "faye_wong": {
-        "你快樂所以我快樂": "你快乐所以我快乐 (Live)",
-        "執迷不悔": "执迷不悔 (粤语版)"
+        # "你快樂所以我快樂": "你快乐所以我快乐 (Live)",
+        # "執迷不悔": "执迷不悔 (粤语版)",
+        # "playlist": {
+        #     "Nice": {
+        #         "執迷不悔": "执迷不悔 (粤语版)",
+        #     }
+        # }
     },
     # 莫文蔚  All
-    "kare_mok": {
+    "karen_mok": {
+        "呼吸有害(电影《飞虎之雷霆极战》主题曲)": "呼吸有害",
+        "这世界那么多人(电影《我要我们在一起》主题曲)": "这世界那么多人",
+        "不散,不見": "不散，不见",
+        "半生缘(我们在这里相遇)": "半生缘 (我们在这里相遇)",
+        "世间始终你好(电影《美人鱼》宣传曲)": "世间始终你好"
     },
     # 五月天  All
     "mayday": {
         "好好": "好好 (想把你写成一首歌)",
         "青春の彼方 / 盛夏光年": "盛夏光年",
         "愛情的模樣 Life Live": "爱情的模样",
-        "知足(07\"最知足版)": "知足 (07 最知足版)"
+        "知足(07'最知足版)": "知足 (2007 最知足版)"
     },
     # Adele  All
     "adele": {
@@ -87,12 +101,14 @@ specialSongNames = {
     "jam_hsiao": {
         "矜持": "矜持 (Studio Live)",
         "袖手旁觀": "袖手旁观 (Studio Live)",
-        "Hello": "Hello (录音室版)"
+        "Hello": "Hello (录音室版)",
+        "城裡的月光": "城里的月光 (Studio Live)"
     },
     # 孙燕姿  All
     "stefanie_sun": {
         "Stay With You": "Stay With You (英文版)",
-        "克卜勒": "克卜勒"
+        "克卜勒": "克卜勒",
+        "跳舞的梵谷": "跳舞的梵谷"
     },
     # Billie Eilish  All
     "billie_eilish": {
@@ -106,11 +122,12 @@ specialSongNames = {
     },
     # Michael Jackson  All
     "michael_jackson": {
-        "Rock with You": "Rock With You",
+        # "Rock with You": "Rock With You",
         "P.Y.T.": "P.Y.T. (Pretty Young Thing)",
-        "We Are The World": "We Are the World (Live)",
-        "Give In to Me": "Give in to Me",
-        "Another Part of Me": "Another Part Of Me"
+        # "We Are The World": "We Are the World (Live)",
+        # "Give In to Me": "Give in to Me",
+        # "Another Part of Me": "Another Part Of Me",
+        "You Rock My World": "You Rock My World (With Intro)"  # short version
     },
     # 蔡健雅  All
     "tanya_chua": {
@@ -118,13 +135,16 @@ specialSongNames = {
     },
     # 李克勤  All
     "hacken_lee": {
-        "時間的錯": "时间的错 (粤)"
+        "時間的錯": "时间的错 (粤)",
+        "情非首爾": "情非首尔 (Live)"
     },
     # 刘德华  All
     "andy_lau": {
         "十七歲": "17岁",
-        "無間道": "无间道 (独唱版)",
-        "無間道": "无间道 (独唱版)"
+        "笨小孩": "笨小孩(独唱版)",
+        "再吻我吧!": "再吻我吧",
+        "無間道": "无间道(独唱版)",  # 原专《风沙》- 梁朝伟 网易无条目
+        "最後...妳也走了": "最后....你也走了"
     },
     # 张惠妹  All
     "amei_chang": {
@@ -132,20 +152,22 @@ specialSongNames = {
     # Shawn Mendes  All
     "shawn_mendes": {
         "Summer of Love": "Summer Of Love",
-        "Lover": "Lover (Remix)"
+        "Lover": "Lover (Remix)",
+        "Never Be Alone / Hey There Delilah": "Never Be Alone / Hey There Delilah (Live At Madison Square Garden/ 2016 / Medley)"
     },
-    # 朴树
+    # 朴树  All
     "pushu": {
-        "NEW BOY": "New Boy"
+        # "NEW BOY": "New Boy",
+        "Baby, До свидания": "Baby ，До свидания"
     },
-    # 许巍
+    # 许巍  All
     "xuwei": {
         "故鄕": "故乡"
     },
-    # 李健
+    # 李健  All
     "lijian": {
     },
-    # 郑钧
+    # 郑钧  All
     "zhengjun": {
     },
     # 张宇  All
@@ -359,7 +381,8 @@ specialSongIds = {
     # Bruno Mars
     "bruno_mars": {
         "Young, Wild & Free": 1934807,
-        "Billionaire": 21806689
+        "Billionaire": 21806689,
+        "Lighters": 1297483,
     },
     # 林俊杰
     "jj_lin":  {
@@ -369,8 +392,9 @@ specialSongIds = {
     "faye_wong":  {
         "因为爱情": 64317,
         # because spotify and netease names don't match, a bit compromise here.
-        # "执迷不悔": 300587,  # 执迷不悔 (粤语版)
-        "执迷不悔 (粤语版)_2_王菲": 300603  # 执迷不悔 (国语版)
+        # update on 2023-03-02: netease update, now match.
+        "执迷不悔": 300603,  # 执迷不悔 (粤语版)
+        "执迷不悔_2_王菲": 300587  # 执迷不悔 (国语版)
     },
     # 五月天
     "mayday": {
@@ -387,8 +411,17 @@ specialSongIds = {
     # Michael Jackson
     "michael_jackson": {
         "Don’t Matter To Me": 574926603,
-        "Love Never Felt So Good": 1299086011,
-        "Love Never Felt So Good_2_Michael Jackson": 1299086142
+        "Say Say Say": 21393974,
+        "We Are The World": 28493451,  # U.S.A. for Africa
+        "Love Never Felt So Good": 28524032,
+        "Love Never Felt So Good_2_Michael Jackson": 28524016
+    },
+    "usa_for_africa": {
+        "We Are The World": 28493451
+    },
+    # 蔡健雅
+    "tanya_chua": {
+        "思念是一种病": 185700
     },
     # 李克勤
     "hacken_lee": {
@@ -397,7 +430,13 @@ specialSongIds = {
     # 刘德华
     "andy_lau": {
         "谢谢你的爱": 112584,  # 谢谢你的爱
-        "谢谢你的爱_2_刘德华": 35955092  # 谢谢你的爱(粤语版)
+        "谢谢你的爱_2_刘德华": 112533,  # 谢谢你的爱(粤语版)
+        "上海滩": 94936,
+        "playlist": {
+            "Nice": {
+                "谢谢你的爱": 112533  # 谢谢你的爱(粤语版)
+            }
+        }
     },
     # 张碧晨
     "zhangbichen": {
@@ -406,7 +445,8 @@ specialSongIds = {
     },
     # 张惠妹
     "amei_chang": {
-        "不该": 417250561
+        "不该": 417250561,
+        "对等关系": 1900998233
     },
     # 张宇
     "phil_chang": {
@@ -485,9 +525,9 @@ specialSongIds = {
 # (Simplified Chinese)
 spotifyMissingSongs = {
     # 王菲
-    "faye_wong": [
-        {"传奇": 298838}
-    ],
+    # "faye_wong": [
+    #     {"传奇": 298838}
+    # ],
     # 李健
     "lijian": [  # Order based on qq music
         {"风吹麦浪": 110215},
@@ -513,7 +553,7 @@ spotifyMissingSongs = {
     ],
 }
 
-# Netease different version songs
+# === Netease different version songs
 # 1. not good song source，e.g. 你的名字 我的姓氏(友个人演唱会1999, first release)
 # 2. not first version (e.g. 相爱很难) or record version (e.g. 沉默是金、无需要太多)
 #    or no copyright (e.g. 年少有为)
@@ -526,10 +566,16 @@ replaceSongIds = {
         "左右为难": 191783,  # in album 《左右为难》
         "甲乙丙丁": 171793,  # in album 《甲乙丙丁》
         "只有情永在": 253915,  # first version
+        "只想一生跟你走": 190407,  # first version
         "烦恼歌": 187672,  # first version
         "旧情绵绵": 189714,  # copyright & more comments
         "雨夜的浪漫": 188747,  # more comments
         "旗开得胜": 5240551  # first version
+    },
+    # 周杰伦
+    "jay_chou": {
+        "飘移": 185922,  # album version,《11月的萧邦》
+        "一路向北": 185924  # album version,《11月的萧邦》
     },
     # 张国荣
     "leslie_cheung": {
@@ -547,6 +593,85 @@ replaceSongIds = {
         "于心有愧": 64797,
         "圣诞结": 65355,
         "白玫瑰": 65761,
+    },
+    # 许嵩
+    "xusong": {
+        "燕归巢": 402073807,  # copyright
+        "山水之间": 28802028,  # copyright
+        "大千世界": 569213279  # copyright & more comments
+    },
+    # 王力宏
+    "leehom_wang": {
+        "缘分一道桥": 440411424,  # copyright
+        "好心分手": 28633001  # first version
+    },
+    # Beyond
+    "beyond": {
+        "海阔天空": 347351,  # first version
+        "情人": 347355,  # first version
+        "我是愤怒": 347344,  # first version
+        "无尽空虚": 347443,  # first version
+        "为了你 为了我": 347272  # first version
+    },
+    # 五月天
+    "mayday": {
+        "入阵曲": 27494071,  # first version
+        "而我知道": 385984,  # more comments, but not first version
+        # 第二人生 (末日版)
+        "我不愿让你一个人": 385554,
+        "干杯": 385552,
+        "星空": 385556
+    },
+    # Adele
+    "adele": {
+        "Someone Like You": 2117030  # first album version
+    },
+    # 萧敬腾
+    "jam_hsiao": {
+        "只能想念你": 167796,  # first album version
+        "怎么说我不爱你": 167799  # first album version
+    },
+    # Billie Eilish
+    "billie_eilish": {
+        "Happier Than Ever": 1849813426
+    },
+    # 孙燕姿
+    "stefanie_sun": {
+        "原点": 209064,  # first version
+        "永远": 287361  # more comments, but not first version
+    },
+    # Ariana Grande
+    "ariana_grande": {
+        # same album version(Sweetener), but more comments
+        "no tears left to cry": 553814210,
+        "God is a woman": 865861178
+    },
+    # 蔡健雅
+    "tanya_chua": {
+        "十万毫升泪水": 27747328,  # first album version, not concert
+        "Easy Come Easy go": 27747326,  # first album version, not concert
+        "当你离开的时候": 208937,  # first album version
+        "遗书": 1331584791,  # copyright & first album version
+        "Nightglow": 1333199831,  # copyright
+        "越来越不懂": 208958  # more comments
+    },
+    # 李克勤
+    "hacken_lee": {
+        "刻不容缓": 287634
+    },
+    # 刘德华
+    "andy_lau": {
+        "我和我追逐的梦": 113021  # for netease wrong version
+    },
+    # Shawn Mendes
+    "shawn_mendes": {
+        "Stitches": 31090820,  # Deluxe version
+        "Never Be Alone": 30621896,  # Deluxe version
+        "A Little Too Much": 30474117  # Deluxe version
+    },
+    # 许巍  All
+    "xuwei": {
+        "礼物": 5262797
     },
     # 李荣浩
     "lironghao": {

@@ -154,7 +154,7 @@ def playlistAddItemsByNumber(artist, trackNumber, accessToken, spotify, authoriz
 
 def playlistAddTracksByNumber(spotify, token, playlistId, playlist, artist, allTracks, trackNumber,
                               isCollection=False, isUpdateDesc=True):
-    addTracksToPlaylistByNumber(
+    resJson, specialAddingTracks = addTracksToPlaylistByNumber(
         spotify, token, playlistId, artist, allTracks, trackNumber)
 
     if not isCollection and isUpdateDesc:
@@ -168,8 +168,8 @@ def playlistAddTracksByNumber(spotify, token, playlistId, playlist, artist, allT
             ' most played songs (top ' + str(trackNumber) + \
             ', maxPlay: ' + maximumPlaycountStr + \
             ', minPlay: ' + minimumPlaycountStr + \
-            (', special adding: ' + ','.join(artists[artist]['includeTracks'].values())
-             if artists[artist].get('includeTracks') != None else '') + '). '
+            (', special adding: ' + ','.join(specialAddingTracks.values())
+             if len(specialAddingTracks) > 0 else '') + '). '
         if playlist == None:  # Create playlist
             playlistDescription = playlistDescription + \
                 'Generated on ' + time.strftime("%Y-%m-%d") + ' by ccg.'

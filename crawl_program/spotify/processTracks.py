@@ -85,12 +85,25 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False,
             trackCount = trackCount + 1
             trackUid = track['uid']
             trackUri = track['track']['uri']
+            trackId = trackUri.replace('spotify:track:', '')
             trackName = track['track']['name']
             trackPlaycount = track['track']['playcount']
             durationMs = track['track']['duration']['totalMilliseconds']
             duration = str(durationMs // 60000) + "m " + \
                 "{:02d}".format(durationMs // 1000 % 60) + "s"
             playable = 'Y' if track['track']['playability']['playable'] == True else 'N'
+
+            # Add includeTracks with no check
+            if artists[artist].get('includeTracks') != None and \
+                    trackId in artists[artist]['includeTracks'].keys():
+                allArtists = ', '.join(
+                    [artist['profile']['name'] for artist in track['track']['artists']['items']])
+                filterdTracks.append(
+                    {'trackUid': trackUid, 'trackUri': trackUri, 'trackName': trackName, 'artists': allArtists,
+                        'durationMs': durationMs, 'duration': duration, 'playcount': int(trackPlaycount), 'playable': playable,
+                        'albumId': albumId, 'albumName': albumName, 'albumArtists': albumArtists, 'releaseDate': releaseDate,
+                        'albumAlbumGroup': albumAlbumGroup, 'albumAlbumType': albumAlbumType, 'albumType': albumType, 'totalTracks': totalTracks})
+                continue
 
             # Check if mustMainArtist
             artistsList = track['track']['artists']['items']
@@ -128,6 +141,18 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False,
                     'albumId': albumId, 'albumName': albumName, 'albumArtists': albumArtists, 'releaseDate': releaseDate,
                     'albumAlbumGroup': albumAlbumGroup, 'albumAlbumType': albumAlbumType, 'albumType': albumType, 'totalTracks': totalTracks})
 
+    # if artists[artist].get('includeTracks') != None:
+    #     filterdTrackIds = {track['id'] for track in filterdTracks}
+    #     for trackId in artists[artist]['includeTracks'].keys():
+    #         if trackId in filterdTrackIds:
+    #             continue
+    #         track = getSingleTrack(trackId)
+    #         filterdTracks.append(
+    #             {'trackUid': track['uid'], 'trackUri': track['track']['uri'], 'trackName': track['track']['name'], 'artists': allArtists,
+    #                 'durationMs': durationMs, 'duration': duration, 'playcount': int(trackPlaycount), 'playable': playable,
+    #                 'albumId': albumId, 'albumName': albumName, 'albumArtists': albumArtists, 'releaseDate': releaseDate,
+    #                 'albumAlbumGroup': albumAlbumGroup, 'albumAlbumType': albumAlbumType, 'albumType': albumType, 'totalTracks': totalTracks})
+
     # Sort all tracks by playcount
     sortedTracks = sorted(
         filterdTracks, key=lambda track: track['playcount'], reverse=True)
@@ -154,7 +179,7 @@ def processTracks(artists, artist, allAlbumsTracks, mustMainArtist=False,
     # Write json to file
     with open('./files/tracks/' + artist + '_alltracks.json', 'w') as f:
         json.dump(processedTracks, f, ensure_ascii=False)
-    trackSheetDir = './files/trackSheets/'
+    trackSheetDir = './files/tracksheets/'
     if artist in otherArtists:
         trackSheetDir = trackSheetDir + 'other/'
     if overwriteTrackSheets:

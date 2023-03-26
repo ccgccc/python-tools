@@ -59,6 +59,21 @@ python3 playlistAddItemsByNumber.py 'Collection 5' andy_hui william_so edmond_le
 
 
 ## Sync netease playlists (& filter netease non-playable songs)
+(Default: artistToCrawl)  
+python3 syncArtistSongs.py 'playlistName'  
+(----------)  
+python3 ../netease/getPlaylistSongs.py '好歌拾遗'  
+(好歌拾遗 -> 好歌拾遗, isIncremental=True)  
+python3 syncArtistSongs.py '好歌拾遗'  
+python3 syncArtistSongs.py '好歌拾遗' faye_wong  
+(To update description)  
+python3 syncNeteaseSongs.py '好歌拾遗'  
+(----------)  
+python3 ../netease/getPlaylistSongs.py 'Listening Artist'  
+(Listening Artist -> Listening, isIncremental=False)  
+python3 syncArtistSongs.py 'Listening Artist'  
+python3 syncArtistSongs.py 'Listening Artist' faye_wong  
+
 (e.g. Favorite, Like, Nice, To Listen, Netease Non-playable)  
 (Default: 我喜欢的音乐)  
 python3 ../netease/getPlaylistSongs.py  
@@ -66,6 +81,9 @@ python3 ../netease/getPlaylistSongs.py 'Listening Artist'
 python3 ../netease/getPlaylistSongs.py 'Favorite' 'Like' 'Nice'  
 python3 ../netease/getPlaylistSongs.py 'Like' 'Nice'  
 python3 ../netease/getPlaylistSongs.py 'Hmm'  
+python3 ../netease/getPlaylistSongs.py 'Like But More' 'Nice But Classic'  
+python3 ../netease/getPlaylistSongs.py 'Like But More'  
+python3 ../netease/getPlaylistSongs.py 'Nice But Classic'  
 python3 ../netease/getPlaylistSongs.py 'High'  
 python3 ../netease/getPlaylistSongs.py 'To Listen'  
 python3 ../netease/getPlaylistSongs.py 'Netease Non-playable'  
@@ -75,10 +93,14 @@ python3 ../netease/getPlaylistSongs.py 'Collection 1'
 
 python3 syncNeteaseSongs.py 'parameter'  
 (Must be incremental!)  
+python3 syncNeteaseSongs.py 'Listening Artist'  
+python3 syncNeteaseSongs.py 'Favorite' 'Like' 'Nice'  
 python3 syncNeteaseSongs.py 'Favorite'  
 python3 syncNeteaseSongs.py 'Like'  
 python3 syncNeteaseSongs.py 'Nice'  
 python3 syncNeteaseSongs.py 'Hmm'  
+python3 syncNeteaseSongs.py 'Like But More'  
+python3 syncNeteaseSongs.py 'Nice But Classic'  
 python3 syncNeteaseSongs.py 'High'  
 python3 syncNeteaseSongs.py 'To Listen'  
 python3 syncNeteaseSongs.py 'Netease Non-playable'  
@@ -88,11 +110,9 @@ python3 syncNeteaseSongs.py 'More Hits - 民谣'
 python3 syncNeteaseSongs.py 'More Hits - 流行'  
 python3 syncNeteaseSongs.py 'Collection 1'  
 
+(Sync netease 'Listening Artist' non-playable songs)  
 python3 ../netease/getPlaylistSongs.py 'Listening Artist'  
 python3 syncNeteaseSongs.py 'Listening'  
-
-python3 ../netease/getPlaylistSongs.py '好歌拾遗'  
-python3 syncArtistSongs.py  
 
 ### Like songs
 python3 tracksDiff.py  

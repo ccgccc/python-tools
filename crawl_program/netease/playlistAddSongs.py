@@ -16,11 +16,10 @@ from netease.syncSongs import getSyncSongs
 #  Add synced songs to netease playlists by spotify playlists
 # ************************************************************
 
-# Set baseUrl
-setBaseUrl()
-
 
 def main():
+    # Set baseUrl
+    setBaseUrl()
     # Get netease playlist
     playlist = loadJsonFromFile(
         'playlists/generated_playlists/' + artistToCrawl + '_playlist')

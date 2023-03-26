@@ -1499,6 +1499,9 @@ generateArtists = {
         "generateInfo": {
             "generateMethod": 1,
             "number": 5  # 白樺林
+        },
+        "excludeAlbums": {
+            "539nDX1Gh336TJehkDUVWR": "朴树 猎户星座 · 专场",  # 现场版本，重复
         }
     },
     # == Generated Artists
@@ -1682,12 +1685,13 @@ generateArtists = {
         "filterTrackByName": True,
         "generateInfo": {
             "generateMethod": 1,
-            "number": 20
+            "number": 25
         }
     },
     "shawn_mendes": {
         "name": "Shawn Mendes",  # 2014-11-04
         "artistId": "7n2wHs1TKAczGzO7Dd2rGr",
+        "filterAlbums": True,
         "generateInfo": {
             "generateMethod": 1,
             "number": 20
@@ -1698,7 +1702,7 @@ generateArtists = {
         "artistId": "6noxsCszBEEK04kCehugOp",
         "generateInfo": {
             "generateMethod": 1,
-            "number": 20
+            "number": 40
         }
     },
     "andy_lau": {
@@ -1706,7 +1710,7 @@ generateArtists = {
         "artistId": "2n3uDrupL8UtFSeZhY38MS",
         "generateInfo": {
             "generateMethod": 1,
-            "number": 30
+            "number": 35
         }
     },
     "hacken_lee": {
@@ -1714,7 +1718,7 @@ generateArtists = {
         "artistId": "3PV11RNUoGfX9tMN2wVljB",
         "generateInfo": {
             "generateMethod": 1,
-            "number": 20
+            "number": 25
         }
     },
     "tanya_chua": {
@@ -1722,20 +1726,29 @@ generateArtists = {
         "artistId": "376pcuw4IgWBMOUwCr8kIm",
         "generateInfo": {
             "generateMethod": 1,
-            "number": 20
+            "number": 25
         }
     },
     "michael_jackson": {
         "name": "Michael Jackson",  # 1972-01-24
         "artistId": "3fMbdgg4jU18AjLCKBhRSm",
+        "filterAlbums": True,
         "generateInfo": {
             "generateMethod": 1,
             "number": 50
+        },
+        "includeAlbums": {
+            "2O6gXGWFJcNrLYAqDINrDa": "We Are The World",
+            # "4gumWVpQL26kXbTSWJehJT": "Classical Pop"  # We Are The World - Live
+        },
+        "includeTracks": {
+            "3Z2tPWiNiIpg8UMMoowHIk": "We Are The World"
         }
     },
     "ariana_grande": {
         "name": "Ariana Grande",  # 2008-09-30
         "artistId": "66CXWjxzNUsdJxJ2JdwvnR",
+        "filterAlbums": True,
         "generateInfo": {
             "generateMethod": 1,
             "number": 20
@@ -1752,6 +1765,7 @@ generateArtists = {
     "billie_eilish": {
         "name": "Billie Eilish",  # 2016-11-17
         "artistId": "6qqNVTkY8uBg9cP3Jd7DAH",
+        "filterAlbums": True,
         "generateInfo": {
             "generateMethod": 1,
             "number": 20
@@ -1762,7 +1776,7 @@ generateArtists = {
         "artistId": "0SIXZXJCAhNU8sxK0qm7hn",
         "generateInfo": {
             "generateMethod": 1,
-            "number": 20
+            "number": 30
         }
     },
     "jam_hsiao": {
@@ -1770,15 +1784,15 @@ generateArtists = {
         "artistId": "4AJcTAMOLkRl3vf4syay8Q",
         "generateInfo": {
             "generateMethod": 1,
-            "number": 20
+            "number": 25
         }
     },
     "adele": {
         "name": "Adele",  # 2008-01-20
         "artistId": "4dpARuHxo51G3z768sgnrY",
         "generateInfo": {
-            "generateMethod": 2,
-            "number": 100000000
+            "generateMethod": 1,
+            "number": 30
         }
     },
     "mayday": {
@@ -1787,6 +1801,9 @@ generateArtists = {
         "generateInfo": {
             "generateMethod": 1,
             "number": 30
+        },
+        "excludeTracks": {
+            "0LfJz5nmfKopvdwm5rV1l2": "知足(07'最知足版)"  # 重复
         }
     },
     "karen_mok": {
@@ -1803,7 +1820,10 @@ generateArtists = {
         "artistId": "3df3XLKuqTQ6iOSmi0K3Wp",
         "generateInfo": {
             "generateMethod": 1,
-            "number": 35
+            "number": 40
+        },
+        "excludeTracks": {
+            "50tINlxyHhT3TKanjxwtKC": "執迷不悔"  # 重复
         }
     },
     "wangfeng": {
@@ -1812,15 +1832,23 @@ generateArtists = {
         "generateInfo": {
             "generateMethod": 1,
             "number": 20
+        },
+        "excludeTracks": {
+            "1zg77kr3smrdg20hSzMIJb": "北京北京"  # 重复&演唱会版本
         }
     },
     "beyond": {
         "name": "Beyond",  # 1986-01-01
         "artistId": "4F5TrtYYxsVM1PhbtISE5m",
         "mustMainArtist": True,
+        "filterTrackByName": True,
         "generateInfo": {
             "generateMethod": 1,
-            "number": 20
+            "number": 30
+        },
+        "excludeTracks": {
+            "1QNKMUKIfncbuhGrQ2g89F": "真的愛你",  # 重复&演唱会版本
+            "58kMmqDaXOjoA5lbG0FSZH": "喜歡你"  # 重复&演唱会版本
         }
     },
     "leehom_wang": {
@@ -1829,6 +1857,9 @@ generateArtists = {
         "generateInfo": {
             "generateMethod": 1,
             "number": 25
+        },
+        "includeTracks": {
+            "1Mum1zLFnzuPDR1GsmBV7x": "緣分一道橋"
         }
     },
     "xusong": {

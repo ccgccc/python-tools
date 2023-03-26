@@ -12,8 +12,8 @@ from spotifyFunc import *
 
 # Define playlistId:isPrivate here
 playlistIDs = {
-    "7J6PrVFDlPWiQe0m6NF2ie": False,  # Favorite
-    "2QBH6yCLDJhTiXKqDfCtOA": False,  # Like
+    # "7J6PrVFDlPWiQe0m6NF2ie": False,  # Favorite
+    # "2QBH6yCLDJhTiXKqDfCtOA": False,  # Like
     # '4SqLcwtjZJXdkH8twICyOa': False,  # Nice
     # '64s4sAZyFPc9v2siw2XdX7': True,  # Hmm
     # '4qaMezDPYbUUCUaKVuOa44': False,  # 好歌拾遗
@@ -27,6 +27,8 @@ playlistIDs = {
     # '2UuyNeehZW9HQXhTkmFKBj': True,  # Netease Non-playable
     # '2R48aLSO7QmOaHAGaV0zIM': True  # Listening Artist
     # '1SncTeu3d4b7PtSLHtghnl': False,  # High
+    # "79D2rJQJMQLzl7h5hIfbnF": False  # Like But More
+    "7GpytCATIXfZqThmVzzmJU": False  # Nice But Classic
 }
 
 # Define if simple print
@@ -155,7 +157,7 @@ def playlistStatistics(playlist):
         else:
             playlistStats[mainArtist] = playlistStats[mainArtist] + 1
     print(dict(sorted(playlistStats.items(),
-          key=lambda item: item[1], reverse=True)))
+          key=lambda item: (-item[1], item[0]), reverse=False)))
 
 
 if __name__ == '__main__':

@@ -16,9 +16,6 @@ from playlistRemoveSongs import playlistRomoveSongs
 #    Sync spotify custom playlists to netease
 # **************************************************
 
-# Set baseUrl
-setBaseUrl()
-
 # Define create playlist or update playlist
 isCreate = False
 
@@ -54,6 +51,9 @@ def main():
         isIncremental = False
         isReversed = False
         addSpotifyMissing = True
+    elif playlistName in {'张学友', '周杰伦'}:
+        isIncremental = False
+        isReversed = False
     print('--------------------')
     print('*** Sync Info ***')
     print('Playlist:', playlistName)
@@ -91,7 +91,10 @@ def main():
         print('isCreate:', isCreate)
         print('IsIncremental:', isIncremental)
         print('IsReversed:', isReversed)
-        sureCheck()
+        print('--------------------')
+        # sureCheck()
+        # Set baseUrl
+        setBaseUrl(needCheck=True)
         # Create netease playlist
         playlist = createPlaylist(playlistName, isPrivate=isPrivate)
         playlistId = playlist['playlist']['id']
@@ -121,10 +124,14 @@ def main():
         print('isCreate:', isCreate)
         print('IsIncremental:', isIncremental)
         print('IsReversed:', isReversed)
-        sureCheck()
+        print('--------------------')
+        # sureCheck()
         if not isIncremental:
             # Remove playlist songs
-            playlistRomoveSongs(playlistId)
+            playlistRomoveSongs(playlistId, isSureCheck=True)
+        else:
+            # Set baseUrl
+            setBaseUrl(needCheck=True)
 
     # Add songs & update playlist description
     if not isReversed:
@@ -134,7 +141,7 @@ def main():
 
     if not isCollection:
         playlistDescription = 'Sync between spotify and netease.' + \
-            ((' Netease missing: ' + ', '.join(neteaseMissingSongsStr) +
+            ((' Netease missing(' + str(len(neteaseMissingSongs)) + '): ' + ', '.join(neteaseMissingSongsStr) +
               '.') if len(neteaseMissingSongsStr) > 0 else '') + \
             ((' Spotify Missing: ' + ', '.join(spotifyMissingSongsStr) +
               '.') if len(spotifyMissingSongsStr) > 0 else '') + \
@@ -150,6 +157,8 @@ def main():
 
     # Get new playlist Info
     print('\nCrawling playlist new info...')
+    # Set baseUrl
+    setBaseUrl2(needCheck=True)
     playlist = getPlaylist(playlistId)
     writeJsonToFile(playlist, neteasePlaylistFileName)
     playlistSongs = getPlaylistSongs(playlistId)

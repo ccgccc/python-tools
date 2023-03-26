@@ -15,6 +15,7 @@ myUserName = 'ccgccc'
 # Define baseUrl
 global baseUrl
 baseUrl = 'https://service-4ipff8tq-1259202535.gz.apigw.tencentcs.com/release'
+# baseUrl = 'https://netease-cloud-music-api-three-rose.vercel.app'
 
 # Define headers to get private info in terminal
 headers = {
@@ -34,8 +35,18 @@ def setBaseUrl(needCheck=False):
     global baseUrl
     baseUrl = 'https://netease-cloud-music-api-three-rose.vercel.app'
     if needCheck:
-        print('Base Url:', baseUrl)
-        msg = input('Set proxy to global. Press Y to continue: ')
+        print('\nBaseUrl changed:', baseUrl)
+        msg = input('Set proxy to global mode. Press Y to continue: ')
+        if msg != 'y' and msg != 'Y':
+            sys.exit()
+
+
+def setBaseUrl2(needCheck=False):
+    global baseUrl
+    baseUrl = 'https://service-4ipff8tq-1259202535.gz.apigw.tencentcs.com/release'
+    if needCheck:
+        print('BaseUrl changed:', baseUrl)
+        msg = input('Set proxy to pac mode. Press Y to continue: ')
         if msg != 'y' and msg != 'Y':
             sys.exit()
 

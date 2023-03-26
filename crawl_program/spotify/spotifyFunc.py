@@ -37,6 +37,15 @@ def getArtistAlbumsOnce(token, artistId, limit, offset):
     return albumsObject
 
 
+# Get single album
+def getSingleAlbum(token, albumId):
+    albumEndPoint = f"https://api.spotify.com/v1/albums/{albumId}"
+    getHeaders = getHeader(token)
+    res = requests.get(albumEndPoint, headers=getHeaders)
+    atrackObject = res.json()
+    return atrackObject
+
+
 # Get one album's tracks
 def getAlbumTracks(token, albumId, limit, offset):
     albumTracksEndPoint = f"https://api.spotify.com/v1/albums/{albumId}/tracks?limit={limit}&offset={offset}"
@@ -250,6 +259,9 @@ def addTracksToPlayList(spotify, token, playlistId, trackUriList):
     postHeaders = postHeader(token)
     print('\n**********')
     print("Adding tracks to playlist...")
+    if (len(trackUriList) == 0):
+        print('Nothing to add...')
+        return None
     for i in range(0, len(trackUriList), 100):
         postData = {
             "uris": trackUriList[i:i+100]
@@ -275,14 +287,17 @@ def addTracksToPlaylistByNumber(spotify, token, playlistId, artist, allTracks, t
                      ['spotify:track:' + trackId for trackId in list(artists[artist]['excludeTracks'].keys())]]
     toAddTracks = allTracks[0:tracksNumber] if tracksNumber < len(
         allTracks) else allTracks
-    trackUriList = []
-    for track in toAddTracks:
-        trackUriList.append(track['trackUri'])
+    trackUriList = [track['trackUri'] for track in toAddTracks]
+    specialAddingTracks = {}
     if artists[artist].get('includeTracks') != None:
-        trackUriList.extend(['spotify:track:' + trackId
-                             for trackId in list(artists[artist]['includeTracks'].keys())])
+        for trackId, trackName in artists[artist]['includeTracks'].items():
+            trackUri = 'spotify:track:' + trackId
+            if trackUri in trackUriList:
+                continue
+            trackUriList.append(trackUri)
+            specialAddingTracks = specialAddingTracks | {trackId: trackName}
     resJson = addTracksToPlayList(spotify, token, playlistId, trackUriList)
-    return resJson
+    return resJson, specialAddingTracks
 
 
 # Add tracks to playlist by playcount

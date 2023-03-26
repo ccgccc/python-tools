@@ -1,15 +1,15 @@
 # Deine artist to crawl
-artistToCrawl = "jj_lin"
+artistToCrawl = "queen"
 
 # === Define artists to generate playlists
 generateArtists = {
-    "zuoxiaozuzhou": {
-        "name": "左小祖咒",
-        "artistId": 6467
-    },
     "zhangruoshui": {
         "name": "张若水",
         "artistId": 12271403
+    },
+    "zuoxiaozuzhou": {
+        "name": "左小祖咒",
+        "artistId": 6467
     },
     "haiweiba": {
         "name": "海尾巴",
@@ -167,7 +167,7 @@ generateArtists = {
         "name": "老狼",
         "artistId": 3682
     },
-
+    # ---
     "queen": {
         "name": "Queen",
         "artistId": 41906

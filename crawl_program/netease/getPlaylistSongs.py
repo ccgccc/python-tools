@@ -51,6 +51,7 @@ def getPlaylistIds(playlistNames):
 
 
 def main():
+    global playlistIds
     # Read parameters from command line
     if len(sys.argv) >= 2:
         playlistIDs, realPlaylistNames = getPlaylistIds(sys.argv[1:])
@@ -59,6 +60,7 @@ def main():
 
     for playlistId in playlistIds:
         playlist = getPlaylist(playlistId)
+        # playlistSongs = getPlaylistSongs(playlistId)
         playlistSongs = getPlaylistSongs(playlistId, addTs=True)
         playlistSongs['playlist'] = playlist
 
@@ -71,7 +73,7 @@ def main():
         writeJsonToFile(playlistSongs, fileName)
 
         printPlaylists([playlist['playlist']])
-        printSongs(playlistSongs['songs'], csvFileName=fileName)
+        printSongs(playlistSongs['songs'], reverse=True, csvFileName=fileName)
 
 
 if __name__ == '__main__':

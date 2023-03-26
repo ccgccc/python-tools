@@ -12,13 +12,11 @@ from netease.syncSongs import getSyncSongs
 from playlistCreate import generatePlaylist
 from playlistRemoveSongs import playlistRomoveSongs
 from playlistAddSongs import playlistAddSongs
+from getPlaylistDetails import getPlaylistDetails
 
 # ************************************************************
 #     Sync spotify most played songs playlists to netease
 # ************************************************************
-
-# Set baseUrl
-setBaseUrl()
 
 # Define artist here
 artistToSyncList = [artistToCrawl]
@@ -49,6 +47,7 @@ if len(sys.argv) >= 2:
 
 
 def main():
+    print(getBaseUrl())
     for artist in artistToSyncList:
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('Updating ' + artists[artist]['name'] + '...')
@@ -84,6 +83,8 @@ def syncSpotifyPlaylist(artist):
 
     # Create or clear playlist
     if isCreate:
+        # Set baseUrl
+        setBaseUrl(needCheck=True)
         # Create netease playlist
         playlist = generatePlaylist(artist, isUpdateDesc=False)
         playlistId = playlist['playlist']['id']
@@ -95,16 +96,24 @@ def syncSpotifyPlaylist(artist):
             sys.exit()
         playlist = loadJsonFromFile(fileName)
         playlistId = playlist['playlist']['id']
+        # Set baseUrl
+        # setBaseUrl(needCheck=True)
         # Remove playlist songs
-        playlistRomoveSongs(playlistId)
+        playlistRomoveSongs(playlistId, isSureCheck=True)
 
     # Add songs & update playlist description
     playlistAddSongs(artist, playlistId, syncSongs, missingSongs,
                      spotifyPlaylist, isUpdateDesc=isUpdateDesc, isPromptDescMissing=isPromptDescMissing)
+    # Set baseUrl
+    setBaseUrl2(needCheck=True)
+    print('\nCrawling playlist new info...')
     # Get new playlist Info
     playlist = getPlaylist(playlistId)
     writeJsonToFile(playlist, 'playlists/generated_playlists/' +
                     artist + '_playlist')
+    # Get playlist details
+    getPlaylistDetails([playlistId])
+    print('Done!')
 
 
 if __name__ == '__main__':

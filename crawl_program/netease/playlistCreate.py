@@ -8,11 +8,10 @@ from common import *
 #     Create netease most played songs playlist
 # **************************************************
 
-# Set baseUrl
-setBaseUrl()
-
 
 def main():
+    # Set baseUrl
+    setBaseUrl()
     dir = './files/playlists/generated_playlists/'
     fileNames = [f for f in listdir(dir) if isfile(join(dir, f))]
     if artistToCrawl + '_playlist.json' in fileNames:

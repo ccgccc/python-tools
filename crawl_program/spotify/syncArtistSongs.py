@@ -2,7 +2,6 @@ import os
 import re
 import sys
 import json
-import time
 import zhconv
 import inspect
 # Enable import parent directory modules
@@ -10,9 +9,10 @@ currentdir = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
+from netease.artists import artists as neteaseArtists
 from netease.specialSongs import *
-from netease.syncSongs import getSpotifyArtistTrackIdNames, getArtistSpecialSongNames
-from artists import artists as spotifyArtists
+from netease.syncSongs import getArtistSpecialSongNames
+from artists import *
 from utils.auth import getAccessToken, getAuthorizationToken
 from utils.secrets import clientID, clientSecret
 from spotifyFunc import *
@@ -20,38 +20,62 @@ from crawlPlaylists import crawlSinglePlaylist
 from playlistRemoveItems import playlistRemoveAllItems
 
 # Define artist
-artist = 'g_e_m'
-# Define netease playlist
-playlistName = 'Listening Artist'
-playlistName = '好歌拾遗'
-spotifyPlaylistName = '好歌拾遗'
+artist = artistToCrawl
+# Read parameters from command line
+if len(sys.argv) >= 2:
+    neteasePlaylistName = sys.argv[1]
+    if len(sys.argv) >= 3:
+        artist = sys.argv[2]
+else:
+    print('Parameter error! Exit...')
+    sys.exit()
+
+# Define netease & spotify playlist
+# neteasePlaylistName = 'Listening Artist'
+# spotifyPlaylistName = 'Listening'
+# neteasePlaylistName = '好歌拾遗'
+# spotifyPlaylistName = '好歌拾遗'
 # Define spotify playlist isPrivate
 isPrivate = True
 # Define is incremental
 isIncremental = True
+if neteasePlaylistName in ['Listening Artist']:
+    spotifyPlaylistName = 'Listening'
+    isPrivate = True
+    isIncremental = False
+elif neteasePlaylistName in ['好歌拾遗']:
+    spotifyPlaylistName = '好歌拾遗'
+    isPrivate = False
+    isIncremental = True
 # Netease playlist file name
 neteasePlaylistFileName = '../netease/files/playlists/playlist_songs_' + \
-    playlistName + '_by ccgccc.json'
+    neteasePlaylistName + '_by ccgccc.json'
 # Spotify playlist file name
 spotifyPlaylistFileName = '../spotify/files/playlists/playlist_' + \
     spotifyPlaylistName + '_by ccg ccc.json'
-if playlistName in ['Listening Artist']:
-    isPrivate = True
-    isIncremental = False
-elif playlistName in ['好歌拾遗']:
-    isPrivate = False
-    isIncremental = True
 
+
+# Get spotify playlist info
+if os.path.isfile(spotifyPlaylistFileName):
+    with open(spotifyPlaylistFileName) as f:
+        spotifyPlaylist = json.load(f)
+        spotifyPlaylistId = spotifyPlaylist['id']
+        spotifyPlaylistTrackIds = {trackItem['track']['uri']
+                                   for trackItem in spotifyPlaylist['tracks']['items']}
+print('Spotify all tracks:', len(spotifyPlaylist['tracks']['items']))
+print({trackItem['track']['name']
+      for trackItem in spotifyPlaylist['tracks']['items']}, '\n')
 
 # Get netease playlist
+print('--------------------')
 if not os.path.isfile(neteasePlaylistFileName):
     print('Netease playlist not created yet.')
     sys.exit()
 with open(neteasePlaylistFileName) as f:
     neteasePlaylist = json.load(f)
-neteaseAllSyncSongNames = [song['name']
-                           for song in neteasePlaylist['songs']]
-print('Netease all songs:', len(neteaseAllSyncSongNames))
+neteaseAllSyncSongNames = [song['name'] for song in neteasePlaylist['songs']
+                           if neteaseArtists[artist]['artistId'] in {ar['id'] for ar in song['ar']}]
+print('Netease all sync songs:', len(neteaseAllSyncSongNames))
 print(neteaseAllSyncSongNames, '\n')
 
 # Get artist all tracks
@@ -69,24 +93,23 @@ for track in allTracks:
         spotifyMatchTracks[processedTrackName] = track['trackUri']
 
 # Get sync songs
+print('--------------------')
 syncSongs = []
 missingSongs = []
 for songName in neteaseAllSyncSongNames:
-    if spotifyMatchTracks.get(songName) != None:
-        syncSongs.append({songName: spotifyMatchTracks[songName]})
+    spotifyMatchTrackId = spotifyMatchTracks.get(songName)
+    if isIncremental and spotifyMatchTrackId in spotifyPlaylistTrackIds:
+        continue
+    if spotifyMatchTrackId != None:
+        syncSongs.append({songName: spotifyMatchTrackId})
     else:
         missingSongs.append(songName)
-print('Sync songs:', syncSongs, '\n')
-print('Missing songs:', missingSongs, '\n')
+print('Sync songs(' + str(len(syncSongs)) + '):', syncSongs, '\n')
+print('Missing songs(' + str(len(missingSongs)) + '):', missingSongs, '\n')
 sureCheck()
 
 # Modify spotify playlist by netease sync songs
 trackUriList = [list(dict.values())[0] for dict in syncSongs]
-# Get spotify playlist id
-if os.path.isfile(spotifyPlaylistFileName):
-    with open(spotifyPlaylistFileName) as f:
-        spotifyPlaylist = json.load(f)
-        spotifyPlaylistId = spotifyPlaylist['id']
 # Get spotify authorization token by scope and accessToken
 scope = [
     "playlist-read-private",

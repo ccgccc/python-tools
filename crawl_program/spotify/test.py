@@ -224,7 +224,7 @@ def getDiffTracks():
     # Get artists diff tracks
     filterArtist = False
     artist = 'eason_chan'
-    filterArtist = True
+    # filterArtist = True
     diffTrackIds = set()
     count = 0
     for trackItem in trackItems:
@@ -305,26 +305,45 @@ def addPlaylistDiffTracks():
 
 
 def playlistResetTracks():
-    artist = 'g_e_m'
+    artist = 'zhengjun'
 
-    resetPlaylistName = "Favorite"
-    resetPlaylistName = "Like"
-    # resetPlaylistName = "Nice"
+    resetPlaylistNames = [
+        "Favorite",
+        "Like",
+        "Nice"
+    ]
+
+    mustMainArtist = True
+
+    isCollection = False
+    isCollection = True
+    collection = 'Collection 1'
 
     # Get artist all tracks
     print('--------------------')
-    playlistNames = [
-        artists[artist]['name'] + ' Most Played Songs',
-        '好歌拾遗'
-    ]
+    if not isCollection:
+        playlistNames = [
+            artists[artist]['name'] + ' Most Played Songs',
+            '好歌拾遗'
+        ]
+    else:
+        playlistNames = [
+            collection,
+            '好歌拾遗'
+        ]
+
     allTrackIds = set()
     count = 0
     for playlistName in playlistNames:
-        try:
-            with open('files/playlists/playlist_' + playlistName + '_by ccg ccc.json') as f:
-                playlist = json.load(f)
-        except:
-            with open('files/playlists/generated_playlists_info/playlist_' + playlistName + '_by ccg ccc.json') as f:
+        if not isCollection:
+            try:
+                with open('files/playlists/playlist_' + playlistName + '_by ccg ccc.json') as f:
+                    playlist = json.load(f)
+            except:
+                with open('files/playlists/generated_playlists_info/playlist_' + playlistName + '_by ccg ccc.json') as f:
+                    playlist = json.load(f)
+        else:
+            with open('files/playlists/playlist_' + collection + '_by ccg ccc.json') as f:
                 playlist = json.load(f)
         tracksNum = len(playlist['tracks']['items'])
         count = count + tracksNum
@@ -334,65 +353,78 @@ def playlistResetTracks():
                                      for track in playlist['tracks']['items']}
     print('All tracks:', len(allTrackIds))
 
+    spotify = None
+    authorizeToken = None
     # Get artist playlist tracks
-    print('--------------------')
-    with open('files/playlists/playlist_' + resetPlaylistName + '_by ccg ccc.json') as f:
-        playlist = json.load(f)
-        spotifyPlaylistId = playlist['id']
-    artistTracks = []
-    for trackItem in playlist['tracks']['items']:
-        for trackArtist in trackItem['track']['artists']:
-            if trackArtist['id'] == artists[artist]['artistId']:
-                artistTracks.append({trackItem['track']['id']: trackItem['track']['name'] +
-                                     '(' + '/'.join([artist['name'] for artist in trackItem['track']['artists']]) + ')'})
-                continue
-    print('Artist tracks:', len(artistTracks))
-    print(artistTracks)
+    for resetPlaylistName in resetPlaylistNames:
+        print('--------------------')
+        print('Playlist:', resetPlaylistName, '\n')
+        with open('files/playlists/playlist_' + resetPlaylistName + '_by ccg ccc.json') as f:
+            playlist = json.load(f)
+            spotifyPlaylistId = playlist['id']
+        artistTracks = []
+        for trackItem in playlist['tracks']['items']:
+            if mustMainArtist:
+                if trackItem['track']['artists'][0]['id'] == artists[artist]['artistId']:
+                    artistTracks.append({trackItem['track']['id']: trackItem['track']['name'] +
+                                        '(' + '/'.join([artist['name'] for artist in trackItem['track']['artists']]) + ')'})
+            else:
+                for trackArtist in trackItem['track']['artists']:
+                    if trackArtist['id'] == artists[artist]['artistId']:
+                        artistTracks.append({trackItem['track']['id']: trackItem['track']['name'] +
+                                            '(' + '/'.join([artist['name'] for artist in trackItem['track']['artists']]) + ')'})
+                        continue
+        print('Artist tracks:', len(artistTracks))
+        print(artistTracks)
 
-    # In playlist tracks
-    artistInPlaylistsTracks = list(filter(
-        lambda dict: list(dict.keys())[0] in allTrackIds, artistTracks))
-    # artistInPlaylistsTracks = [{'3ftmO1Cwbew497pFiWiyAH': '浮誇(陳奕迅)'}, {'6akVETVeqqPVvuBS5e0EB1': '孤勇者 - 《英雄聯盟:雙城之戰》動畫劇集中文主題曲(陳奕迅)'}]
-    print('\nArtist in laylist tracks:', len(artistInPlaylistsTracks))
-    print(artistInPlaylistsTracks)
-    # Not in playlist tracks
-    artistNotInPlaylistsTracks = list(filter(
-        lambda dict: list(dict.keys())[0] not in allTrackIds, artistTracks))
-    print('\nArtist not in laylist tracks:',
-          len(artistNotInPlaylistsTracks))
-    print(artistNotInPlaylistsTracks)
+        # In playlist tracks
+        artistInPlaylistsTracks = list(filter(
+            lambda dict: list(dict.keys())[0] in allTrackIds, artistTracks))
+        # artistInPlaylistsTracks = [{'3ftmO1Cwbew497pFiWiyAH': '浮誇(陳奕迅)'}, {'6akVETVeqqPVvuBS5e0EB1': '孤勇者 - 《英雄聯盟:雙城之戰》動畫劇集中文主題曲(陳奕迅)'}]
+        print('\nArtist in playlist tracks:', len(artistInPlaylistsTracks))
+        print(artistInPlaylistsTracks)
+        # Not in playlist tracks
+        artistNotInPlaylistsTracks = list(filter(
+            lambda dict: list(dict.keys())[0] not in allTrackIds, artistTracks))
+        # artistNotInPlaylistsTracks = [{'6LLyiqMoNoex4Zu0ka4iF2': '唯一(王力宏)'}, {
+        #     '2fzf7AWpYMsW5xMOEaPvWc': '好心分手 (feat. Leehom Wang)(盧巧音/王力宏)'}]
+        print('\nArtist not in playlist tracks:',
+              len(artistNotInPlaylistsTracks))
+        print(artistNotInPlaylistsTracks)
 
-    print('--------------------')
-    sureCheck()
-    scope = [
-        "playlist-read-private",
-        "playlist-modify-private",
-        "playlist-modify-public"
-    ]
-    spotify, authorizeToken = getAuthorizationToken(
-        clientID, clientSecret, scope)
-    accessToken = getAccessToken(clientID, clientSecret)
-    artistInPlaylistsTrackUris = [
-        'spotify:track:' + list(dict.keys())[0] for dict in artistInPlaylistsTracks]
-    removePlayListTracks(spotify, authorizeToken,
-                         spotifyPlaylistId, artistInPlaylistsTrackUris)
-    # addTracksToPlayList(spotify, authorizeToken,
-    #                     spotifyPlaylistId, artistInPlaylistsTrackUris)
-    # for dict in artistInPlaylistsTracks:
-    #     addTracksToPlayList(spotify, authorizeToken,
-    #                         spotifyPlaylistId, ['spotify:track:' + list(dict.keys())[0]])
-    #     time.sleep(1)
+        print('--------------------')
+        sureCheck()
+        scope = [
+            "playlist-read-private",
+            "playlist-modify-private",
+            "playlist-modify-public"
+        ]
+        if spotify == None:
+            spotify, authorizeToken = getAuthorizationToken(
+                clientID, clientSecret, scope)
+        accessToken = getAccessToken(clientID, clientSecret)
+        artistInPlaylistsTrackUris = [
+            'spotify:track:' + list(dict.keys())[0] for dict in artistInPlaylistsTracks]
+        removePlayListTracks(spotify, authorizeToken,
+                             spotifyPlaylistId, artistInPlaylistsTrackUris)
+        # addTracksToPlayList(spotify, authorizeToken,
+        #                     spotifyPlaylistId, artistInPlaylistsTrackUris)
+        # for dict in artistInPlaylistsTracks:
+        #     addTracksToPlayList(spotify, authorizeToken,
+        #                         spotifyPlaylistId, ['spotify:track:' + list(dict.keys())[0]])
+        #     time.sleep(1)
 
-    time.sleep(2)
-    artistNotInPlaylistsTrackUris = [
-        'spotify:track:' + list(dict.keys())[0] for dict in artistNotInPlaylistsTracks]
-    removePlayListTracks(spotify, authorizeToken,
-                         spotifyPlaylistId, artistNotInPlaylistsTrackUris)
-    # addTracksToPlayList(spotify, authorizeToken,
-    #                     spotifyPlaylistId, artistNotInPlaylistsTrackUris)
+        # sys.exit()
+        time.sleep(2)
+        artistNotInPlaylistsTrackUris = [
+            'spotify:track:' + list(dict.keys())[0] for dict in artistNotInPlaylistsTracks]
+        removePlayListTracks(spotify, authorizeToken,
+                             spotifyPlaylistId, artistNotInPlaylistsTrackUris)
+        # addTracksToPlayList(spotify, authorizeToken,
+        #                     spotifyPlaylistId, artistNotInPlaylistsTrackUris)
 
-    crawlSinglePlaylist(accessToken, spotifyPlaylistId,
-                        './files/playlists/', spotify=spotify)
+        crawlSinglePlaylist(accessToken, spotifyPlaylistId,
+                            './files/playlists/', spotify=spotify)
 
 
 def unSaveTracks():
@@ -418,7 +450,7 @@ def checkArtists():
 
 
 def renameTrackSheets():
-    mypath = './files/trackSheets/temp/'
+    mypath = './files/tracksheets/temp/'
     files = [mypath + f for f in os.listdir(mypath)
              if os.path.isfile(os.path.join(mypath, f))]
     print('Renaming:')

@@ -9,6 +9,8 @@ from .artists import *
 #  Get spotify synced songs by artist & track names
 # **************************************************
 
+ignoreCase = True
+
 
 # Classify playlist tracks by artist
 def getSpotifyArtistTrackIdNames(spotifyPlaylistName, spotifyPlaylistTracks, spotifyArtists):
@@ -121,19 +123,6 @@ def getSpotifyToNeteaseSongs(spotifyArtistTrackIdNames, spotifyArtists, playlist
     return syncSongs, neteaseMissingSongs, neteaseMissingSongsStr, spotifyMissingTracksStr
 
 
-# Get artist special song names
-def getArtistSpecialSongNames(artist, playlistName):
-    artistSpecialSongNames = specialSongNames.get(artist)
-    if playlistName == None:
-        return artistSpecialSongNames
-    if artistSpecialSongNames != None and artistSpecialSongNames.get('playlist') != None:
-        playlistSpecialSongNames = artistSpecialSongNames['playlist'].get(
-            playlistName)
-        if playlistSpecialSongNames != None:
-            artistSpecialSongNames = artistSpecialSongNames | playlistSpecialSongNames
-    return artistSpecialSongNames
-
-
 # Process spotify track names & match netease songs for one artist
 def getSyncSongs(artist, spotifyTrackIdNames, playlistName=None, isRemoveAlias=True, addSpotifyMissing=False,
                  isNeedPrompt=True, isOkPrompt=True, confirmOnceMode=True):
@@ -159,15 +148,34 @@ def getSyncSongs(artist, spotifyTrackIdNames, playlistName=None, isRemoveAlias=T
                             for song in neteaseArtistSongs}
     if specialSongIds.get(artist) != None:
         neteaseArtistSongIds = neteaseArtistSongIds \
-            | specialSongIds.get(artist)  # since python 3.9
+            | getArtistSpecialSongIds(artist, playlistName)  # since python 3.9
     if replaceSongIds.get(artist) != None:
         for k, v in replaceSongIds.get(artist).items():
             neteaseArtistSongIds[k] = v
 
     # Get sync songs name & id
-    seen = set()
-    syncSongs = [{name: neteaseArtistSongIds.get(name)} for name in spotifyTrackNames
-                 if neteaseArtistSongIds.get(name) != None and name not in seen and not seen.add(name)]
+    if not ignoreCase:
+        seen = set()
+        syncSongs = [{name: neteaseArtistSongIds.get(name)} for name in spotifyTrackNames
+                     if neteaseArtistSongIds.get(name) != None and name not in seen and not seen.add(name)]
+    else:
+        seen = set()
+        neteaseArtistLowerSongIds = {k.lower(): v for k, v in neteaseArtistSongIds.items()
+                                     if k.lower() not in seen and not seen.add(k.lower())}
+        neteaseArtistIdSongs = {
+            v: k for k, v in neteaseArtistSongIds.items()}
+        # syncSongIds = [neteaseArtistLowerSongIds.get(name.lower()) for name in spotifyTrackNames
+        #                if neteaseArtistLowerSongIds.get(name.lower()) != None
+        #                and name not in seen and not seen.add(name)]
+        syncSongIds = []
+        neteaseMissingSongs = set()
+        for name in spotifyTrackNames:
+            if neteaseArtistLowerSongIds.get(name.lower()) != None:
+                syncSongIds.append(neteaseArtistLowerSongIds[name.lower()])
+            else:
+                neteaseMissingSongs.add(name)
+        syncSongs = [{neteaseArtistIdSongs.get(songId): songId}
+                     for songId in syncSongIds]
     if addSpotifyMissing:
         # Add spotify missing songs
         if spotifyMissingSongs.get(artist) != None:
@@ -177,8 +185,9 @@ def getSyncSongs(artist, spotifyTrackIdNames, playlistName=None, isRemoveAlias=T
     print(syncSongs, '\n')
 
     # Get missing songs
-    neteaseMissingSongs = set(spotifyTrackNames) - \
-        {list(songDict.keys())[0] for songDict in syncSongs}
+    if not ignoreCase:
+        neteaseMissingSongs = set(spotifyTrackNames) - \
+            {list(songDict.keys())[0] for songDict in syncSongs}
     neteaseMissingSongs = sorted(
         list(neteaseMissingSongs), key=lambda songName: spotifyTrackNames.index(songName))
     missingSongSpotifyNames = [spotifyTrackOriginalNames[spotifyTrackNames.index(songName)]
@@ -217,3 +226,51 @@ def getSyncSongs(artist, spotifyTrackIdNames, playlistName=None, isRemoveAlias=T
         elif confirmOnceMode or continueMsg == 'n' or continueMsg == 'N':
             sys.exit()
     return syncSongs, neteaseMissingSongs, missingSongSpotifyNames
+
+
+# Get artist special song names
+def getArtistSpecialSongNames(artist, playlistName):
+    artistSpecialSongNames = specialSongNames.get(artist)
+    if playlistName == None:
+        return artistSpecialSongNames
+    if artistSpecialSongNames != None and artistSpecialSongNames.get('playlist') != None:
+        playlistSpecialSongNames = artistSpecialSongNames['playlist'].get(
+            playlistName)
+        if playlistSpecialSongNames != None:
+            artistSpecialSongNames = artistSpecialSongNames | playlistSpecialSongNames
+            artistSpecialSongNames['playlist'] = None
+    return artistSpecialSongNames
+
+
+# Get artist special song ids
+def getArtistSpecialSongIds(artist, playlistName):
+    artistSpecialIds = specialSongIds.get(artist)
+    if playlistName == None:
+        return artistSpecialIds
+    if artistSpecialIds != None and artistSpecialIds.get('playlist') != None:
+        playlistSpecialSongIds = artistSpecialIds['playlist'].get(
+            playlistName)
+        if playlistSpecialSongIds != None:
+            artistSpecialIds = artistSpecialIds | playlistSpecialSongIds
+        artistSpecialIds['playlist'] = None
+    return artistSpecialIds
+
+
+# Get netease no copyright songs
+def getNeteaseNoCopyrightSongs(neteasePlaylist):
+    neteasePlaylistSongs = neteasePlaylist['songs']
+    neteasePlaylistPrivileges = neteasePlaylist['privileges']
+    neteaseNoCopyrightSongs = []
+    neteaseNeedPurchaseSongs = []
+    for i in range(len(neteasePlaylistSongs)):
+        if neteasePlaylistPrivileges[i]['st'] < 0:
+            neteaseNoCopyrightSongs.append(neteasePlaylistSongs[i])
+            continue
+        # if neteasePlaylistSongs[i]['fee'] == 4:
+        # TODO reliable?? hahaha
+        if neteasePlaylistSongs[i]['fee'] == 4 and (
+                neteasePlaylistPrivileges[i]['flag'] % 4 == 0
+                or neteasePlaylistPrivileges[i]['flag'] == 8197):
+            # print(neteasePlaylistSongs[i]['name'], neteasePlaylistPrivileges[i]['flag'])
+            neteaseNeedPurchaseSongs.append(neteasePlaylistSongs[i])
+    return neteaseNoCopyrightSongs, neteaseNeedPurchaseSongs

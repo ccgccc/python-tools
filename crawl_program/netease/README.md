@@ -55,6 +55,9 @@ python3 ../spotify/crawlPlaylists.py
 python3 ../spotify/crawlPlaylists.py 'Listening Artist'  
 python3 ../spotify/crawlPlaylists.py 'Favorite' 'Like' 'Nice'  
 python3 ../spotify/crawlPlaylists.py 'Like' 'Nice'  
+python3 ../spotify/crawlPlaylists.py 'Like But More' 'Nice But Classic'  
+python3 ../spotify/crawlPlaylists.py 'Like But More'  
+python3 ../spotify/crawlPlaylists.py 'Nice But Classic'  
 python3 ../spotify/crawlPlaylists.py 'Hmm'  
 python3 ../spotify/crawlPlaylists.py 'High'  
 python3 ../spotify/crawlPlaylists.py '好歌拾遗'  
@@ -71,9 +74,13 @@ python3 syncCustomPlaylist.py 'Listening Artist'
 python3 syncCustomPlaylist.py 'Favorite'  
 python3 syncCustomPlaylist.py 'Like'  
 python3 syncCustomPlaylist.py 'Nice'  
+python3 syncCustomPlaylist.py 'Like But More'  
+python3 syncCustomPlaylist.py 'Nice But Classic'  
 python3 syncCustomPlaylist.py 'Hmm'  
 python3 syncCustomPlaylist.py 'High'  
 python3 syncCustomPlaylist.py '好歌拾遗'  
+python3 syncCustomPlaylist.py '张学友'  
+python3 syncCustomPlaylist.py '周杰伦'  
 python3 syncCustomPlaylist.py 'Listening'  
 python3 syncCustomPlaylist.py 'To Listen'  
 python3 syncCustomPlaylist.py 'Netease Non-playable'  
@@ -83,8 +90,13 @@ python3 syncCustomPlaylist.py 'More Hits - 流行'
 python3 syncCustomPlaylist.py 'Collection 1'  
 
 ### Sync spotify liked songs
-python3 syncLikedSongs.py  
 python3 songsDiff.py  
+python3 syncLikedSongs.py  
+
+python3 getPlaylistSongs.py 'Favorite' 'Like' 'Nice'  
+~~python3 getPlaylistDetails.py huahua~~  
+python3 diffSongs.py  
+python3 diffSongs.py huahua  
 
 
 
@@ -95,6 +107,7 @@ python3 getPlaylistSongs.py
 python3 getPlaylistSongs.py 'Favorite' 'Like' 'Nice' 'Listening Artist'  
 python3 getPlaylistSongs.py 'Favorite' 'Like' 'Nice'  
 python3 getPlaylistSongs.py 'Listening Artist'  
+python3 getPlaylistSongs.py '好歌拾遗'  
 python3 getPlaylistSongs.py 'Collection 1'  
 python3 getPlaylistSongs.py 张学友  
 (张学友 Most Played Songs)  
@@ -107,3 +120,4 @@ python3 getPlaylistDetails.py
 python3 getPlaylistDetails.py jacky_cheung  
 python3 getPlaylistDetails.py 'Collection 1'  
 python3 getPlaylistDetails.py 张学友  
+python3 getPlaylistDetails.py 'Listening Artist'  

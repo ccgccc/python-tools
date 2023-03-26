@@ -71,6 +71,6 @@ dupes = [songId for songId in playlistAllSongIds
          if songId in seen or seen.add(songId)]
 print('Dupes:', len(dupes))
 if len(dupes) > 0:
-    print('Dupes:', [{song['id']:song['name']}
-                     for song in playlistSongs if song['id'] in dupes])
+    print('Dupes:', {song['id']:song['name']
+                     for song in playlistSongs if song['id'] in dupes})
 print('--------------------')

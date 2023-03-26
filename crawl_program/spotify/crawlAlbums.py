@@ -13,6 +13,9 @@ from spotifyFunc import *
 artistToCrawlList = [artistToCrawl]
 # Crawl all artists
 # artistToCrawlList = artists.keys()
+# Read parameters from command line
+if len(sys.argv) >= 2:
+    artistToCrawlList = sys.argv[1:]
 
 
 def main():
@@ -29,28 +32,50 @@ def crawlAlbums(token, artists, artist, filterAlbums=True, includeFeatureOn=True
     artistId = artists[artist]['artistId']
     # Get artist albums
     allAlbums = getArtistAllAlbums(token, artistId)
-    # Only US market
-    allAlbums = [album for album in allAlbums
-                 if 'US' in album['available_markets']]
     print('Total albums: ' + str(len(allAlbums)))
     # Write json to file
     with open('./files/albums/' + artist + '_albums_raw.json', 'w') as f:
         json.dump(allAlbums, f, ensure_ascii=False)
+    # with open('./files/albums/' + artist + '_albums_raw.json') as f:
+    #     allAlbums = json.load(f)
+    # Only US market
+    allAlbums = [album for album in allAlbums
+                 if 'US' in album['available_markets']]
+    print('Total albums(US): ' + str(len(allAlbums)))
 
     # Filter albums type to album and single
-    if filterAlbums:
-        filterdAlbums = []
-        for album in allAlbums:
+    filterdAlbums = []
+    for album in allAlbums:
+        if artists[artist].get('excludeAlbums') != None and \
+                album['id'] in artists[artist]['excludeAlbums'].keys():
+            continue
+        if artists[artist].get('includeAlbums') != None and \
+                album['id'] in artists[artist]['includeAlbums'].keys():
+            filterdAlbums.append(album)
+            continue
+        if filterAlbums:
             if album['album_type'] == 'album' or album['album_type'] == 'single':
                 if not includeFeatureOn:
                     if album['album_group'] != 'appears_on':
                         filterdAlbums.append(album)
                 else:
                     filterdAlbums.append(album)
-        print('Filtered albums:', str(len(filterdAlbums)), '(albumtype=album|single' +
-              (')' if includeFeatureOn else ' & album_group!=appears_on)'))
-    else:
-        filterdAlbums = allAlbums
+        else:
+            filterdAlbums.append(album)
+    filterRule = 'None' if not filterAlbums else 'albumtype=album|single' + \
+        ('' if includeFeatureOn else ' & album_group!=appears_on')
+    print('Filtered albums:', str(len(filterdAlbums)),
+          '(filter: ' + filterRule + ')')
+
+    # Request includeAlbums
+    if artists[artist].get('includeAlbums') != None:
+        filterdAlbumIds = {album['id'] for album in filterdAlbums}
+        for albumId in artists[artist]['includeAlbums'].keys():
+            if albumId in filterdAlbumIds:
+                continue
+            album = getSingleAlbum(token, albumId)
+            filterdAlbums.append(album)
+
     # Sort albums by release date
     filterdAlbums.sort(key=lambda album: (
         album['release_date'], album['name']))
